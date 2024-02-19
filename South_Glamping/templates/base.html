@@ -1,0 +1,190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>Glamping</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- site icon -->
+      <link rel="icon" href="{% static 'images/logo/Golden.png' %}" type="image/png" />
+      <!-- bootstrap css -->
+      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+      <!-- site css -->
+      <link rel="stylesheet" href="{% static 'style.css' %}" />
+      <!-- responsive css -->
+      <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+      <!-- color css -->
+      <link rel="stylesheet" href="{% static 'css/colors.css' %}" />
+      <!-- select bootstrap -->
+      <link rel="stylesheet" href="{% static 'css/bootstrap-select.css' %}" />
+      <!-- scrollbar css -->
+      <link rel="stylesheet" href="{% static 'css/perfect-scrollbar.css' %}" />
+      <!-- custom css -->
+      <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+   </head>
+   <body class="dashboard dashboard_1">
+      <div class="full_container">
+         <div class="inner_container">
+            <!-- Sidebar  -->
+            <nav id="sidebar">
+               <div class="sidebar_blog_1">
+                  <div class="sidebar-header">
+                     <div class="logo_section">
+                        <a href="index.html"><img class="logo_icon img-responsive" src="{% static 'images/logo/logo_icon.png' %}" alt="#" /></a>
+                     </div>
+                  </div>
+                  <div class="sidebar_user_info">
+                     <div class="icon_setting"></div>
+                     <div class="user_profle_side">
+                        <div class="user_img"><img class="img-responsive" src="{% static 'images/layout_img/msg1.png' %}" alt="#" /></div>
+                        <div class="user_info">
+                           <h6>Camila Álvarez </h6>
+                           <p><span class="online_animation"></span> Online</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="sidebar_blog_2">
+                  <h4>General</h4>
+                  <ul class="list-unstyled components">
+                     <li><a href="{% url 'login' %}"><i class="fa fa-key red_color"></i> <span>Login</span></a></li>
+                     <li><a href="{% url 'customer' %}"><i class="fa fa-user blue1_color"></i> <span>Cliente</span></a></li>
+                     <li>
+                        <a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa  fa-university yellow_color"></i> <span>Cabañas</span></a>
+                        <ul class="collapse list-unstyled" id="element">
+                           <li><a href="{% url 'cabin' %}">> <span>Cabaña</span></a></li>
+                           <li><a href="{% url 'cabin_type' %}">> <span>Tipo de Cabaña</span></a></li>
+                        </ul>
+                     </li>
+                     <li><a href="{% url 'service' %}"><i class="fa fa-coffee blue1_color"></i> <span>Servicios</span></a></li>
+                     <li>
+                        <a href="{% url 'booking' %}">
+                        <i class="fa fa-file-text red_color"></i> <span>Reserva</span></a>
+                     </li>
+                     <li>
+                        <a href="{% url 'payment' %}">
+                        <i class=" fa-duotone fa fa-money green_color"></i> <span>Pago</span></a>
+                     </li>
+                     <!-- <li class="active">
+                        <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-clone yellow_color"></i> <span>Otros</span></a>
+                        <ul class="collapse list-unstyled" id="additional_page">
+                           
+                           <li>
+                              <a href="{% url 'booking_service' %}">> <span>Reserva Servicio</span></a>
+                           </li>
+                           <li>
+                              <a href="project.html">> <span>Projects</span></a>
+                           </li>
+                           <li>
+                              <a href="login.html">> <span>Login</span></a>
+                           </li>
+                           <li>
+                              <a href="404_error.html">> <span>404 Error</span></a>
+                           </li>
+                        </ul>
+                     </li>
+                     <!-- <li><a href="map.html"><i class="fa fa-map purple_color2"></i> <span>Map</span></a></li>
+                     <li><a href="charts.html"><i class="fa fa-bar-chart-o green_color"></i> <span>Charts</span></a></li>
+                     <li><a href="settings.html"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li> -->
+                  </ul>
+               </div>
+            </nav>
+            <!-- end sidebar -->
+            <!-- right content -->
+            <div id="content">
+               <!-- topbar -->
+               <div class="topbar">
+                  <nav class="navbar navbar-expand-lg navbar-light">
+                     <div class="full">
+                        <button type="button" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i></button>
+                        <div class="logo_section">
+                           <a href="index.html"><img class="img-responsive" src="{% static 'images/logo/logo.png' %}" alt="#" /></a>
+                        </div>
+                        <div class="right_topbar">
+                           <div class="icon_info">
+                              
+                              <ul class="user_profile_dd">
+                                 <li>
+                                    <a class="dropdown-toggle" data-toggle="dropdown"><img class="img-responsive rounded-circle" src="{% static 'images/layout_img/msg1.png' %}" alt="#" /><span class="name_user">Camila Álvarez </span></a>
+                                    <div class="dropdown-menu">
+                                       <a class="dropdown-item" href="profile.html">Mi perfil</a>
+                                       <a class="dropdown-item" href="#"><span>Salir</span> <i class="fa fa-sign-out"></i></a>
+                                    </div>
+                                 </li>
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+                  </nav>
+               </div>
+               <!-- end topbar -->
+               <!-- dashboard inner -->
+               <div class="midde_cont">
+               
+               {% block content %}
+
+               {% endblock %}
+
+                  <!-- footer -->
+                  <div class="container-fluid">
+                     <div class="footer">
+                        <p>Copyright © 2018 Designed by html.design. All rights reserved.<br><br>
+                           Distributed By: <a href="https://themewagon.com/">ThemeWagon</a>
+                        </p>
+                     </div>
+                 </div>
+              </div>
+              <!-- end dashboard inner -->
+           </div>
+        </div>
+     </div>
+     <!-- jQuery -->
+     <script src="{% static 'js/jquery.min.js' %}"></script>
+     <script src="{% static 'js/popper.min.js' %}"></script>
+     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+     <!-- wow animation -->
+     <script src="{% static 'js/animate.js' %}"></script>
+     <!-- select country -->
+     <script src="{% static 'js/bootstrap-select.js' %}"></script>
+     <!-- owl carousel -->
+     <script src="{% static 'js/owl.carousel.js' %}"></script> 
+     <!-- chart js -->
+     <script src="{% static 'js/Chart.min.js' %}"></script>
+     <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
+     <script src="{% static 'js/utils.js' %}"></script>
+     <script src="{% static 'js/analyser.js' %}"></script>
+     <!-- nice scrollbar -->
+     <script src="{% static 'js/perfect-scrollbar.min.js' %}"></script>
+     <script>
+        var ps = new PerfectScrollbar('#sidebar');
+     </script>
+     <!-- custom js -->
+     <script src="{% static 'js/custom.js' %}"></script>
+     <script src="{% static 'js/chart_custom_style1.js' %}"></script>
+         <!-- Page level plugins -->
+      <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+      <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+      <!-- Page level custom scripts -->
+      <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+      
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+
+  </body>
+</html> 
+               

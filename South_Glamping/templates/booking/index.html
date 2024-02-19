@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking{% endblock %}
+
+{% block content %}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h4 class="m-0 font-weight-bold text-primary">Reserva</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">            
+            <a href="{% url 'create_booking' %}" class="btn btn-primary btn-icon-split mb-3">
+                <span class="icon text-white-50">
+                    <i class="fa fa-plus "></i>
+                </span>
+                <span class="text">Crear Reserva</span>
+            </a>
+            
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Fecha reserva</th>
+                        <th>Fecha inicio</th>
+                        <th>Fecha finalización</th>
+                        <th>Valor</th>
+                        <th>Cliente</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>                        
+                    </tr>
+                </thead>                
+                <tbody>
+                    {% for booking in booking_list %}
+                    <tr>
+                    <td>{{ booking.date_booking }}</td>
+                    <td>{{ booking.date_start }}</td>
+                    <td>{{ booking.date_end }}</td>
+                    <td>{{ booking.price }}</td>
+                    <td>{{ booking.id_customer }}</td>
+                    <td>{{ booking.state_booking }}</td>                                       
+                    <td>
+                        <form action="{% url 'booking_status' booking.id %}" method="POST">
+                            {% csrf_token %}                            
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch{{ forloop.counter }}" {% if reservation_sale.status %} checked {% endif %} onchange="this.form.submit()">
+                                <label class="custom-control-label" for="customSwitch{{ forloop.counter }}"></label>
+                            </div>                     
+                        </form>
+                    </td>
+                    <td>
+                        <a href="" class="btn btn-info btn-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modalId" data-booking-id="{{ booking.id }}"> 
+                            <i class="fa fa-info-circle"></i>
+                        </a>
+                        <a href="" class="btn btn-warning btn-circle btn-sm">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="{% url 'delete_booking' booking.id %}" class="deleteBtn btn btn-danger btn-circle btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                    </tr>
+                    {% endfor %}                                     
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="modalNameId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">Detalles de la reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid" id="cabin-details"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Función para cargar detalles de la reserva en el modal
+function loadBookingDetails(bookingId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "{% url 'detail_booking' 0 %}".replace('0', bookingId), true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    console.log(data);
+                    // Actualizar el contenido del modal con los detalles de la reserva
+                    document.getElementById("booking-details").innerHTML =
+                        "<p><strong>Nombre:</strong> " + data.id_customer.name + "</p>" +
+                        "<p><strong>Fecha reserva:</strong> " + data.date_booking + "</p>" +
+                        "<p><strong>Fecha de inicio:</strong> " + data.date_start + "</p>" +
+                        "<p><strong>Fecha de finalización:</strong> " + data.date_end + "</p>" +
+                        "<p><strong>Valor:</strong> " + data.price + "</p>" +
+                        "<p><strong>Estado de la reserva:</strong> " + data.status + "</p>";                
+                    $('#modalId').modal('show'); // Mover esta línea aquí
+                } else {
+                    console.error('Error fetching booking details. Status code: ' + xhr.status);
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    // Asignar evento click a los botones de detalle de la reserva
+    document.addEventListener("click", function (event) {
+        if (event.target && event.target.dataset.bookingId) {
+            event.stopPropagation();
+            var bookingId = event.target.dataset.bookingId;
+            loadBookingDetails(bookingId);
+        }
+    });
+
+</script>
+
+<script>
+    document.querySelectorAll('.deleteBtn').forEach(function(deleteBtn) {
+    deleteBtn.addEventListener('click', function (event) {
+        event.preventDefault(); 
+
+        swal({
+            title: "Estás seguro que deseas eliminar?",            
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {                
+                window.location.href = this.getAttribute('href');              
+            }
+        });
+    });
+});
+</script>
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            swal({                
+                text: "{{ message }}",
+                icon: "{{ message.tags }}",
+                button: "OK",
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+{% endblock %}
