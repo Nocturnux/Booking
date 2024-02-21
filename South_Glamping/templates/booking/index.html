@@ -37,16 +37,8 @@
                     <td>{{ booking.date_start }}</td>
                     <td>{{ booking.date_end }}</td>
                     <td>{{ booking.price }}</td>
-                    <td>{{ booking.id_customer }}</td>
-                    <td>{{ booking.state_booking }}</td>                                       
-                    <td>
-                        <form action="{% url 'booking_status' booking.id %}" method="POST">
-                            {% csrf_token %}                            
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch{{ forloop.counter }}" {% if reservation_sale.status %} checked {% endif %} onchange="this.form.submit()">
-                                <label class="custom-control-label" for="customSwitch{{ forloop.counter }}"></label>
-                            </div>                     
-                        </form>
+                    <td>{{ booking.customer }}</td>
+                    <td>{{ booking.status }}</td>                                       
                     </td>
                     <td>
                         <a href="" class="btn btn-info btn-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modalId" data-booking-id="{{ booking.id }}"> 

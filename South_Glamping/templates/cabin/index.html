@@ -38,7 +38,7 @@
                     <td>{{ cabin.capacity }}</td>
                     <td>{{ cabin.cabin_type  }}</td>
                     <td>{{ cabin.description }}</td>
-                    <td>{{ service.price }}</td>
+                    <td>{{ cabin.price }}</td>
                     <td>
                         <form action="{% url 'cabin_status' cabin.id %}" method="POST">
                             {% csrf_token %}                            
