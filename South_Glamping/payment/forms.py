@@ -4,7 +4,7 @@ from . models import Payment
 from booking.models import Booking
 
 class PaymentForm(forms.ModelForm):
-    booking = forms.ModelChoiceField(queryset=Booking.objects.filter(status=True).order_by('date_booking'))
+    booking = forms.ModelChoiceField(queryset=Booking.objects.order_by('customer'))
 
     class Meta:
         model = Payment

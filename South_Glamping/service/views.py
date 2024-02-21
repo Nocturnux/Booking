@@ -49,4 +49,4 @@ def edit_service(request, service_id):
         except:
             messages.error(request, 'Ocurrió un error al editar el Servicio.')        
         return redirect('service')    
-    return render(request, 'service/editar.html', {'form': form})
+    return render(request, 'service/edit.html', {'form': form})
