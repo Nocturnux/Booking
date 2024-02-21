@@ -92,7 +92,7 @@
 
 <script>
     cabin_added = [];
-    services_added = [];
+    service_added = [];
     let total = 0;
     function addCabin(event) {
         let date_start = document.getElementById('date_start').value
@@ -104,6 +104,7 @@
         let cabin_price = cabinSelect.find('option:selected').text().split(' - ')[1];
         cabin_added.push(cabin_Id);
         totalBooking(parseFloat(cabin_price));
+
         $('#tbooking').append(`
             <tr id=${cabin_Id}>                               
                 <td>
@@ -113,8 +114,8 @@
                 </td>
                 <td>${cabin_price}</td>                
                 <td>
-                    <a onclick='removeBooking(event, "cabin")' class="btn btn-danger btn-circle btn-sm">
-                        <i class="fas fa-trash"></i>
+                    <a onclick='removeBooking(event, "cabin")' class="deleteBtn btn btn-danger btn-circle btn-sm">
+                        <i class="fa fa-trash"></i>
                     </a>
                 </td>
             </tr>
@@ -124,20 +125,20 @@
     function addService(event) {
         event.preventDefault();
         let serviceSelect = $('select[name="service"]');
-        let serviceId = serviceSelect.val();
-        let seviceName = serviceSelect.find('option:selected').text().split(' - ')[0];
-        let servicePrice = serviceSelect.find('option:selected').text().split(' - ')[1];
-        service_added.push(serviceId);
-        totalBooking(parseFloat(servicePrice));
+        let service_Id = serviceSelect.val();
+        let sevice_Name = serviceSelect.find('option:selected').text().split(' - ')[0];
+        let service_Price = serviceSelect.find('option:selected').text().split(' - ')[1];
+        service_added.push(service_Id);
+        totalBooking(parseFloat(service_Price));
 
         $('#tbooking').append(`
-            <tr id="${serviceId}">                                
+            <tr id="${service_Id}">                                
                 <td>
-                    <input type="hidden" name="serviceId[]" value="${serviceId}">
-                    <input type="hidden" name="servicePrice[]" value="${servicePrice}">
-                    ${seviceName}
+                    <input type="hidden" name="service_Id[]" value="${service_Id}">
+                    <input type="hidden" name="service_Price[]" value="${service_Price}">
+                    ${sevice_Name}
                 </td>
-                <td>${servicePrice}</td>                
+                <td>${service_Price}</td>                
                 <td>
                     <a onclick='removeBooking(event, "service")' class="btn btn-danger btn-circle btn-sm">
                         <i class="fa fa-trash"></i>

@@ -57,7 +57,7 @@ def create_booking(request):
             booking_service.save()              
         messages.success(request, 'Reserva creada con éxito.')
         return redirect('booking')
-    return render(request, 'booking/create.html', {'customer_list': customer_list, 'cabin_list': cabin_list, 'services_list': service_list})
+    return render(request, 'booking/create.html', {'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list})
 
 def detail_booking(request, booking_id):
     booking = Booking.objects.get(pk=booking_id)

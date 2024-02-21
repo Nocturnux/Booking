@@ -3,8 +3,8 @@
 
 {% for field in form %}
     <div class="mb-3">
-        <label for="" class="form-label">{{ field.label }}</label>
         {% if field.name == 'booking' %}
+        <label for="" class="form-label">Reserva</label>
             <select class="form-control" name="{{ field.name }}">                    
                 {% for choice in field.field.choices %}
                     <option value="{{ choice.0 }}" {% if choice.0 == field.value %}selected{% endif %}>{{ choice.1 }}</option>
