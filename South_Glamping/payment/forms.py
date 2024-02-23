@@ -9,15 +9,17 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = "__all__"
-        exclude = ['status',]
+        exclude = ['',]
         
         labels = {
             'date': 'Fecha',
             'payment_method': 'Método de pago', 
-            'booking': 'Reserva', 
+            'booking': 'Reserva',
+            'status' : 'Estado' 
             
         }
         widgets = {
             'date' : forms.DateInput(attrs={'type':'date'}),
             'payment_method': forms.TextInput(attrs={'placeholder': 'Ingresa el método de pago'}),
+            'status': forms.TextInput(attrs={'placeholder': 'Ingresa el estado del pago'}),
         }

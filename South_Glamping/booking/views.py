@@ -29,7 +29,7 @@ def create_booking(request):
             date_start=date_start,
             date_end=date_end,
             price=request.POST['totalValue'],
-            status='Reservado',
+            status='Por confirmar',
             customer_id=request.POST['customer']
         )
         booking.save()        
@@ -83,4 +83,14 @@ def delete_booking(request, booking_id):
     except:
         messages.error(request, 'No se puede eliminar la reserva porque está asociada a un servicio.')
     return redirect('booking')
+
+def edit_booking(request, booking_id):
+    booking = Booking.objects.get(pk=booking_id)
+    try:
+       booking.save()
+       messages.success(request, 'Cabaña actualizada correctamente.')
+    except:
+        messages.error(request, 'Ocurrió un error al editar la cabaña.')
+        return redirect('booking')    
+    return render(request, 'booking/edit.html', {'form': form})
 

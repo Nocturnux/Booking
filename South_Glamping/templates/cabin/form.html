@@ -5,8 +5,8 @@
       <div class="mb-3">  
           {% if field.name == 'cabin_type'%}
           <label for="" class="form-label">Tipo Cabaña</label> 
-              <select class="form-control" name="{{field.name}}" id="">
-                <option value="" {% if not field.value %}selected{% endif %}>Seleccione lel tipo de cabaña {{ choice.1 }}</option>
+              <select class="form-control" name="cabin_type" id="">
+                <option value="">Seleccione el tipo de cabaña {{ choice.1 }}</option>
                   {% for choice in field.field.choices %}
                     <option value="{{ choice.0 }}" {% if choice.0 == field.value %}selected{% endif %}>{{ choice.1 }}</option>
                   {% endfor %}

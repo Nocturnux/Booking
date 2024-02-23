@@ -5,8 +5,8 @@ class Booking(models.Model):
     date_start = models.DateField()
     date_end = models.DateField()
     price = models.IntegerField()
-    status = models.CharField(max_length=30, default = 'Reservado')
+    status = models.CharField(max_length=30, default = 'Por confirmar')
     customer = models.ForeignKey('customer.Customer', on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return str(self.date_booking)
+        return f"{self.customer} - {self.date_start}"

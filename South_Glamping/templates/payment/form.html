@@ -1,4 +1,4 @@
-<form action="" method="POST" enctype="multipart/form-data">
+<form action="" method="POST">
   {% csrf_token %}
   
   {% for field in form %}
@@ -8,7 +8,7 @@
               <select class="form-control" name="{{field.name}}" id="">
                 <option value="" {% if not field.value %}selected{% endif %}>Seleccione la reserva {{ choice.1 }}</option>
                   {% for choice in field.field.choices %}
-                    <option value= {% if choice.0 == field.value %}selected{% endif %}>{{ choice.1 }}</option>
+                    <option value= "{{choice.0}}"{% if choice.0 == field.value %}selected{% endif %}>{{ choice.1 }}</option>
                   {% endfor %}
               </select>
           {% else %}

@@ -23,7 +23,7 @@
                         <th>Fecha</th>
                         <th>Metodo de pago</th>
                         <th>Estado</th>
-                        <th>reserva</th>
+                        <th>Reserva</th>
                         <th>Acciones</th>                        
                     </tr>
                 </thead>                
@@ -35,25 +35,14 @@
                     <td>{{ payment.status }}</td>
                     <td>{{ payment.booking }}</td>                                       
                     <td>
-                        <form action="{% url 'payment_status' payment.id %}" method="POST">
-                            {% csrf_token %}                            
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch{{ forloop.counter }}" {% if payment.status %} checked {% endif %} onchange="this.form.submit()">
-                                <label class="custom-control-label" for="customSwitch{{ forloop.counter }}"></label>
-                            </div>                     
-                        </form>
-                    </td>
-                    <td>
                         <a href="" class="btn btn-info btn-circle btn-sm"data-bs-toggle="modal" data-bs-target="#modalId" data-payment-id="{{ payment.id }}">
                             <i class="fa fa-info-circle"></i>
                         </a>
                         <a href="{% url 'edit_payment' payment.id %}" class="btn btn-warning btn-circle btn-sm">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <a href="{% url 'delete_payment' payment.id %}" class="deleteBtn btn btn-danger btn-circle btn-sm">
-                            <i class="fa fa-trash"></i>
-                </a>
                     </td>
+                    
                     </tr>
                     <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -76,7 +65,7 @@
                     
                     <script>
 
-                    function loadAuthorDetails(payment) {
+                    function loadPaymentDetails(payment) {
                             var xhr = new XMLHttpRequest();
                             xhr.open("GET", "{% url 'detail_payment' 0 %}".replace('0', paymentId), true);
                             xhr.onreadystatechange = function () {
@@ -115,25 +104,7 @@
     </div>
 </div>
 
-<script>
-    document.querySelectorAll('.deleteBtn').forEach(function(deleteBtn) {
-    deleteBtn.addEventListener('click', function (event) {
-        event.preventDefault(); 
 
-        swal({
-            title: "Estás seguro que deseas eliminar?",            
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-            if (willDelete) {                
-                window.location.href = this.getAttribute('href');              
-            }
-        });
-    });
-});
-</script>
 
 {% if messages %}
     {% for message in messages %}
