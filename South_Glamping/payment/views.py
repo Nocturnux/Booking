@@ -15,7 +15,7 @@ def create_payment(request):
     if form.is_valid():
         payment_instance = form.save()  # Guarda el formulario y obtén la instancia de Payment
         booking_instance = payment_instance.booking  # Obtén la instancia de Booking asociada al Payment
-        booking_instance.status = 'Reservado'  # Establece el estado como 'Reservado'
+        booking_instance.status = 'Confirmado'  # Establece el estado como 'Reservado'
         booking_instance.save()  # Guarda los cambios en la instancia de Booking
         return redirect('payment')   
     print(form.errors) 
