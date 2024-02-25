@@ -1,7 +1,6 @@
-body {
-    background: linear-gradient(45deg, #FC466B, #3F5EFB);
-    height: 100vh;
-    font-family: 'Montserrat', sans-serif;
+body {  
+  background-color: #15283c;
+  background-image: url('../images/layout_img/pattern.png');
   }
   
   .container {
@@ -159,4 +158,3 @@ body {
   button:focus {
       outline: none;
   }
-  

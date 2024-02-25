@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from payment.models import Payment
+from booking.models import Booking
 from .forms import PaymentForm
 from django.http import JsonResponse
 from django.contrib import messages
@@ -12,7 +13,10 @@ def payment(request):
 def create_payment(request):
     form = PaymentForm(request.POST or None)
     if form.is_valid():
-        form.save()
+        payment_instance = form.save()  # Guarda el formulario y obtén la instancia de Payment
+        booking_instance = payment_instance.booking  # Obtén la instancia de Booking asociada al Payment
+        booking_instance.status = 'Reservado'  # Establece el estado como 'Reservado'
+        booking_instance.save()  # Guarda los cambios en la instancia de Booking
         return redirect('payment')   
     print(form.errors) 
     return render(request, 'payment/create.html', {'form': form})

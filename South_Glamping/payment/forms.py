@@ -5,6 +5,7 @@ from booking.models import Booking
 
 class PaymentForm(forms.ModelForm):
     booking = forms.ModelChoiceField(queryset=Booking.objects.order_by('customer'))
+    booking_status = forms.CharField(max_length=30)
 
     class Meta:
         model = Payment
@@ -15,7 +16,7 @@ class PaymentForm(forms.ModelForm):
             'date': 'Fecha',
             'payment_method': 'Método de pago', 
             'booking': 'Reserva',
-            'status' : 'Estado' 
+            'status' : 'Estado',
             
         }
         widgets = {

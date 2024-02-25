@@ -24,7 +24,7 @@ def create_booking(request):
         date_start = datetime.strptime(date_start_str, '%Y-%m-%d')
         date_end = datetime.strptime(date_end_str, '%Y-%m-%d')
         
-     
+    
         booking = Booking.objects.create(                        
             date_booking=datetime.now().date(),                                   
             date_start=date_start,
@@ -38,7 +38,7 @@ def create_booking(request):
         service_Id = request.POST.getlist('serviceId[]')
         cabin_price = request.POST.getlist('cabinPrice[]')
         service_price = request.POST.getlist('servicePrice[]') 
-              
+            
                 
         for i in range(len(cabin_Id)):            
             cabin = Cabin.objects.get(pk=int(cabin_Id[i]))
@@ -50,13 +50,14 @@ def create_booking(request):
             booking_cabin.save()
         
         for i in range(len(service_Id)):
-            service = Service.objects.get(pk=int(service_Id[i]))
-            booking_service = Booking_service.objects.create(
-                booking=booking,
-                service=service,
-                price=service_price[i]
-            )
-            booking_service.save()      
+            if i > 0:
+                service = Service.objects.get(pk=int(service_Id[i]))
+                booking_service = Booking_service.objects.create(
+                    booking=booking,
+                    service=service,
+                    price=service_price[i]
+                )
+                booking_service.save()      
             
                     
         messages.success(request, 'Reserva creada con éxito.')
@@ -91,8 +92,9 @@ def delete_booking(request, booking_id):
 def edit_booking(request, booking_id):
     booking = Booking.objects.get(pk=booking_id)
     try:
-       booking.save()
-       messages.success(request, 'Cabaña actualizada correctamente.')
+        
+        booking.save()
+        messages.success(request, 'Cabaña actualizada correctamente.')
     except:
         messages.error(request, 'Ocurrió un error al editar la reserva.')
         return redirect('booking')    

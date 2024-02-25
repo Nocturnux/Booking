@@ -11,6 +11,10 @@
                     <option value= "{{choice.0}}"{% if choice.0 == field.value %}selected{% endif %}>{{ choice.1 }}</option>
                   {% endfor %}
               </select>
+              {% elif field.name == 'booking_status' %}
+              <label for="{{ field.id_for_label }}" class="form-label">Estado de la reserva</label>
+              <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}"
+                    aria-describedby="helpId" placeholder="Ingresa el estado de la reserva" value="Reservado">
           {% else %}
           <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label> 
             {% if field.name == 'image' and field.value %}
