@@ -1,11 +1,182 @@
 {% extends 'base.html' %}
 
+{% block title %} Glamping{% endblock %}
+
 {% block content %}
 <div class="card shadow mb-4 p-4 ">
     <div class="card-header py-3 mb-3">
-        <h4 class="m-0 font-weight-bold text-primary">Editar reserva</h4>
+        <h4 class="m-0 font-weight-bold text-primary">Editar Reserva</h4>
     </div>
-    {% include 'booking/create.html' %}
+    {% if error_message %}
+    <div class="alert alert-danger">
+        {{ error_message }}
+    </div>
+    {% endif %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="d-flex">
+            <div class="mb-3">
+                <label for="date_start" class="form-label">Fecha inicio</label>
+                <input type="date" class="form-control" name="date_start" id="date_start" aria-describedby="helpId"
+                    placeholder="Ingresa una fecha de inicio" value="{{ booking.date_start|date:'Y-m-d'  }}">
+                <small id="helpId" class="form-text text-muted"></small>
+            </div>
+            <div class="mb-3 mx-4">
+                <label for="date_end" class="form-label">Fecha final</label>
+                <input type="date" class="form-control" name="date_end" id="date_end" aria-describedby="helpId"
+                    placeholder="Ingresa una fecha de inicio" value="{{ booking.date_end|date:'Y-m-d' }}">
+                <small id="helpId" class="form-text text-muted"></small>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Cliente</label>
+            <select class="form-control" name="customer" id="">
+                <option value="">Selecciona un cliente</option>
+                {% for customer in customer_list %}
+                <option value="{{customer.id}}" {% if customer.id == booking.customer.id %} selected {% endif %}>{{customer.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Cabaña</label>
+            <div class="d-flex">
+                <select class="form-control" name="cabin" id="">
+                    <option value="">Selecciona una cabaña</option>
+                    {% for cabin in cabin_list %}
+                    <option value="{{cabin.id}}" {% if cabin.id == booking.cabin.id %} selected {% endif %}>{{ cabin.name }} - {{ cabin.price }}</option>
+                    {% endfor %}
+                </select>
+                <a href="" onclick="addCabin(event)" class="btn btn-primary btn-icon-split mb-3">
+                   <span class="icon text-white-50"><i class="fa fa-plus"></i></span>
+               </a>
+            </div>   
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Servicios</label>
+            <div class="d-flex">
+                <select class="form-control" name="service" id="">
+                    <option value="">Selecciona un servicio</option>
+                    {% for service in service_list %}
+                    <option value="{{service.id}}" {% if service.id == booking.service.id %} selected {% endif %}>{{ service.name }} - {{ service.price }}</option>
+                    {% endfor %}
+                </select>
+                <a onclick="addService(event)" href="" class="btn btn-primary btn-icon-split mb-3">
+                <span class="icon text-white-50"><i class="fa fa-plus"></i></span>
+                </a>
+            </div>    
+
+        </div>
+        <div class="card-header py-3 mb-3">
+            <h4 class="m-0 font-weight-bold text-primary">Detalle reserva</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="tbooking">
+                </tbody>
+                <thead>
+                    <tr>
+                        <th>Total:</th>
+                        <th scope="col"><input class="text-success font-weight-bold" style="border: none;" type="text" name="totalValue" id="totalValue" readonly></th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+    </form>
 </div>
 
+<script>
+    cabin_added = [];
+    service_added = [];
+    let total = 0;
+    function addCabin(event) {
+        let date_start = document.getElementById('date_start').value
+        let date_end = document.getElementById('date_end').value
+        event.preventDefault();
+        let cabinSelect = $('select[name="cabin"]');
+        let cabin_Id = cabinSelect.val();
+        let cabin_Name = cabinSelect.find('option:selected').text().split(' - ')[0];
+        let cabin_price = cabinSelect.find('option:selected').text().split(' - ')[1];
+        cabin_added.push(cabin_Id);
+        totalBooking(parseFloat(cabin_price));
+
+        $('#tbooking').append(`
+            <tr id=${cabin_Id}>                               
+                <td>
+                    <input type="hidden" name="cabin_Id[]" value="${cabin_Id}">
+                    <input type="hidden" name="cabin_price[]" value="${cabin_price}">
+                    ${cabin_Name}
+                </td>
+                <td>${cabin_price}</td>                
+                <td>
+                    <a onclick='removeBooking(event, "cabin")' class="deleteBtn btn btn-danger btn-circle btn-sm">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        `);
+    }
+
+    function addService(event) {
+        event.preventDefault();
+        let serviceSelect = $('select[name="service"]');
+        let service_Id = serviceSelect.val();
+        let sevice_Name = serviceSelect.find('option:selected').text().split(' - ')[0];
+        let service_Price = serviceSelect.find('option:selected').text().split(' - ')[1];
+        service_added.push(service_Id);
+        totalBooking(parseFloat(service_Price));
+
+        $('#tbooking').append(`
+            <tr id="${service_Id}">                                
+                <td>
+                    <input type="hidden" name="service_Id[]" value="${service_Id}">
+                    <input type="hidden" name="service_Price[]" value="${service_Price}">
+                    ${sevice_Name}
+                </td>
+                <td>${service_Price}</td>                
+                <td>
+                    <a onclick='removeBooking(event, "service")' class="btn btn-danger btn-circle btn-sm">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        `);
+    }
+
+    function totalBooking(value) {
+        total += value;
+        document.getElementById('totalValue').value = total;
+    }
+
+    function removeBooking(event, type) {
+        event.preventDefault();        
+        let element = event.target.parentElement.parentElement.parentElement;
+        let id = element.id;          
+        if (type == 'cabin') {
+            cabin_added = cabin_added.filter(cabin => cabin != id);
+        } else {
+            service_added = service_added.filter(service => service != id);
+        }
+        element.remove();
+        let price = parseFloat(element.children[1].textContent);        
+        total -= price;
+        document.getElementById('totalValue').value = total;
+    }
+</script>
+
+
 {% endblock %}
+            

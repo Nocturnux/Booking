@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from customer.models import Customer
 from cabin.models import Cabin
@@ -50,7 +50,6 @@ def create_booking(request):
             booking_cabin.save()
         
         for i in range(len(service_Id)):
-            if i > 0:
                 service = Service.objects.get(pk=int(service_Id[i]))
                 booking_service = Booking_service.objects.create(
                     booking=booking,
@@ -90,13 +89,54 @@ def delete_booking(request, booking_id):
     return redirect('booking')
 
 def edit_booking(request, booking_id):
-    booking = Booking.objects.get(pk=booking_id)
-    try:
+    customer_list = Customer.objects.all()
+    cabin_list = Cabin.objects.all()
+    service_list = Service.objects.all()
+    
+    booking = get_object_or_404(Booking, pk=booking_id)
+    
+    if request.method == 'POST':
+        date_start_str = request.POST['date_start']
+        date_end_str = request.POST['date_end']        
+        date_start = datetime.strptime(date_start_str, '%Y-%m-%d')
+        date_end = datetime.strptime(date_end_str, '%Y-%m-%d')
         
+        
+        # Actualizar los campos de la reserva
+        booking.date_start = date_start
+        booking.date_end = date_end
+        booking.price = request.POST['totalValue']
+        booking.customer_id=request.POST['customer']
         booking.save()
-        messages.success(request, 'Cabaña actualizada correctamente.')
-    except:
-        messages.error(request, 'Ocurrió un error al editar la reserva.')
-        return redirect('booking')    
-    return render(request, 'booking/edit.html', {'form': form})
+        
+        # Actualizar las cabañas asociadas a la reserva
+        cabin_Id = request.POST.getlist('cabinId[]')
+        cabin_price = request.POST.getlist('cabinPrice[]')
+        
+        for i in range(len(cabin_Id)):            
+            cabin = Cabin.objects.get(pk=int(cabin_Id[i]))
+            booking_cabin = Booking_cabin.objects.create(
+                booking=booking,
+                cabin=cabin,
+                price=cabin_price[i]
+            )
+            booking_cabin.save()
+        
+        # Actualizar los servicios asociados a la reserva
+        service_Id = request.POST.getlist('serviceId[]')
+        service_price = request.POST.getlist('servicePrice[]')
+       
+        for i in range(len(service_Id)):
+                service = Service.objects.get(pk=int(service_Id[i]))
+                booking_service = Booking_service.objects.create(
+                    booking=booking,
+                    service=service,
+                    price=service_price[i]
+                )
+                booking_service.save()
+        
+        messages.success(request, 'Reserva editada con éxito.')
+        return redirect('booking')
+    
+    return render(request, 'booking/edit.html', {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list})
 
