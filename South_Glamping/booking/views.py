@@ -23,20 +23,22 @@ def create_booking(request):
         date_end_str = request.POST['date_end']        
         date_start = datetime.strptime(date_start_str, '%Y-%m-%d')
         date_end = datetime.strptime(date_end_str, '%Y-%m-%d')
-
+        
+     
         booking = Booking.objects.create(                        
             date_booking=datetime.now().date(),                                   
             date_start=date_start,
             date_end=date_end,
             price=request.POST['totalValue'],
-            status='Por confirmar',
+            status='Reservado',
             customer_id=request.POST['customer']
         )
         booking.save()        
         cabin_Id = request.POST.getlist('cabinId[]')
-        cabin_price = request.POST.getlist('cabinPrice[]')
         service_Id = request.POST.getlist('serviceId[]')
-        service_price = request.POST.getlist('servicePrice[]')       
+        cabin_price = request.POST.getlist('cabinPrice[]')
+        service_price = request.POST.getlist('servicePrice[]') 
+              
                 
         for i in range(len(cabin_Id)):            
             cabin = Cabin.objects.get(pk=int(cabin_Id[i]))
@@ -54,9 +56,12 @@ def create_booking(request):
                 service=service,
                 price=service_price[i]
             )
-            booking_service.save()              
+            booking_service.save()      
+            
+                    
         messages.success(request, 'Reserva creada con éxito.')
         return redirect('booking')
+    
     return render(request, 'booking/create.html', {'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list})
 
 def detail_booking(request, booking_id):
@@ -74,7 +79,6 @@ def change_status_booking(request, booking_id):
     return redirect('booking')
 
 
-
 def delete_booking(request, booking_id):
     booking = Booking.objects.get(pk=booking_id)
     try:
@@ -90,7 +94,7 @@ def edit_booking(request, booking_id):
        booking.save()
        messages.success(request, 'Cabaña actualizada correctamente.')
     except:
-        messages.error(request, 'Ocurrió un error al editar la cabaña.')
+        messages.error(request, 'Ocurrió un error al editar la reserva.')
         return redirect('booking')    
     return render(request, 'booking/edit.html', {'form': form})
 
