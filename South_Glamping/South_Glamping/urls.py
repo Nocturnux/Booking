@@ -20,7 +20,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
+    path('', views.landingpage, name="landingpage"),
+    path('login/', views.login, name='login'),
+    path('logout', views.logout, name='logout'),
+    path('index/', views.index, name='index'),
     path('customer/', include('customer.urls')),
     path('service/', include('service.urls')),
     path('booking/', include('booking.urls')),  
@@ -29,6 +32,4 @@ urlpatterns = [
     path('cabin/', include('cabin.urls')),  
     path('booking_service/', include('booking_service.urls')),
     path('booking_cabin/', include('booking_cabin.urls')),
-    path('login/', views.login, name = 'login'),
-    path('landingpage/', views.landingpage, name="landingpage"),    
 ]

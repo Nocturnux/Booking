@@ -92,6 +92,9 @@ def edit_booking(request, booking_id):
     customer_list = Customer.objects.all()
     cabin_list = Cabin.objects.all()
     service_list = Service.objects.all()
+    booking_cabin = Booking_cabin.objects.filter(booking_id=1)
+    print(booking_cabin)
+    booking_service = Booking_service.objects.filter(booking_id=booking_id)
     
     booking = get_object_or_404(Booking, pk=booking_id)
     
@@ -138,5 +141,5 @@ def edit_booking(request, booking_id):
         messages.success(request, 'Reserva editada con éxito.')
         return redirect('booking')
     
-    return render(request, 'booking/edit.html', {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list})
+    return render(request, 'booking/edit.html', {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list, 'booking_cabin':booking_cabin })
 
