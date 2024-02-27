@@ -63,8 +63,6 @@
                <div class="sidebar_blog_2">
                   <h4>General</h4>
                   <ul class="list-unstyled components">
-                     <li><a href="{% url 'login' %}"><i class="fa fa-key red_color"></i> <span>Login</span></a></li>
-                     <li><a href="{% url 'landingpage' %}"><i class="fa fa-home red_color"></i> <span>Landingpage</span></a></li>
                      <li><a href="{% url 'customer' %}"><i class="fa fa-user blue1_color"></i> <span>Cliente</span></a></li>
                      <li>
                         <a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa  fa-university yellow_color"></i> <span>Cabañas</span></a>
@@ -82,27 +80,7 @@
                         <a href="{% url 'payment' %}">
                         <i class=" fa-duotone fa fa-money green_color"></i> <span>Pago</span></a>
                      </li>
-                     <!-- <li class="active">
-                        <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-clone yellow_color"></i> <span>Otros</span></a>
-                        <ul class="collapse list-unstyled" id="additional_page">
-                           
-                           <li>
-                              <a href="{% url 'booking_service' %}">> <span>Reserva Servicio</span></a>
-                           </li>
-                           <li>
-                              <a href="project.html">> <span>Projects</span></a>
-                           </li>
-                           <li>
-                              <a href="login.html">> <span>Login</span></a>
-                           </li>
-                           <li>
-                              <a href="404_error.html">> <span>404 Error</span></a>
-                           </li>
-                        </ul>
-                     </li>
-                     <!-- <li><a href="map.html"><i class="fa fa-map purple_color2"></i> <span>Map</span></a></li>
-                     <li><a href="charts.html"><i class="fa fa-bar-chart-o green_color"></i> <span>Charts</span></a></li>
-                     <li><a href="settings.html"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li> -->
+                     
                   </ul>
                </div>
             </nav>
@@ -122,10 +100,10 @@
                               
                               <ul class="user_profile_dd">
                                  <li>
-                                    <a class="dropdown-toggle" data-toggle="dropdown"><img class="img-responsive rounded-circle" src="{% static 'images/layout_img/msg1.png' %}" alt="#" /><span class="name_user">Camila Álvarez </span></a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown"><img class="img-responsive rounded-circle" {% if request.user.is_superuser or request.user.is_staff %} src="{% static 'images/layout_img/admin ico.png' %}" {% else %} src="{% static 'images/layout_img/user ico.png' %}" {% endif %} alt="#" /><span class="name_user">{{request.user.username}} </span></a>
                                     <div class="dropdown-menu">
                                        <a class="dropdown-item" href="profile.html">Mi perfil</a>
-                                       <a class="dropdown-item" href="#"><span>Salir</span> <i class="fa fa-sign-out"></i></a>
+                                       <a class="dropdown-item" href="{% url 'logout' %}"><span>Salir</span> <i class="fa fa-sign-out"></i></a>
                                     </div>
                                  </li>
                               </ul>

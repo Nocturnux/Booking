@@ -92,7 +92,7 @@ def edit_booking(request, booking_id):
     customer_list = Customer.objects.all()
     cabin_list = Cabin.objects.all()
     service_list = Service.objects.all()
-    booking_cabin = Booking_cabin.objects.filter(booking_id=1)
+    booking_cabin = Booking_cabin.objects.filter(booking_id=booking_id)
     print(booking_cabin)
     booking_service = Booking_service.objects.filter(booking_id=booking_id)
     
@@ -128,7 +128,7 @@ def edit_booking(request, booking_id):
         # Actualizar los servicios asociados a la reserva
         service_Id = request.POST.getlist('serviceId[]')
         service_price = request.POST.getlist('servicePrice[]')
-       
+        
         for i in range(len(service_Id)):
                 service = Service.objects.get(pk=int(service_Id[i]))
                 booking_service = Booking_service.objects.create(
