@@ -43,7 +43,7 @@ def register(request):
             document = form.cleaned_data['document']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            phone = form.cleaned_data['phone']
+            cellphone = form.cleaned_data['cellphone']
             username = email
             user = User.objects.create_user(username, email, password, first_name=name, last_name=last_name)
             user.save()
@@ -53,7 +53,7 @@ def register(request):
             client = Customer.objects.filter(document=document).first()
             if client is None:
                 name = form.cleaned_data['name'] + ' ' + form.cleaned_data['last_name']
-                client = Customer(None, name, document=document, email=email, phone=phone)
+                client = Customer(None, name, document=document, email=email, cellphone=cellphone)
                 client.save()
                 return redirect('login')               
         return redirect('login')    
