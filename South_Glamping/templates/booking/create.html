@@ -18,19 +18,19 @@
             <div class="mb-3">
                 <label for="" class="form-label">Fecha inicio</label>
                 <input type="date" class="form-control" name="date_start" id="date_start" aria-describedby="helpId"
-                    placeholder="Ingresa una fecha de inicio">
+                    placeholder="Ingresa una fecha de inicio" required>
                 <small id="helpId" class="form-text text-muted"></small>
             </div>
             <div class="mb-3 mx-4">
                 <label for="" class="form-label">Fecha final</label>
                 <input type="date" class="form-control" name="date_end" id="date_end" aria-describedby="helpId"
-                    placeholder="Ingresa una fecha de inicio">
+                    placeholder="Ingresa una fecha de inicio" required>
                 <small id="helpId" class="form-text text-muted"></small>
             </div>
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Cliente</label>
-            <select class="form-control" name="customer" id="">
+            <select class="form-control" name="customer" id="" required>
                 <option value="">Selecciona un cliente</option>
                 {% for customer in customer_list %}
                 <option value="{{customer.id}}">{{customer.name}}</option>
@@ -40,7 +40,7 @@
         <div class="mb-3">
             <label for="" class="form-label">Cabaña</label>
             <div class="d-flex">
-                <select class="form-control" name="cabin" id="">
+                <select class="form-control" name="cabin" id=""required>
                     <option value="">Selecciona una cabaña</option>
                     {% for cabin in cabin_list %}
                     <option value="{{cabin.id}}">{{cabin.name}} - {{cabin.price}}</option>
@@ -54,7 +54,7 @@
         <div class="mb-3">
             <label for="" class="form-label">Servicios</label>
             <div class="d-flex">
-                <select class="form-control" name="service" id="">
+                <select class="form-control" name="service" id="" required>
                     <option value="">Selecciona un servicio</option>
                     {% for service in service_list %}
                     <option value="{{service.id}}">{{service.name}} - {{service.price}}</option>
