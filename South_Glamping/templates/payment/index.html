@@ -1,142 +1,54 @@
 {% extends 'base.html' %}
 
-{% block title %}{% endblock %}
+{% block title %}Payment{% endblock %}
 
 {% block content %}
-
-
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Pago reserva</h1>    
+</div>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h4 class="m-0 font-weight-bold text-primary">Pago</h4>
+        <h4 class="m-0 font-weight-bold text-primary">Pago reserva</h4>
     </div>
     <div class="card-body">
-        <div class="table-responsive">            
-            <a href="{% url 'create_payment' %}" class="btn btn-primary btn-icon-split mb-3">
-                <span class="icon text-white-50">
-                    <i class="fa fa-plus"></i>
-                </span>
-                <span class="text">Crear Pago</span>
-            </a>
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Método de pago</th>
-                        <th>Estado</th>
-                        <th>Reserva</th>
-                        <th>Acciones</th>                        
-                    </tr>
-                </thead>                
-                <tbody>
-                    {% for payment in payment_list %}
-                    <tr>
-                    <td>{{ payment.date }}</td>
-                    <td>{{ payment.payment_method }}</td>
-                    <td>{{ payment.status }}</td>
-                    <td>{{ payment.booking }}</td>                                       
-                    <td>
-                        <a href="" class="btn btn-info btn-circle btn-sm"data-bs-toggle="modal" data-bs-target="#modalId" data-payment-id="{{ payment.id }}">
-                            <i class="fa fa-info-circle"></i>
-                        </a>
-                        <a href="{% url 'edit_payment' payment.id %}" class="btn btn-warning btn-circle btn-sm">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                    </td>
-                    
-                    </tr>
-                    <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalTitleId">Detalles del pago</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container-fluid" id="payment-details"></div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                        Cerrar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <script>
-
-                    function loadPaymentDetails(payment) {
-                            var xhr = new XMLHttpRequest();
-                            xhr.open("GET", "{% url 'detail_payment' 0 %}".replace('0', paymentId), true);
-                            xhr.onreadystatechange = function () {
-                                if (xhr.readyState == 4) {
-                                    if (xhr.status == 200) {
-                                        var data = JSON.parse(xhr.responseText);
-                                        console.log(data);
-                                        document.getElementById("payment-details").innerHTML =
-                                            "<p><strong>Fecha:</strong> " + data.date + "</p>" +
-                                            "<p><strong>Metodo de pago:</strong> " + data.payment_method + "</p>" +
-                                            "<p><strong>Valor:</strong> " + data.price + "</p>";
-                                            "<p><strong>Estado del pago:</strong> " + data.status + "</p>";
-
-                                         $('#modalId').modal('show'); // Mover esta línea aquí
-                                    } else {
-                                        console.error('Error fetching payment details. Status code: ' + xhr.status);
-                                    }
-                                }
-                            };
-                            xhr.send();
-                        }
-                    
-                        document.addEventListener("click", function (event) {
-                            if (event.target && event.target.dataset.paymentId) {
-                                event.stopPropagation();
-                                var paymentId = event.target.dataset.paymentId;
-                                loadPaymentDetails(paymentId);
-                            }
-                        });
-                    
-                    </script>
-                    {% endfor %}                                     
-                </tbody>
-            </table>
-        </div>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="d-flex mb-3">
+                <label for="" class="form-label mr-3">Total reserva</label>
+                <input type="text" class="form-control col-3 mx-3" name="booking_total" id="booking_total" value="{{ booking.price }}" readonly />
+                <label for="" class="form-label mx-3">Total pagos</label>
+                <input type="text" class="form-control col-3" name="payment_booking" id="payment_booking" value="{{ total_payments}}" readonly />
+            </div>
+            <div class="mb-3 d-flex">
+                <label for="" class="form-label">Método de pago</label>
+                <select
+                    class="form-control mx-2 col-3"
+                    name="method"
+                    id="method">
+                    <option selected>Select una opción</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Tarjeta Crédito">Tarjeta Crédito</option>
+                    <option value="Tarjeta Débito">Tarjeta Débito</option>
+                    <option value="Transferencia">Transferencia</option>
+                </select>
+                <label for="" class="form-label ml-4">Abono</label>
+                <input
+                    type="text" class="form-control col-3 mx-5" name="amount" id="amount" aria-describedby="helpId" placeholder="" />
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Pagar</button>
+        </form>
     </div>
 </div>
 
 
-
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({                
-                text: "{{ message }}",
-                icon: "{{ message.tags }}",
-                button: "OK",
-            });
-        </script>
-
 <script>
-    document.querySelectorAll('.deleteBtn').forEach(function(editBtn) {
-    editBtn.addEventListener('click', function (event) {
-        event.preventDefault(); 
-
-        swal({
-            title: "Estás seguro que deseas editar?",            
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willEdit) => {
-            if (willEdit) {                
-                window.location.href = this.getAttribute('href');              
-            }
-        });
-    });
-});
+    let booking_total = document.getElementById('booking_total').value;
+    let payment_booking = document.getElementById('payment_booking').value;
+    let amount = booking_total / 2;
+    if (booking_total != payment_booking) {
+        document.getElementById('amount').value = amount;        
+    }
+    
 </script>
-
-
-    {% endfor %}
-{% endif %}
 {% endblock %}
