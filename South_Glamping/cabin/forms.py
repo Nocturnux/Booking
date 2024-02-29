@@ -17,12 +17,12 @@ class CabinForm(forms.ModelForm):
             'capacity': 'Capacidad',
             'description': 'Descripción',
             'cabin_type': 'Tipo de cabaña',
-            'price': 'valor',                                   
+            'price': 'Valor por noche ',                                   
         }
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Ingrese el nombre de la cabaña'}),
             'image': forms.FileInput(attrs={'placeholder': 'Ingrese la imagen de la cabaña'}),
             'capacity': forms.TextInput(attrs={'placeholder': 'Ingrese la capacidad de la cabaña'}),
             'description': forms.TextInput(attrs={'placeholder': 'Ingrese la descripción de la cabaña'}), 
-            'price': forms.NumberInput(attrs={'placeholder': 'Ingrese el valor de la cabaña'}),
+            'price': forms.NumberInput(attrs={'placeholder': 'Ingrese el valor por noche de la cabaña'}),
         }
