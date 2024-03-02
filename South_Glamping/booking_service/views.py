@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-
 from booking_service.models import Booking_service
+from service.models import Service
+from booking.models import Booking
 
 def booking_service(request):    
     booking_service_list = Booking_service.objects.all()    
