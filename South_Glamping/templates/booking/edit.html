@@ -38,12 +38,6 @@
             </select>
         </div>
 
-        {% for c in booking_cabin%}
-        <p>{{c}}</p>
-        {% endfor %}
-
-
-
         <div class="mb-3">
             <label for="" class="form-label">Cabaña</label>
             <div class="d-flex">
@@ -58,6 +52,7 @@
                 </a>
             </div>   
         </div>
+
         <div class="mb-3">
             <label for="" class="form-label">Servicios</label>
             <div class="d-flex">
@@ -80,13 +75,46 @@
             <table class="table">
                 <thead>
                     <tr>
+                        
                         <th scope="col">Descripción</th>
                         <th scope="col">Precio</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
+
                 <tbody id="tbooking">
+                    {% for booking_cabin in booking_cabin %}
+                    <tr id="{{ booking_cabin.cabin.id }}">
+                        <td>
+                            <input type="hidden" name="cabin_Id[]" value="{{ booking_cabin.cabin.id }}">
+                            <input type="hidden" name="cabin_price[]" value="{{ booking_cabin.price }}">
+                            {{ booking_cabin.cabin.name }}
+                        </td>
+                        <td>{{ booking_cabin.price }}</td>
+                        <td>
+                            <a onclick='removeBooking(event, "cabin")' class="btn btn-danger btn-circle btn-sm">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% for booking_service in booking_service %}
+                    <tr id="{{ booking_service.service.id }}">
+                        <td>
+                            <input type="hidden" name="service_Id[]" value="{{ booking_service.service.id }}">
+                            <input type="hidden" name="service_Price[]" value="{{ booking_service.price }}">
+                            {{ booking_service.service.name }}
+                        </td>
+                        <td>{{ booking_service.price }}</td>
+                        <td>
+                            <a onclick='removeBooking(event, "service")' class="btn btn-danger btn-circle btn-sm">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
+
                 <thead>
                     <tr>
                         <th>Total:</th>
@@ -97,18 +125,26 @@
             </table>
         </div>
 
-
-
         <div class="text-center">
+            <p id="totalDisplay">{{ booking.total }}</p>
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
         </div>
     </form>
 </div>
 
 <script>
+
+    let total = 0;
+
+    window.onload = function() {
+        let totalValueElement = document.getElementById('totalValue');
+        total = parseFloat(totalValueElement.value);
+
+    }
+
     cabin_added = [];
     service_added = [];
-    let total = 0;
+   
     function addCabin(event) {
         let date_start = document.getElementById('date_start').value
         let date_end = document.getElementById('date_end').value
@@ -165,8 +201,10 @@
 
     function totalBooking(value) {
         total += value;
-        document.getElementById('totalValue').value = total;
+        document.getElementById('totalValue').value = parseInt(total);
+        document.getElementById('totalDisplay').textContent = parseInt(total);
     }
+
 
     function removeBooking(event, type) {
         event.preventDefault();        
@@ -177,13 +215,34 @@
         } else {
             service_added = service_added.filter(service => service != id);
         }
-        element.remove();
         let price = parseFloat(element.children[1].textContent);        
+        totalBooking(-price);
+        element.remove();
+        
+    }
+    
+    function removeCabin(event, id) {
+        event.preventDefault();
+        cabin_added = cabin_added.filter(cabin => cabin != id);
+        let element = event.target.parentElement;
+        let price = parseFloat(element.previousElementSibling.textContent);
         total -= price;
         document.getElementById('totalValue').value = total;
+        element.parentElement.remove();
     }
+
+    function removeService(event, id) {
+        event.preventDefault();
+        service_added = service_added.filter(service => service != id);
+        let element = event.target.parentElement;
+        let price = parseFloat(element.previousElementSibling.textContent);
+        total -= price;
+        document.getElementById('totalValue').value = total;
+        element.parentElement.remove();
+    }
+
+
 </script>
 
 
 {% endblock %}
-            

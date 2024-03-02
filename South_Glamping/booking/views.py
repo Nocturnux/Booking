@@ -89,6 +89,9 @@ def delete_booking(request, booking_id):
     return redirect('booking')
 
 def edit_booking(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    booking_cabin = Booking_cabin.objects.filter(booking=booking)
+    booking_service = Booking_service.objects.filter(booking=booking)
     customer_list = Customer.objects.all()
     cabin_list = Cabin.objects.all()
     service_list = Service.objects.all()
@@ -96,7 +99,6 @@ def edit_booking(request, booking_id):
     print(booking_cabin)
     booking_service = Booking_service.objects.filter(booking_id=booking_id)
     
-    booking = get_object_or_404(Booking, pk=booking_id)
     
     if request.method == 'POST':
         date_start_str = request.POST['date_start']
@@ -141,5 +143,5 @@ def edit_booking(request, booking_id):
         messages.success(request, 'Reserva editada con éxito.')
         return redirect('booking')
     
-    return render(request, 'booking/edit.html', {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list, 'booking_cabin':booking_cabin })
+    return render(request, 'booking/edit.html', {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list, 'booking_cabin': booking_cabin, 'booking_service': booking_service})
 

@@ -96,8 +96,7 @@ function loadServiceDetails(serviceId) {
                         "<p><strong>Nombre:</strong> " + data.name + "</p>" +
                         "<p><strong>Imagen:</strong> <img src='" + data.image + "' alt='Cabin Image' style='width: 50%; max-width: 200px; height: auto;'></p>" +
                         "<p><strong>Descripcion:</strong> " + data.description + "</p>" +
-                        "<p><strong>Valor:</strong> " + data.price + "</p>" +
-                        "<p><strong>Estado:</strong> " + data.status + "</p>";               
+                        "<p><strong>Valor:</strong> " + data.price + "</p>";               
                     $('#modalId').modal('show'); // Mover esta línea aquí
                 } else {
                     console.error('Error fetching service details. Status code: ' + xhr.status);
