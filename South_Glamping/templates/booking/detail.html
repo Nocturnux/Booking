@@ -19,11 +19,11 @@
             </div>
             <div class="mb-3 mr-5">
                 <label for="" class="form-label">Documento Cliente</label>
-                <input type="text" class="form-control" value="{{booking.client.document}}" readonly />
+                <input type="text" class="form-control" value="{{booking.customer.document}}" readonly />
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Nombre Cliente</label>
-                <input type="text" class="form-control" value="{{booking.client}}" readonly />
+                <input type="text" class="form-control" value="{{booking.customer.name}}" readonly />
             </div>
         </div>
         <div class="d-flex">
@@ -59,9 +59,9 @@
                     {% for cabin in booking_cabin %}
                     <tr>
                         <td><img src="{{ cabin.cabin.image.url}}" alt="" width="50"></td>
-                        <td>{{ cabin.cabin.code }}</td>
+                        <td>{{ cabin.cabin.id }}</td>
                         <td>{{ cabin.cabin.name }}</td>
-                        <td>{{ cabin.value}}</td>                        
+                        <td>{{ cabin.price}}</td>                        
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -86,7 +86,7 @@
                         <td>{{ service.service.id }}</td>
                         <td>{{ service.service.name }}</td>
                         <td>{{ service.service.description }}</td>
-                        <td>{{ service.value}}</td>                        
+                        <td>{{ service.price}}</td>                        
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -97,7 +97,7 @@
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead class="table-dark">
                     <tr>                        
-                        <th>Código servicio</th>
+                        <th>Código pago</th>
                         <th>Fecha</th>
                         <th>Método</th>
                         <th>Valor</th>
@@ -110,7 +110,7 @@
                         <td>{{ payment.id }}</td>
                         <td>{{ payment.date_payment|date:"d/m/Y" }}</td>
                         <td>{{ payment.payment_method }}</td>
-                        <td>{{ payment.value }}</td>
+                        <td>{{ payment.price }}</td>
                         <td>{{ payment.status }}</td>                       
                     </tr>
                     {% endfor %}

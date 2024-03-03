@@ -17,5 +17,5 @@ class ServiceForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'placeholder': 'Ingresa el nombre'}),
             'image': forms.FileInput(attrs={'placeholder': 'Ingrese la imagen del servicio'}),
             'description': forms.TextInput(attrs={'placeholder': 'Ingresa la descripción'}),  
-            'price': forms.TextInput(attrs={'placeholder': 'Ingresa el valor'}),         
+            'price': forms.NumberInput(attrs={'placeholder': 'Ingresa el valor'}),         
         }

@@ -23,6 +23,7 @@
                     <tr>
                         <th>Código reserva</th>
                         <th>Cliente</th>
+                        <th>Documento Cliente</th>
                         <th>Fecha reserva</th>
                         <th>Fecha inicio</th>
                         <th>Fecha finalización</th>
@@ -35,15 +36,16 @@
                     {% for booking in booking_list %}
                     <tr>
                     <td>{{ booking.id }}</td>
-                    <td>{{ booking.customer }}</td>
+                    <td>{{ booking.customer.name }}</td>
+                    <td>{{ booking.customer.document }}</td>
                     <td>{{ booking.date_booking }}</td>
                     <td>{{ booking.date_start }}</td>
                     <td>{{ booking.date_end }}</td>
                     <td>{{ booking.price }}</td>
                     <td>{{ booking.status }}</td>                                       
-                    </td>
+
                     <td>
-                        <a href="" class="btn btn-info btn-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modalId" data-booking-id="{{ booking.id }}"> 
+                        <a href="{% url 'detail_booking' booking.id %}" class="btn btn-info btn-circle btn-sm"> 
                             <i class="fa fa-info-circle"></i>
                         </a>
                         <a href="{% url 'edit_booking' booking.id %}" class="btn btn-warning btn-circle btn-sm">
@@ -61,62 +63,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="modalNameId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleId">Detalles de la reserva</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid" id="cabin-details"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// Función para cargar detalles de la reserva en el modal
-function loadBookingDetails(bookingId) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "{% url 'detail_booking' 0 %}".replace('0', bookingId), true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    var data = JSON.parse(xhr.responseText);
-                    console.log(data);
-                    // Actualizar el contenido del modal con los detalles de la reserva
-                    document.getElementById("booking-details").innerHTML =
-                        "<p><strong>Nombre:</strong> " + data.id_customer.name + "</p>" +
-                        "<p><strong>Fecha reserva:</strong> " + data.date_booking + "</p>" +
-                        "<p><strong>Fecha de inicio:</strong> " + data.date_start + "</p>" +
-                        "<p><strong>Fecha de finalización:</strong> " + data.date_end + "</p>" +
-                        "<p><strong>Valor:</strong> " + data.price + "</p>" +
-                        "<p><strong>Estado de la reserva:</strong> " + data.status + "</p>";                
-                    $('#modalId').modal('show'); // Mover esta línea aquí
-                } else {
-                    console.error('Error fetching booking details. Status code: ' + xhr.status);
-                }
-            }
-        };
-        xhr.send();
-    }
-
-    // Asignar evento click a los botones de detalle de la reserva
-    document.addEventListener("click", function (event) {
-        if (event.target && event.target.dataset.bookingId) {
-            event.stopPropagation();
-            var bookingId = event.target.dataset.bookingId;
-            loadBookingDetails(bookingId);
-        }
-    });
-
-</script>
 
 <script>
     document.querySelectorAll('.deleteBtn').forEach(function(deleteBtn) {
