@@ -8,7 +8,8 @@ from django.contrib.auth.models import Group
 def index(request):
     return render(request, 'index.html')
 
-
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
 
 def landingpage(request):
         return render(request,'landingpage.html')
