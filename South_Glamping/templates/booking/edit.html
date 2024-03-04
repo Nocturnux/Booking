@@ -133,37 +133,33 @@
 </div>
 
 <script>
-
-    let total = 0;
-
-    window.onload = function() {
-        let totalValueElement = document.getElementById('totalValue');
-        total = parseFloat(totalValueElement.value);
-
-    }
-
     cabin_added = [];
     service_added = [];
-   
+    let total = 0;
     function addCabin(event) {
         let date_start = document.getElementById('date_start').value
         let date_end = document.getElementById('date_end').value
+        let start_date = new Date(date_start);
+        let end_date = new Date(date_end);
+        let days = (end_date - start_date) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
+
         event.preventDefault();
         let cabinSelect = $('select[name="cabin"]');
         let cabin_Id = cabinSelect.val();
         let cabin_Name = cabinSelect.find('option:selected').text().split(' - ')[0];
-        let cabin_price = cabinSelect.find('option:selected').text().split(' - ')[1];
+        let cabin_price_per_day = cabinSelect.find('option:selected').text().split(' - ')[1];
+        let cabin_price_total = cabin_price_per_day * days;
         cabin_added.push(cabin_Id);
-        totalBooking(parseFloat(cabin_price));
+        totalBooking(parseFloat(cabin_price_total));
 
         $('#tbooking').append(`
             <tr id=${cabin_Id}>                               
                 <td>
-                    <input type="hidden" name="cabin_Id[]" value="${cabin_Id}">
-                    <input type="hidden" name="cabin_price[]" value="${cabin_price}">
+                    <input type="hidden" name="cabinId[]" value="${cabin_Id}">
+                    <input type="hidden" name="cabinPrice[]" value="${cabin_price_total}">
                     ${cabin_Name}
                 </td>
-                <td>${cabin_price}</td>                
+                <td>${cabin_price_total}</td>                
                 <td>
                     <a onclick='removeBooking(event, "cabin")' class="deleteBtn btn btn-danger btn-circle btn-sm">
                         <i class="fa fa-trash"></i>
@@ -185,8 +181,8 @@
         $('#tbooking').append(`
             <tr id="${service_Id}">                                
                 <td>
-                    <input type="hidden" name="service_Id[]" value="${service_Id}">
-                    <input type="hidden" name="service_Price[]" value="${service_Price}">
+                    <input type="hidden" name="serviceId[]" value="${service_Id}">
+                    <input type="hidden" name="servicePrice[]" value="${service_Price}">
                     ${sevice_Name}
                 </td>
                 <td>${service_Price}</td>                
@@ -201,10 +197,28 @@
 
     function totalBooking(value) {
         total += value;
-        document.getElementById('totalValue').value = parseInt(total);
-        document.getElementById('totalDisplay').textContent = parseInt(total);
+        document.getElementById('totalValue').value = total;
     }
 
+    document.querySelector('form').addEventListener('submit', function(e) {
+        let date_start = document.getElementById('date_start').value;
+        let date_end = document.getElementById('date_end').value;
+        let today = new Date();
+        today.setHours(0, 0, 0, 0); // Set time to 00:00:00.000
+        let start_date = new Date(date_start);
+        let end_date = new Date(date_end);
+    
+        if (start_date < today) {
+            e.preventDefault();
+            alert('La fecha de inicio de la reserva no puede ser anterior a la fecha actual.');
+        } else if (start_date > end_date) {
+            e.preventDefault();
+            alert('La fecha de inicio de la reserva no puede ser mayor a la fecha de fin.');
+        } else if (cabin_added.length === 0) {
+            e.preventDefault();
+            alert('Por favor, añade al menos una cabaña a la reserva.');
+        }
+    });
 
     function removeBooking(event, type) {
         event.preventDefault();        
@@ -215,32 +229,11 @@
         } else {
             service_added = service_added.filter(service => service != id);
         }
-        let price = parseFloat(element.children[1].textContent);        
-        totalBooking(-price);
         element.remove();
-        
-    }
-    
-    function removeCabin(event, id) {
-        event.preventDefault();
-        cabin_added = cabin_added.filter(cabin => cabin != id);
-        let element = event.target.parentElement;
-        let price = parseFloat(element.previousElementSibling.textContent);
+        let price = parseFloat(element.children[1].textContent);        
         total -= price;
         document.getElementById('totalValue').value = total;
-        element.parentElement.remove();
     }
-
-    function removeService(event, id) {
-        event.preventDefault();
-        service_added = service_added.filter(service => service != id);
-        let element = event.target.parentElement;
-        let price = parseFloat(element.previousElementSibling.textContent);
-        total -= price;
-        document.getElementById('totalValue').value = total;
-        element.parentElement.remove();
-    }
-
 
 </script>
 

@@ -75,7 +75,6 @@
                         <th>Imagen</th>
                         <th>Código servicio</th>
                         <th>Nombre</th>
-                        <th>Descripción</th>
                         <th>Valor</th>
                     </tr>
                 </thead>
@@ -85,7 +84,6 @@
                         <td><img src="{{ service.service.image.url}}" alt="" width="50"></td>
                         <td>{{ service.service.id }}</td>
                         <td>{{ service.service.name }}</td>
-                        <td>{{ service.service.description }}</td>
                         <td>{{ service.price}}</td>                        
                     </tr>
                     {% endfor %}
