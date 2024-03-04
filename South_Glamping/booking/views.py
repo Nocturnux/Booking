@@ -178,4 +178,4 @@ def payment_booking(request, booking_id):
         
         except Exception as e:
             return redirect('bookings')         
-    return render(request, 'payment_booking.html', {'booking': booking, 'total_payments': total_payments})
+    return render(request, 'booking/payment_booking.html', {'booking': booking, 'total_payments': total_payments})
