@@ -155,14 +155,14 @@ def payment_booking(request, booking_id):
     else:
         total_payments = 0    
     if request.method == 'POST':
-        date_payment = datetime.now().date()
+        date = datetime.now().date()
         amount = request.POST['amount']
-        method = request.POST['method']
+        payment_method = request.POST['payment_method']
         payment_booking = request.POST['payment_booking']
         payment = Payment.objects.create(
-            date_payment=date_payment,
+            date=date,
             amount=int(amount),
-            method=method,
+            payment_method=payment_method,
             booking=booking,
             status='Confirmado'
         )
@@ -177,5 +177,5 @@ def payment_booking(request, booking_id):
             return redirect('bookings') 
         
         except Exception as e:
-            return redirect('bookings')         
+            return redirect('booking')         
     return render(request, 'booking/payment_booking.html', {'booking': booking, 'total_payments': total_payments})
