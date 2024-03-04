@@ -8,6 +8,7 @@ from booking.models import Booking
 from booking_cabin.models import Booking_cabin
 from booking_service.models import Booking_service
 from payment.models import Payment
+from django.db import models
 
 def booking(request):    
     booking_list = Booking.objects.all()    
@@ -145,3 +146,36 @@ def edit_booking(request, booking_id):
     
     return render(request, 'booking/edit.html', {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list, 'booking_cabin': booking_cabin, 'booking_service': booking_service})
 
+
+def payment_booking(request, booking_id):
+    booking = Booking.objects.get(id=booking_id)
+    total_payments = Payment.objects.filter(booking_id=booking_id).aggregate(total=models.Sum('amount'))
+    if total_payments['total'] is not None:
+        total_payments = total_payments['total']
+    else:
+        total_payments = 0    
+    if request.method == 'POST':
+        date_payment = datetime.now().date()
+        amount = request.POST['amount']
+        method = request.POST['method']
+        payment_booking = request.POST['payment_booking']
+        payment = Payment.objects.create(
+            date_payment=date_payment,
+            amount=int(amount),
+            method=method,
+            booking=booking,
+            status='Confirmado'
+        )
+        try:
+            payment.save()     
+            total_p = Payment.objects.filter(booking_id=booking_id).aggregate(total=models.Sum('amount'))       
+            if  int(total_p['total']) >= (booking.price / 2) and int(total_p['total']) < booking.price:
+                booking.status = 'Confirmada'
+            elif int(total_p['total']) >= booking.price:
+                booking.status = 'En ejecución'        
+            booking.save()
+            return redirect('bookings') 
+        
+        except Exception as e:
+            return redirect('bookings')         
+    return render(request, 'payment_booking.html', {'booking': booking, 'total_payments': total_payments})

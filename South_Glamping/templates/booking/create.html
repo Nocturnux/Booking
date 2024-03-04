@@ -28,6 +28,7 @@
                 <small id="helpId" class="form-text text-muted"></small>
             </div>
         </div>
+        {% if request.user.is_superuser or request.user.is_staff %}
         <div class="mb-3">
             <label for="" class="form-label">Cliente</label>
             <select class="form-control" name="customer" id="" required>
@@ -37,6 +38,9 @@
                 {% endfor %}
             </select>
         </div>
+        {% else %}
+        <input type="hidden" name="customer" value="{{request.user.customer.id}}">
+        {% endif %}
         <div class="mb-3">
             <label for="" class="form-label">Cabaña</label>
             <div class="d-flex">

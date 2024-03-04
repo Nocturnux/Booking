@@ -5,8 +5,6 @@ from booking.models import Booking
 from .forms import PaymentForm
 from django.http import JsonResponse
 from django.contrib import messages
-from django.db import models
-
 
 def payment(request):    
     payment_list = Payment.objects.all()    
@@ -40,35 +38,3 @@ def edit_payment(request, payment_id):
         return redirect('payment')    
     return render(request, 'payment/edit.html', {'form': form})
 
-def payment_booking(request, id):
-    booking = Booking.objects.get(id=id)
-    total_payments = Payment.objects.filter(booking_id=id).aggregate(total=models.Sum('amount'))
-    if total_payments['total'] is not None:
-        total_payments = total_payments['total']
-    else:
-        total_payments = 0    
-    if request.method == 'POST':
-        date_payment = datetime.now().date()
-        amount = request.POST['amount']
-        method = request.POST['method']
-        payment_booking = request.POST['payment_booking']
-        payment = Payment.objects.create(
-            date_payment=date_payment,
-            amount=int(amount),
-            method=method,
-            booking=booking,
-            status='Confirmado'
-        )
-        try:
-            payment.save()     
-            total_p = Payment.objects.filter(booking_id=id).aggregate(total=models.Sum('amount'))       
-            if  int(total_p['total']) >= (booking.price / 2) and int(total_p['total']) < booking.price:
-                booking.status = 'Confirmada'
-            elif int(total_p['total']) >= booking.price:
-                booking.status = 'En ejecución'        
-            booking.save()
-            return redirect('bookings') 
-        
-        except Exception as e:
-            return redirect('bookings')         
-    return render(request, 'payment.html', {'booking': booking, 'total_payments': total_payments})
