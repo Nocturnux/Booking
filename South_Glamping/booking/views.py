@@ -9,6 +9,12 @@ from booking_cabin.models import Booking_cabin
 from booking_service.models import Booking_service
 from payment.models import Payment
 from django.db import models
+from django.views.generic import View
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.conf import settings
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
 
 def booking(request):    
     booking_list = Booking.objects.all()    
@@ -179,3 +185,16 @@ def payment_booking(request, booking_id):
         except Exception as e:
             return redirect('booking')         
     return render(request, 'booking/payment_booking.html', {'booking': booking, 'total_payments': total_payments})
+
+class ReportInvoicePdfView(View):
+    def get(self, request, *args, **kwargs):
+        template = get_template('booking/invoice.html')
+        context = {'title' : 'pdf'}
+        html = template.render(context)
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="report.pdf"' 
+        pisaStatus = pisa.CreatePDF(
+            html, dest=response)
+        if pisaStatus.err:
+            return HttpResponse(' Hay un error ' + html)
+        return response
