@@ -25,7 +25,7 @@ def create_payment(request):
 
 def detail_payment(request, payment_id):
     payment = Payment.objects.get(pk=payment_id)
-    data = { 'date': payment.date, 'payment_method': payment.payment_method, 'status': payment.status }    
+    data = { 'amount' : payment.amount, 'date': payment.date, 'payment_method': payment.payment_method, 'status': payment.status }    
     return JsonResponse(data)
 
 def edit_payment(request, payment_id):
