@@ -30,12 +30,7 @@
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Cliente</label>
-            <select class="form-control" name="customer" id=""required>
-                <option value="">Selecciona un cliente</option>
-                {% for customer in customer_list %}
-                <option value="{{customer.id}}" {% if customer.id == booking.customer.id %} selected {% endif %}>{{customer.name}}</option>
-                {% endfor %}
-            </select>
+            <input type="text" class="form-control" name="customer" id="" value="{{booking.customer.name}}" required>
         </div>
 
         <div class="mb-3">

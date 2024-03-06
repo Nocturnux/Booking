@@ -34,34 +34,61 @@
                 </thead>                
                 <tbody>
                     {% for booking in booking_list %}
-                    <tr>
-                    <td>{{ booking.id }}</td>
-                    <td>{{ booking.customer.name }}</td>
-                    <td>{{ booking.customer.document }}</td>
-                    <td>{{ booking.date_booking }}</td>
-                    <td>{{ booking.date_start }}</td>
-                    <td>{{ booking.date_end }}</td>
-                    <td>{{ booking.price }}</td>
-                    <td>{{ booking.status }}</td>                                       
-
-                    <td>
-                        <a href="{% url 'detail_booking' booking.id %}" class="btn btn-info btn-circle btn-sm"> 
-                            <i class="fa fa-info-circle"></i>
-                        </a>
-                        <a href="{% url 'edit_booking' booking.id %}" class="btn btn-warning btn-circle btn-sm">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a href="{% url 'delete_booking' booking.id %}" class="deleteBtn btn btn-danger btn-circle btn-sm">
-                            <i class="fa fa-trash"></i>
-                        </a>
-                        <a href="{% url 'payment_booking' booking.id %}" class="btn btn btn-success btn-circle btn-sm">
-                            <i class="fa fa-credit-card-alt"></i>
-                        </a>
-                        <a href="" class="btn btn btn-secondary btn-circle btn-sm">
-                            <i class="fa fa-print"></i>
-                        </a>
-                    </td>
-                    </tr>
+                        {% if request.user.is_superuser or request.user.is_staff %}
+                        <tr>
+                            <td>{{ booking.id }}</td>
+                            <td>{{ booking.customer.name }}</td>
+                            <td>{{ booking.customer.document }}</td>
+                            <td>{{ booking.date_booking }}</td>
+                            <td>{{ booking.date_start }}</td>
+                            <td>{{ booking.date_end }}</td>
+                            <td>{{ booking.price }}</td>
+                            <td>{{ booking.status }}</td>                                       
+                
+                            <td>
+                                <a href="{% url 'detail_booking' booking.id %}" class="btn btn-info btn-circle btn-sm"> 
+                                    <i class="fa fa-info-circle"></i>
+                                </a>
+                                <a href="{% url 'edit_booking' booking.id %}" class="btn btn-warning btn-circle btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="{% url 'delete_booking' booking.id %}" class="deleteBtn btn btn-danger btn-circle btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                                <a href="{% url 'payment_booking' booking.id %}" class="btn btn btn-success btn-circle btn-sm">
+                                    <i class="fa fa-credit-card-alt"></i>
+                                </a>
+                                <a href="" class="btn btn btn-secondary btn-circle btn-sm">
+                                    <i class="fa fa-print"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                            {% if request.user.email == booking.customer.email %}
+                            <tr>
+                                <td>{{ booking.id }}</td>
+                                <td>{{ booking.customer.name }}</td>
+                                <td>{{ booking.customer.document }}</td>
+                                <td>{{ booking.date_booking }}</td>
+                                <td>{{ booking.date_start }}</td>
+                                <td>{{ booking.date_end }}</td>
+                                <td>{{ booking.price }}</td>
+                                <td>{{ booking.status }}</td>                                       
+                    
+                                <td>
+                                    <a href="{% url 'detail_booking' booking.id %}" class="btn btn-info btn-circle btn-sm"> 
+                                        <i class="fa fa-info-circle"></i>
+                                    </a>
+                                    <a href="{% url 'edit_booking' booking.id %}" class="btn btn-warning btn-circle btn-sm">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="" class="btn btn btn-secondary btn-circle btn-sm">
+                                        <i class="fa fa-print"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% endif %}
                     {% endfor %}                                     
                 </tbody>
             </table>

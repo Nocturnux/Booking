@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib import messages
 from customer.models import Customer
 from cabin.models import Cabin
@@ -16,10 +17,20 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 
+
+
+
+def admin_or_staff(user):
+    return user.is_authenticated and (user.is_superuser or user.is_staff)
+
+
+@login_required
 def booking(request):    
     booking_list = Booking.objects.all()    
     return render(request, 'booking/index.html', {'booking_list': booking_list})
 
+
+@login_required
 def create_booking(request):
     customer_list = Customer.objects.all()
     cabin_list = Cabin.objects.all()
@@ -71,6 +82,8 @@ def create_booking(request):
     
     return render(request, 'booking/create.html', {'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list})
 
+
+@login_required
 def detail_booking(request, booking_id):
     booking = Booking.objects.get(pk=booking_id)
     booking_cabin = Booking_cabin.objects.filter(booking=booking)
@@ -79,13 +92,8 @@ def detail_booking(request, booking_id):
     return render(request, 'booking/detail.html', {'booking': booking, 'booking_cabin': booking_cabin, 'booking_service': booking_service, 'payment': payment})
 
 
-def change_status_booking(request, booking_id):
-    booking = Booking.objects.get(pk=booking_id)
-    booking.status = not booking.status
-    booking.save()
-    return redirect('booking')
-
-
+@login_required
+@user_passes_test(admin_or_staff)
 def delete_booking(request, booking_id):
     booking = Booking.objects.get(pk=booking_id)
     try:
@@ -95,6 +103,9 @@ def delete_booking(request, booking_id):
         messages.error(request, 'No se puede eliminar la reserva porque está asociada a un servicio.')
     return redirect('booking')
 
+
+
+@login_required
 def edit_booking(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
     booking_cabin = Booking_cabin.objects.filter(booking=booking)
@@ -153,6 +164,9 @@ def edit_booking(request, booking_id):
     return render(request, 'booking/edit.html', {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list, 'booking_cabin': booking_cabin, 'booking_service': booking_service})
 
 
+
+@login_required
+@user_passes_test(admin_or_staff)
 def payment_booking(request, booking_id):
     booking = Booking.objects.get(id=booking_id)
     total_payments = Payment.objects.filter(booking_id=booking_id).aggregate(total=models.Sum('amount'))
