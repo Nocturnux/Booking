@@ -30,7 +30,8 @@
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Cliente</label>
-            <input type="text" class="form-control" name="customer" id="" value="{{booking.customer.name}}" required>
+            <input type="text" class="form-control" id="customerName" value="{{booking.customer.name}}" required>
+            <input type="hidden" name="customer" id="customerId" value="{{booking.customer.id}}">
         </div>
 
         <div class="mb-3">
