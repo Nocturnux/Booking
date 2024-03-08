@@ -56,7 +56,7 @@ def edit_payment(request, payment_id):
     return render(request, 'payment/edit.html', {'form': form})
 
 class ReportInvoicePdfView(View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs ):
         template = get_template('booking/invoice.html')
         context = {'title' : 'pdf'}
         html = template.render(context)
