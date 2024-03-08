@@ -202,7 +202,7 @@ def payment_booking(request, booking_id):
 
 class ReportInvoicePdfView(View):
     def get(self, request, *args, **kwargs):
-        template = get_template('booking/invoice.html')
+        template = get_template('payment/invoice.html')
         context = {'title' : 'pdf'}
         html = template.render(context)
         response = HttpResponse(content_type='application/pdf')

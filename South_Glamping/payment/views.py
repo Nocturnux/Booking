@@ -4,8 +4,14 @@ from datetime import datetime
 from payment.models import Payment
 from booking.models import Booking
 from .forms import PaymentForm
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.conf import settings
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.views.generic import View
+from django.contrib.staticfiles import finders
+
 
 def admin_or_staff(user):
     return user.is_authenticated and (user.is_superuser or user.is_staff)
@@ -48,4 +54,17 @@ def edit_payment(request, payment_id):
             messages.error(request, 'Ocurrió un error al editar el pago.')
         return redirect('payment')    
     return render(request, 'payment/edit.html', {'form': form})
+
+class ReportInvoicePdfView(View):
+    def get(self, request, *args, **kwargs):
+        template = get_template('booking/invoice.html')
+        context = {'title' : 'pdf'}
+        html = template.render(context)
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="report_payment.pdf"' 
+        pisaStatus = pisa.CreatePDF(
+            html, dest=response)
+        if pisaStatus.err:
+            return HttpResponse(' Hay un error ' + html)
+        return response
 
