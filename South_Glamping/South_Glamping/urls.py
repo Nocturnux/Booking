@@ -33,4 +33,5 @@ urlpatterns = [
     path('cabin/', include('cabin.urls')),  
     path('booking_service/', include('booking_service.urls')),
     path('booking_cabin/', include('booking_cabin.urls')),
+    path('recover',views.recover, name='recover')
 ]
