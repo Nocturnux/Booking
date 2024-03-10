@@ -29,8 +29,12 @@ def change_status_cabin(request, cabin_id):
 @user_passes_test(admin_or_staff)
 def create_cabin(request):
     form = CabinForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        form.save()
+    if form.is_valid() and request.method == 'POST':
+        try:
+            form.save()
+            messages.success(request, 'Cabaña creada correctamente.')
+        except:
+            messages.error(request, 'Ocurrió un error al crear la cabaña.')        
         return redirect('cabin')    
     return render(request, 'cabin/create.html', {'form': form})
 

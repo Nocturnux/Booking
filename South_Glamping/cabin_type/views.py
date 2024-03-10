@@ -76,4 +76,4 @@ def edit_cabin_type(request, cabin_type_id):
         except:
             messages.error(request, 'Ocurrió un error al editar el Tipo de cabaña.')        
         return redirect('cabin_type')    
-    return render(request, 'cabin_type/editar.html', {'form': form})
+    return render(request, 'cabin_type/edit.html', {'form': form})

@@ -156,7 +156,7 @@ h4, .h4 {
 }
 
 h5, .h5 {
-  font-size: 1.25rem;
+  font-size: 1.50rem;
 }
 
 h6, .h6 {
@@ -1278,6 +1278,12 @@ progress {
     flex: 0 0 auto;
     width: 25%;
   }
+
+  .col-lg-3 .card {
+    flex: 100%; /* Hace que las tarjetas se expandan para llenar el espacio disponible */
+    margin: 10px; /* Agrega un margen de 10px alrededor de cada tarjeta */
+  }
+
   .col-lg-4 {
     flex: 0 0 auto;
     width: 33.33333333%;
@@ -10843,7 +10849,7 @@ header.masthead {
   background-color: #343a40;
   background: url("../images/layout_img/bg-masthead.jpg") no-repeat center center;
   background-size: cover;
-  padding-top: 8rem;
+  padding-top: 2rem;
   padding-bottom: 8rem;
 }
 header.masthead:before {
@@ -10854,10 +10860,10 @@ header.masthead:before {
   width: 100%;
   top: 0;
   left: 0;
-  opacity: 0.5;
+  opacity:0.6;
 }
 header.masthead h1, header.masthead .h1 {
-  font-size: 2rem;
+  font-size: 3rem;
 }
 @media (min-width: 768px) {
   header.masthead {
@@ -10887,11 +10893,12 @@ header.masthead h1, header.masthead .h1 {
   padding-bottom: 5rem;
 }
 .testimonials .testimonial-item {
-  max-width: 18rem;
+  max-width: 24rem;
 }
 .testimonials .testimonial-item img {
-  max-width: 12rem;
+  max-width: 400px;
   box-shadow: 0px 5px 5px 0px #adb5bd;
+  margin: 5px; /* Agrega un margen de 10px alrededor de cada imagen */
 }
 
 .call-to-action {
