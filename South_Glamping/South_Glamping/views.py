@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from South_Glamping.forms import RegisterForm
 from customer.models import Customer
 from django.contrib.auth.models import Group
+from South_Glamping.recover_password import recuperar_contraseña
 
 def index(request):
     return render(request, 'index.html')
@@ -59,3 +60,23 @@ def register(request):
                 return redirect('login')               
         return redirect('login')    
     return render(request, 'register.html', {'form': form})
+
+def recover(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        recuperar_contraseña(email)
+        """ consultar usuario por email y cambiar la contraseña"""
+        
+    return render(request, 'recover.html')
+            
+
+
+
+
+
+
+
+
+
+
+

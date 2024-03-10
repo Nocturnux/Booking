@@ -201,14 +201,21 @@ def payment_booking(request, booking_id):
     return render(request, 'booking/payment_booking.html', {'booking': booking, 'total_payments': total_payments})
 
 class ReportInvoicePdfView(View):
-    def get(self, request, *args, **kwargs):
-        template = get_template('booking/invoice.html')
-        context = {'title' : 'pdf'}
-        html = template.render(context)
+    def get(self, request, booking_id, *args, **kwargs):
+        booking = get_object_or_404(Booking, pk=booking_id)
+        booking_cabin = Booking_cabin.objects.filter(booking=booking)
+        booking_service = Booking_service.objects.filter(booking=booking)
+        customer_list = Customer.objects.all()
+        cabin_list = Cabin.objects.all()
+        service_list = Service.objects.all()
+        booking_cabin = Booking_cabin.objects.filter(booking_id=booking_id)
+        booking_service = Booking_service.objects.filter(booking_id=booking_id)
+        template = get_template('payment/invoice.html')
+        context = {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list, 'booking_cabin': booking_cabin, 'booking_service': booking_service}
+        html = template.render(context, request)
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="report.pdf"' 
-        pisaStatus = pisa.CreatePDF(
-            html, dest=response)
+        response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+        pisaStatus = pisa.CreatePDF(html, dest=response)
         if pisaStatus.err:
-            return HttpResponse(' Hay un error ' + html)
+            return HttpResponse('Hay un error al generar el PDF')
         return response
