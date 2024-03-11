@@ -5,6 +5,7 @@ from South_Glamping.forms import RegisterForm
 from customer.models import Customer
 from django.contrib.auth.models import Group
 from South_Glamping.recover_password import recuperar_contraseña
+from service.models import Service
 
 def index(request):
     return render(request, 'index.html')
@@ -13,7 +14,9 @@ def custom_404(request, exception):
     return render(request, '404.html', status=404)
 
 def landingpage(request):
-        return render(request,'landingpage.html')
+    services = Service.objects.filter(status=True)
+    return render(request, 'landingpage.html', {'services': services})
+        
 
 def login(request):
     error = None

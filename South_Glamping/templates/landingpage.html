@@ -307,10 +307,35 @@
                         </div>
                     </div>
                 </section>
+    <div class="carousel-container">
+    <h2 class="carousel-title">Servicios adicionales:</h2>            
+    <div id="servicesCarousel" class="carousel slide carousel-custom" data-ride="carousel">
+        <div class="carousel-inner">
+            {% for service in services %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ service.image.url }}" class="d-flex w-100 h-20" alt="{{ service.name }}">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>{{ service.name }}</h2>
+                        <h4>{{ service.description }}</h4>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+                
+        <a class="carousel-control-prev" href="#servicesCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
+        </a>
+        <a class="carousel-control-next" href="#servicesCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Siguiente</span>
+        </a>
+    </div>
+    </div>
         <!-- Testimonials-->
-        <section class="testimonials text-center bg-white">
+        <section class="testimonials text-center bg-light">
             <div class="container">
-                <h2 class="mb-5">Contamos con...</h2>
+                <h2 class="mb-5">Además, contamos con...</h2>
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="testimonial-item mx-auto mb-5 mb-lg-0">
@@ -404,5 +429,7 @@
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     </body>
 </html>
