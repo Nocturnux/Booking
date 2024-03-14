@@ -220,3 +220,24 @@ class ReportInvoicePdfView(View):
         if pisaStatus.err:
             return HttpResponse('Hay un error al generar el PDF')
         return response
+    
+
+from django.db.models import Q
+
+@login_required
+def booking(request):
+    query = request.GET.get('q')
+    if query:
+        booking_list = Booking.objects.filter(
+            Q(customer__name__icontains=query) | 
+            Q(customer__document__icontains=query) |
+            Q(date_booking__icontains=query) |
+            Q(date_start__icontains=query) |
+            Q(date_end__icontains=query) |
+            Q(price__icontains=query) |
+            Q(status__icontains=query)
+        ).distinct()
+    else:
+        booking_list = Booking.objects.all()
+
+    return render(request, 'booking/index.html', {'booking_list': booking_list})
