@@ -4,8 +4,12 @@ from django.contrib.auth.models import User
 from South_Glamping.forms import RegisterForm
 from customer.models import Customer
 from django.contrib.auth.models import Group
-from South_Glamping.recover_password import recover_password
 from service.models import Service
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import random
+import string
 
 def index(request):
     return render(request, 'index.html')
@@ -31,7 +35,7 @@ def login(request):
         else:
             error = 'Usuario o contraseña incorrectos.'
             return render(request, 'login.html', {'error': error})    
-        
+    
     return render(request, 'login.html')
 
 def logout(request):
@@ -64,12 +68,49 @@ def register(request):
         return redirect('login')    
     return render(request, 'register.html', {'form': form})
 
+def generate_password():
+    characters = string.ascii_letters + string.digits
+    length = 10
+    return ''.join(random.choice(characters) for i in range(length))
+
+def send_email(addressee, password):
+    # Configuración del servidor SMTP
+    smtp_server = 'smtp.gmail.com'
+    port = 587
+    sender = 'southglamping.sg@gmail.com'
+    password_smtp = 'cwne kdqi pzpn xoln'
+
+    # Crear el mensaje
+    message = MIMEMultipart()
+    message['From'] = sender #remitente
+    message['to'] = addressee #destinatario
+    message['Subject'] = 'Recuperación de contraseña'
+
+    body = f'Tu nueva contraseña para acceder a South Glamping es: {password}. Por favor no olvides cambiar tu contraseña en tu próximo inicio de sesión.'
+    message.attach(MIMEText(body, 'plain', 'utf-8'))
+
+    # Iniciar sesión en el servidor SMTP
+    server = smtplib.SMTP(smtp_server, port)
+    server.starttls()
+    server.login(sender, password_smtp)
+
+    # Enviar el correo electrónico
+    server.send_message(message)
+
+    # Cerrar la conexión
+    server.quit()
+
+# Función principal
+def recuperar_contraseña (email):
+    destination_email= email
+    new_password= generate_password()
+    send_email(destination_email, new_password)
+
 def recover_pasword(request):
     if request.method == 'POST':
         email = request.POST['email']
-        recover_pasword(email)
+        recuperar_contraseña(email)
         """ consultar usuario por email y cambiar la contraseña"""
-        
     return render(request, 'recover_pasword.html')
             
 
