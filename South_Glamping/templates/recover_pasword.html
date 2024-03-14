@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar contraseña</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- site icon -->
+    <link rel="icon" href="{% static 'images/logo/Golden.png' %}" type="image/png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/recover.css' %}" />
+</head>
+<body>
+    <section>
+        <div class="color"></div>
+        <div class="color"></div>
+        <div class="color"></div>
+        <div class="box">
+            <div class="square" style="--i:0"></div>
+            <div class="square" style="--i:1"></div>
+            <div class="square" style="--i:2"></div>
+            <div class="square" style="--i:3"></div>
+            <div class="square" style="--i:4"></div>
+            <div class="container">
+                <div class="form">
+                    <h2>Recuperar Contraseña</h2>
+                    <p>Por favor, introduce tu correo electrónico y te enviaremos instrucciones para recuperar tu contraseña.</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="email" name="email" placeholder="Correo electrónico"><br>
+                        <input type="submit" value="Recuperar Contraseña"><br>
+                    </form>
+                    {% if email %}
+                    <p>Se ha enviado un correo electrónico a {{ email }} con instrucciones para recuperar tu contraseña.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

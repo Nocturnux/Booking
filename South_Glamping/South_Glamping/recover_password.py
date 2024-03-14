@@ -47,4 +47,4 @@ def recover_password(request):
         email = request.POST['email']
         """ Cosultar el usuario por el correo  y cambiar la contraseña encriptada"""
         recover_password(email)
-        return render (request, 'recover_password.html', {'email': email})
+    return render (request, 'recover_password.html', {'email': email})

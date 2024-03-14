@@ -70,7 +70,7 @@ def recover_pasword(request):
         recover_pasword(email)
         """ consultar usuario por email y cambiar la contraseña"""
         
-    return render(request, 'recover.html')
+    return render(request, 'recover_pasword.html')
             
 
 
