@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <!-- basic -->
 <meta charset="utf-8">
@@ -25,10 +25,10 @@
         <form  method="post" >
             {% csrf_token %}
             <p>Bienvenido</p>
-            <input type="text" name="username" placeholder="Usuario"required><br>
-            <input type="password" name="password" placeholder="Clave"required><br>
+            <input type="text" name="username" placeholder="Usuario"><br>
+            <input type="password" name="password" placeholder="Clave"><br>
             <input type="submit" value="Ingresar"><br>
-            <a href="#">¿Olvidaste tu clave?</a><br>
+            <a href="{% url 'recover_pasword' %}">¿Olvidaste tu clave?</a><br>
             <a href="{% url 'register' %}">  Registrarse</a>
         </form>
         

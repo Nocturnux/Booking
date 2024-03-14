@@ -7,6 +7,56 @@
     <div class="card-header py-3 mb-3">
         <h4 class="m-0 font-weight-bold text-primary">Editar Reserva</h4>
     </div>
+    <div class="mb-3 mr-5">
+        <label for="" class="form-label"><FONT SIZE=6 COLOR="#ff5722">Valor de la reserva</FONT></label>
+        <input type="text" class="form-control" value="{{booking.price}}" readonly />
+    </div>
+    <div class="table-responsive">
+        <h5 class="text-primary font-weight-bold mt-4">Cabañas reservadas</h5>
+        <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Imagen</th>
+                    <th>Código cabaña</th>
+                    <th>Nombre</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cabin in booking_cabin %}
+                <tr>
+                    <td><img src="{{ cabin.cabin.image.url}}" alt="" width="50"></td>
+                    <td>{{ cabin.cabin.id }}</td>
+                    <td>{{ cabin.cabin.name }}</td>
+                    <td>{{ cabin.price}}</td>                        
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>            
+    </div>
+    <div class="table-responsive">
+        <h5 class="text-primary font-weight-bold mt-4">Servicios reservados</h5>
+        <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Imagen</th>
+                    <th>Código servicio</th>
+                    <th>Nombre</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in booking_service %}
+                <tr>
+                    <td><img src="{{ service.service.image.url}}" alt="" width="50"></td>
+                    <td>{{ service.service.id }}</td>
+                    <td>{{ service.service.name }}</td>
+                    <td>{{ service.price}}</td>                        
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>            
+    </div>
     {% if error_message %}
     <div class="alert alert-danger">
         {{ error_message }}
@@ -30,14 +80,14 @@
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Cliente</label>
-            <input type="text" class="form-control" id="customerName" value="{{booking.customer.name}}" required>
+            <input type="text" class="form-control" id="customerName" value="{{booking.customer.name}}" readonly>
             <input type="hidden" name="customer" id="customerId" value="{{booking.customer.id}}">
         </div>
 
         <div class="mb-3">
             <label for="" class="form-label">Cabaña</label>
             <div class="d-flex">
-                <select class="form-control" name="cabin" id="" required>
+                <select class="form-control" name="cabin" id="" >
                     <option value="">Selecciona una cabaña</option>
                     {% for cabin in cabin_list %}
                     <option value="{{cabin.id}}" {% if cabin.id == booking.cabin.id %} selected {% endif %}>{{ cabin.name }} - {{ cabin.price }}</option>
@@ -52,7 +102,7 @@
         <div class="mb-3">
             <label for="" class="form-label">Servicios</label>
             <div class="d-flex">
-                <select class="form-control" name="service" id="" required>
+                <select class="form-control" name="service" id="" >
                     <option value="">Selecciona un servicio</option>
                     {% for service in service_list %}
                     <option value="{{service.id}}" {% if service.id == booking.service.id %} selected {% endif %}>{{ service.name }} - {{ service.price }}</option>
@@ -71,46 +121,16 @@
             <table class="table">
                 <thead>
                     <tr>
-                        
                         <th scope="col">Descripción</th>
                         <th scope="col">Precio</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
-
+        
                 <tbody id="tbooking">
-                    {% for booking_cabin in booking_cabin %}
-                    <tr id="{{ booking_cabin.cabin.id }}">
-                        <td>
-                            <input type="hidden" name="cabin_Id[]" value="{{ booking_cabin.cabin.id }}">
-                            <input type="hidden" name="cabin_price[]" value="{{ booking_cabin.price }}">
-                            {{ booking_cabin.cabin.name }}
-                        </td>
-                        <td>{{ booking_cabin.price }}</td>
-                        <td>
-                            <a onclick='removeBooking(event, "cabin")' class="btn btn-danger btn-circle btn-sm">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% for booking_service in booking_service %}
-                    <tr id="{{ booking_service.service.id }}">
-                        <td>
-                            <input type="hidden" name="service_Id[]" value="{{ booking_service.service.id }}">
-                            <input type="hidden" name="service_Price[]" value="{{ booking_service.price }}">
-                            {{ booking_service.service.name }}
-                        </td>
-                        <td>{{ booking_service.price }}</td>
-                        <td>
-                            <a onclick='removeBooking(event, "service")' class="btn btn-danger btn-circle btn-sm">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                    <!-- Elimina el bucle que carga los datos iniciales -->
                 </tbody>
-
+        
                 <thead>
                     <tr>
                         <th>Total:</th>
@@ -120,6 +140,7 @@
                 </thead>
             </table>
         </div>
+        
 
         <div class="text-center">
             <p id="totalDisplay">{{ booking.total }}</p>
@@ -217,19 +238,27 @@
     });
 
     function removeBooking(event, type) {
-        event.preventDefault();        
-        let element = event.target.parentElement.parentElement.parentElement;
-        let id = element.id;          
-        if (type == 'cabin') {
-            cabin_added = cabin_added.filter(cabin => cabin != id);
-        } else {
-            service_added = service_added.filter(service => service != id);
-        }
-        element.remove();
-        let price = parseFloat(element.children[1].textContent);        
-        total -= price;
-        document.getElementById('totalValue').value = total;
+    event.preventDefault();
+    let element = event.target.parentElement.parentElement;
+    let id = element.id;
+    let price = parseFloat(element.children[1].textContent);
+    
+    if (type === 'cabin') {
+        cabin_added = cabin_added.filter(cabin => cabin !== id);
+    } else {
+        service_added = service_added.filter(service => service !== id);
     }
+
+    total -= price;
+    if (total < 0) {
+        total = 0; // Asegurarse de que el total nunca sea negativo
+    }
+    document.getElementById('totalValue').value = total;
+
+    element.remove();
+    }
+
+
 
 </script>
 
