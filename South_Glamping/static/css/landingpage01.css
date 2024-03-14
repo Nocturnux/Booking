@@ -3624,6 +3624,8 @@ textarea.form-control-lg {
   list-style: none;
 }
 
+
+
 .nav-link {
   display: block;
   padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
@@ -10845,6 +10847,7 @@ textarea.form-control-lg {
 }
 
 header.masthead {
+  height: 600px;
   position: relative;
   background-color: #343a40;
   background: url("../images/layout_img/bg-masthead.jpg") no-repeat center center;
@@ -10864,13 +10867,14 @@ header.masthead:before {
 }
 header.masthead h1, header.masthead .h1 {
   font-size: 3rem;
+
 }
 @media (min-width: 768px) {
   header.masthead {
-    padding-top: 12rem;
+    padding-top: 1;
     padding-bottom: 12rem;
   }
-  header.masthead h1, header.masthead .h1 {
+  header.masthead .h1 {
     font-size: 3rem;
   }
 }
@@ -10893,16 +10897,17 @@ header.masthead h1, header.masthead .h1 {
   padding-bottom: 5rem;
 }
 .testimonials .testimonial-item {
-  max-width: 24rem;
+  max-width: 26rem;
+  justify-content: space-around;
 }
 .testimonials .testimonial-item img {
-  max-width: 400px;
+  max-width: 350px;
   box-shadow: 0px 5px 5px 0px #adb5bd;
-  margin: 5px; /* Agrega un margen de 10px alrededor de cada imagen */
+  margin: 10px; /* Agrega un margen de 10px alrededor de cada imagen */
 }
 
 .carousel-container {
-  max-width: 1100px;
+  max-width: 1000px;
   margin: auto;
 }
 .carousel-title {
@@ -10912,7 +10917,7 @@ header.masthead h1, header.masthead .h1 {
 }
 
 .carousel-custom .carousel-inner .carousel-item {
-  height: 700px;
+  height: 600px;
   overflow: hidden;
 }
 

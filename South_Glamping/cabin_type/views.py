@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test, login_required
 from .forms import Cabin_typeForm
@@ -30,7 +29,7 @@ def change_status_cabin_type(request, cabin_type_id):
 @login_required
 @user_passes_test(admin_or_staff)
 def create_cabin_type(request):
-    form = Cabin_typeForm(request.POST or None)
+    form = Cabin_typeForm(request.POST or None, request.FILES or None)
     if form.is_valid() and request.method == 'POST':
         try:
             form.save()
@@ -38,7 +37,7 @@ def create_cabin_type(request):
         except:
             messages.error(request, 'Ocurrió un error al crear el Tipo de cabaña.')        
         return redirect('cabin_type')    
-    return render(request, 'cabin_type/editar.html', {'form': form})
+    return render(request, 'cabin_type/create.html', {'form': form})
 
 
 
@@ -46,7 +45,7 @@ def create_cabin_type(request):
 @user_passes_test(admin_or_staff)
 def detail_cabin_type(request, cabin_type_id):
     cabin_type = Cabin_type.objects.get(pk=cabin_type_id)
-    data = { 'name': cabin_type.name, }    
+    data = { 'image':cabin_type.image.url, 'name': cabin_type.name, 'description':cabin_type.description,}    
     return JsonResponse(data)
 
 
@@ -68,7 +67,7 @@ def delete_cabin_type(request, cabin_type_id):
 @user_passes_test(admin_or_staff)
 def edit_cabin_type(request, cabin_type_id):
     cabin_type = Cabin_type.objects.get(pk=cabin_type_id)
-    form = Cabin_typeForm(request.POST or None, instance=cabin_type)
+    form = Cabin_typeForm(request.POST or None, request.FILES or None, instance=cabin_type)
     if form.is_valid() and request.method == 'POST':
         try:
             form.save()
