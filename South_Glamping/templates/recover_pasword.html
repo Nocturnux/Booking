@@ -29,14 +29,17 @@
                 <div class="form">
                     <h2>Recuperar Contraseña</h2>
                     <p>Por favor, introduce tu correo electrónico y te enviaremos instrucciones para recuperar tu contraseña.</p>
-                    <form method="post">
+                    <form  method="post">
                         {% csrf_token %}
-                        <input type="email" name="email" placeholder="Correo electrónico"><br>
-                        <input type="submit" value="Recuperar Contraseña"><br>
+                       <div> 
+                         <label for="email">Correo electrónico:</label><br>
+                         <input type="email" id="email" name="email"><br>
+                         <input type="submit" value="Recuperar contraseña">
+                       </div>
                     </form>
-                    {% if email %}
+            
                     <p>Se ha enviado un correo electrónico a {{ email }} con instrucciones para recuperar tu contraseña.</p>
-                    {% endif %}
+                    
                 </div>
             </div>
         </div>
