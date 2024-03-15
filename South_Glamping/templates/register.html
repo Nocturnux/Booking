@@ -3,58 +3,53 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <title>Registro</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
-<!-- site icon -->
+    <!-- site icon -->
     <link rel="icon" href="{% static 'images/logo/Golden.png' %}" type="image/png" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/register.css' %}" />
 </head>
-<body>
-    <section>
-        <div class="color"></div>
-        <div class="color"></div>
-        <div class="color"></div>
-        <div class="box">
-            <div class="square" style="--i:0"></div>
-            <div class="square" style="--i:1"></div>
-            <div class="square" style="--i:2"></div>
-            <div class="square" style="--i:3"></div>
-            <div class="square" style="--i:4"></div>
-            <div class="container">
-                <div class="form">
-                    <h2>Crear Cuenta</h2>
-                    <form class="inputBx" method="post">
-                        {% csrf_token %} {% for field in form %}
-                        <div class="mb-3">
-                            <label for="" class="form-label">{{field.label}}</label>
-                            <input
-                            type="{{field.field.widget.input_type}}"
-                            class="form-control"
-                            name="{{field.name}}"
-                            id=""
-                            aria-describedby="helpId"
-                            placeholder="{{field.label}}"
-                            value="{{field.value | default:'' }}"
-                            />
-                        <small id="helpId" class="form-text text-danger"
-                            >{{field.errors}}</small
-                        >
-                        </div>
-                        {% endfor %}
-
-                        <div class="inputBx">
-                            <input type="submit" value="Registrar">
-                        </div>
-                    </form>
+<body >
+    <div class="container">
+        <div class="form">
+            <form class="inputBx" method="post">
+                <h2>Crear Cuenta</h2>
+                {% csrf_token %} {% for field in form %}
+                <div class="mb-3">
+                    <input required 
+                    type="{{field.field.widget.input_type}}"
+                    class="form-control"
+                    name="{{field.name}}"
+                    id=""
+                    aria-describedby="helpId"
+                    placeholder="{{field.label}}"
+                    value="{{field.value | default:'' }}"
+                    />
+                <small id="helpId" class="form-text text-danger"
+                    >{{field.errors}}</small>
                 </div>
+                {% endfor %}
+
+                <div class="inputBx">
+                    <input type="submit" value="Registrar">
+                </div>
+            </form>
+            <div class="drops">
+                <div class="drop drop-1"></div>
+                <div class="drop drop-2"></div>
+                <div class="drop drop-3"></div>
+                <div class="drop drop-4"></div>
+                <div class="drop drop-5"></div>
             </div>
         </div>
-    </section>
+    </div>
 </body>
 </html>
 

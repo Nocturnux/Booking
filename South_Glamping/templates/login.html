@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 <!-- site metas -->
-<title>Login</title>
+<title>Inicio Sesión</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -25,11 +25,14 @@
         <form  method="post" >
             {% csrf_token %}
             <p>Bienvenido</p>
-            <input type="text" name="username" placeholder="Usuario"><br>
-            <input type="password" name="password" placeholder="Clave"><br>
+            <input required type="text" name="username" placeholder="Usuario"><br>
+            <input required type="password" name="password" placeholder="Clave"><br>
             <input type="submit" value="Ingresar"><br>
-            <a href="{% url 'recover_pasword' %}">¿Olvidaste tu clave?</a><br>
-            <a href="{% url 'register' %}">  Registrarse</a>
+            <a href="{% url 'recover_password' %}">¿Olvidaste tu clave?</a><br>
+            <a href="{% url 'register' %}">  Crear cuenta</a>
+        {% if error %}
+           <h3>{{ error }}</h3>
+       {% endif %}
         </form>
         
         <div class="drops">
@@ -39,7 +42,7 @@
             <div class="drop drop-4"></div>
             <div class="drop drop-5"></div>
         </div>
-        </div>
+    </div>
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

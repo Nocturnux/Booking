@@ -4,12 +4,14 @@ from django.contrib.auth.models import User
 from South_Glamping.forms import RegisterForm
 from customer.models import Customer
 from django.contrib.auth.models import Group
+from django.contrib.auth.models import User
 from service.models import Service
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import random
 import string
+
 
 def index(request):
     return render(request, 'index.html')
@@ -33,7 +35,7 @@ def login(request):
             auth_login(request, authenticated_user)
             return render(request, 'index.html', {'user': authenticated_user})
         else:
-            error = 'Usuario o contraseña incorrectos.'
+            error = '¡Usuario o contraseña incorrectos!'
             return render(request, 'login.html', {'error': error})    
     
     return render(request, 'login.html')
@@ -65,7 +67,7 @@ def register(request):
                 client = Customer(None, name, document=document, email=email, cellphone=cellphone)
                 client.save()
                 return redirect('login')               
-        return redirect('login')    
+        return redirect('login')     
     return render(request, 'register.html', {'form': form})
 
 def generate_password():
@@ -86,7 +88,12 @@ def send_email(addressee, password):
     message['to'] = addressee #destinatario
     message['Subject'] = 'Recuperación de contraseña'
 
-    body = f'Tu nueva contraseña para acceder a South Glamping es: {password}. Por favor no olvides cambiar tu contraseña en tu próximo inicio de sesión.'
+    body = body = f"""Hola.  
+    
+Tu nueva contraseña para acceder a South Glamping es: {password}. Por favor, no olvides cambiar esta contraseña en tu próximo inicio de sesión.
+
+Saludos,
+South Glamping."""
     message.attach(MIMEText(body, 'plain', 'utf-8'))
 
     # Iniciar sesión en el servidor SMTP
@@ -106,12 +113,19 @@ def recuperar_contraseña (email):
     new_password= generate_password()
     send_email(destination_email, new_password)
 
-def recover_pasword(request):
+def recover_password(request):
+    message = None
     if request.method == 'POST':
         email = request.POST['email']
-        recuperar_contraseña(email)
-        """ consultar usuario por email y cambiar la contraseña"""
-    return render(request, 'recover_pasword.html')
+        try:
+            user = User.objects.get(email=email)
+            recuperar_contraseña(email)
+            # Consultar usuario por email y cambiar la contraseña
+            message = f"Se ha enviado un correo a: {email}, con la nueva contraseña."
+        except User.DoesNotExist:
+            message = "¡El correo ingresado no está registrado!"
+        
+    return render(request, 'recover_password.html', {'message': message})
             
 
 
