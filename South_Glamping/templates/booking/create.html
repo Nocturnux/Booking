@@ -103,9 +103,10 @@
     cabin_added = [];
     service_added = [];
     let total = 0;
+
     function addCabin(event) {
-        let date_start = document.getElementById('date_start').value
-        let date_end = document.getElementById('date_end').value
+        let date_start = document.getElementById('date_start').value;
+        let date_end = document.getElementById('date_end').value;
         let start_date = new Date(date_start);
         let end_date = new Date(date_end);
         let days = (end_date - start_date) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
@@ -115,9 +116,9 @@
         let cabin_Id = cabinSelect.val();
         let cabin_Name = cabinSelect.find('option:selected').text().split(' - ')[0];
         let cabin_price_per_day = cabinSelect.find('option:selected').text().split(' - ')[1];
-        let cabin_price_total = cabin_price_per_day * days;
+        let cabin_price_total = parseInt(cabin_price_per_day) * days;
         cabin_added.push(cabin_Id);
-        totalBooking(parseFloat(cabin_price_total));
+        totalBooking(cabin_price_total);
 
         $('#tbooking').append(`
             <tr id=${cabin_Id}>                               
@@ -143,7 +144,7 @@
         let sevice_Name = serviceSelect.find('option:selected').text().split(' - ')[0];
         let service_Price = serviceSelect.find('option:selected').text().split(' - ')[1];
         service_added.push(service_Id);
-        totalBooking(parseFloat(service_Price));
+        totalBooking(parseInt(service_Price));
 
         $('#tbooking').append(`
             <tr id="${service_Id}">                                
@@ -188,19 +189,33 @@
     });
 
     function removeBooking(event, type) {
-        event.preventDefault();        
-        let element = event.target.parentElement.parentElement.parentElement;
-        let id = element.id;          
-        if (type == 'cabin') {
-            cabin_added = cabin_added.filter(cabin => cabin != id);
+    event.preventDefault();
+    let element = event.target.closest('tr');
+    
+    // Comprobar si el elemento existe
+    if (element) {
+        let id = element.id;
+        let priceString = element.querySelector('td:nth-child(2)').textContent;
+        // Elimina los caracteres que no son dígitos
+        let price = parseInt(priceString.replace(/\D/g, ''), 10);
+        
+        if (type === 'cabin') {
+            cabin_added = cabin_added.filter(cabin => cabin !== id);
         } else {
-            service_added = service_added.filter(service => service != id);
+            service_added = service_added.filter(service => service !== id);
         }
-        element.remove();
-        let price = parseFloat(element.children[1].textContent);        
+
         total -= price;
+        if (total < 0) {
+            total = 0; // Asegurarse de que el total nunca sea negativo
+        }
         document.getElementById('totalValue').value = total;
+
+        element.remove();
+    } else {
+        console.error('Error: Elemento no encontrado.');
     }
+}
 </script>
 
 
