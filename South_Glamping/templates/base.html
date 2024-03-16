@@ -65,22 +65,22 @@
                   <hr class="sidebar-divider">
                   {% if request.user.is_superuser or request.user.is_staff %}
                   <ul class="list-unstyled components">
-                     <li><a href="{% url 'customer' %}"><i class="fa fa-user blue1_color"></i> <span>Cliente</span></a></li>
+                     <li><a href="{% url 'customer' %}"><i class="fa fa-user blue1_color"></i> <span>Clientes</span></a></li>
                      <li>
                         <a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa  fa-university yellow_color"></i> <span>Cabañas</span></a>
                         <ul class="collapse list-unstyled" id="element">
-                           <li><a href="{% url 'cabin' %}">> <span>Cabaña</span></a></li>
-                           <li><a href="{% url 'cabin_type' %}">> <span>Tipo de Cabaña</span></a></li>
+                           <li><a href="{% url 'cabin' %}">> <span>Cabañas</span></a></li>
+                           <li><a href="{% url 'cabin_type' %}">> <span>Tipos de Cabaña</span></a></li>
                         </ul>
                      </li>
                      <li><a href="{% url 'service' %}"><i class="fa fa-coffee blue1_color"></i> <span>Servicios</span></a></li>
                      <li>
                         <a href="{% url 'booking' %}">
-                        <i class="fa fa-calendar red_color"></i> <span>Reserva</span></a>
+                        <i class="fa fa-calendar red_color"></i> <span>Reservas</span></a>
                      </li>
                      <li>
                         <a href="{% url 'payment' %}">
-                        <i class=" fa-duotone fa fa-money green_color"></i> <span>Pago</span></a>
+                        <i class=" fa-duotone fa fa-money green_color"></i> <span>Pagos</span></a>
                      </li>
                      
                   </ul>

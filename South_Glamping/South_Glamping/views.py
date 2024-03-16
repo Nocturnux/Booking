@@ -11,10 +11,58 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import random
 import string
+from booking.models import Booking 
+from babel.dates import format_date
+import json
+from datetime import date
+from django.db.models import Sum
+import calendar
+from collections import Counter
+from cabin.models import Cabin
+from booking_cabin.models import Booking_cabin
+from cabin_type.models import Cabin_type    
+
+
+def get_booking_data():
+    data = []
+    for month in range(1, 7):
+        bookings = Booking.objects.filter(date_start__month=month).count()
+        data.append(bookings)
+    return data
+
+
+def get_profit_data():
+    data = []
+    for month in range(1, 7):  
+        bookings = Booking.objects.filter(date_booking__month=month)
+        monthly_profit = bookings.aggregate(total_profit=Sum('price'))['total_profit'] or 0
+        data.append(monthly_profit)
+    return data
+
+def get_typecabin_data():
+    cabin_types = [cabin_type.name for cabin_type in Cabin_type.objects.all()]
+    cabin_data = []
+    for cabin_type in cabin_types:
+        cabins = Cabin.objects.filter(cabin_type__name=cabin_type)
+        bookings = Booking_cabin.objects.filter(cabin__cabin_type__name=cabin_type)
+        cabin_data.append(bookings.count())
+    return cabin_types, cabin_data
 
 
 def index(request):
-    return render(request, 'index.html')
+    months = [format_date(date(month=i, day=1, year=2024), 'MMMM', locale='es_ES') for i in range(1,7 )]
+    booking_data = get_booking_data()
+    profit_data = get_profit_data()
+    cabin_types, cabin_data = get_typecabin_data()
+    context = {
+        'months': json.dumps(months),
+        'data': json.dumps(booking_data),
+        'profit': json.dumps(profit_data), 
+        'cabin_data': json.dumps(cabin_data),
+        'cabin_types': json.dumps(cabin_types),
+    }
+    return render(request, 'index.html', context)
+
 
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
