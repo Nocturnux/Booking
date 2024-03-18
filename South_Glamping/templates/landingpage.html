@@ -79,235 +79,42 @@
             </div>
         </section>
         <!-- Image Showcases-->
+        {% for cabin_type in cabin_types %}
         <section class="showcase">
             <div class="container-fluid p-0">
                 <div class="row g-0">
-                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('../static/images/landing_page/domo6.jpg')"></div>
+                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{ cabin_type.image }}')"></div>
                     <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                        <h2>Cabañas tipo Domo</h2>
-                        <p class="lead mb-0">Imagina una cabaña redondeada, como una enorme burbuja, pero hecha de madera y con ventanas por todas partes. Dentro, tienes todas las comodidades de un hotel de lujo. Es como estar en medio de la naturaleza, pero con todas las comodidades que puedas desear.</p>
+                        <h2>{{ cabin_type.name }}</h2>
+                        <p class="lead mb-0">{{ cabin_type.description }}</p>
                     </div>
                 </div>
                 <section class="testimonials text-center bg-light">
-                    <div class="container">
-                        <div class="row ">
-                            <div class="col-lg-3">
-                                <div class="card ">
-                                    <img class="img-fluid mb-3" src="../static/images/landing_page/domo3.jpg" alt="..." />
-                                    <h5>Aurora</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                    
+                    <div class="container-fluid p-5">
+                        <div class="row g-3 py-0">
+                            {% for cabin in cabin_type.cabin_set.all %}
+                                {% if cabin in cabins %}
+                                <div class="col-lg-3 d-flex align-items-stretch p-0">
+                                    <div class="card h-100 d-flex flex-column m-1">
+                                        <img class="img-fluid mb-3 m-1" src="{{ cabin.image }}" alt="..." />
+                                        <div class="card h-100 d-flex flex-column ">
+                                            <strong><h5 class="card-title">{{ cabin.name }}</h5></strong>
+                                            <p class="card-text mb-auto">
+                                                <strong>Descripción:</strong> {{ cabin.description }}<br>
+                                                <strong>Capacidad:</strong> {{ cabin.capacity }}<br>
+                                                <strong>Valor por noche:</strong> {{ cabin.price }}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/domo2.jpg" alt="..." />
-                                    <h5>Encanto</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/domo5.jpg" alt="..." />
-                                    <h5>Ensueño</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/domo9.jpg" alt="..." />
-                                    <h5>Sereno</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </section>
-                <div class="row g-0">
-                    <div class="col-lg-6 text-white showcase-img" style="background-image: url('../static/images/layout_img/chalet.jpg')"></div>
-                    <div class="col-lg-6 my-auto showcase-text">
-                        <h2>Cabañas tipo Chalet</h2>
-                        <p class="lead mb-0">Piensa en un chalet suizo clásico, pero en medio de un hermoso paisaje natural. Estas cabañas tienen ese encanto rústico de madera y piedra, con techos inclinados. Es como tener tu propio refugio privado en la naturaleza, pero con todas las comodidades modernas.</p>
-                    </div>
-                </div>
-                <section class="testimonials text-center bg-light">
-                    <div class="container">
-                        <div class="row ">
-                            <div class="col-lg-3">
-                                <div class="card ">
-                                    <img class="img-fluid mb-3" src="../static/images/landing_page/chalet4.jpg" alt="..." />
-                                    <h5>Alpina</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: <br>
-                                    </p>
-                                    
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid mb-3 " src="../static/images/landing_page/chaletalpina.jpg" alt="..." />
-                                    <h5>Cedro</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: <br>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/chalet6.jpg" alt="..." />
-                                    <h5>Cumbre</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: <br>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/chalet7.jpg" alt="..." />
-                                    <h5>Horizonte.</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                        </div>
-                    </div>
-                </section>
-                <div class="row g-0">
-                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('../static/images/layout_img/burbuja.jpg')"></div>
-                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                        <h2>Cabañas tipo Burbuja</h2>
-                        <p class="lead mb-0">Estas cabañas son una enorme burbuja transparente. Puedes ver todo lo que te rodea, desde las estrellas en el cielo hasta los árboles y la naturaleza circundante. Dentro, tienes una cama cómoda y todas las comodidades que necesitas, pero la verdadera magia es la vista panorámica que te ofrece.</p>
-                    </div>
-                </div>
-                <section class="testimonials text-center bg-light">
-                    <div class="container">
-                        <div class="row ">
-                            <div class="col-lg-3">
-                                <div class="card ">
-                                    <img class="img-fluid mb-3" src="../static/images/landing_page/burbuja10.jpg" alt="..." />
-                                    <h5>Celestial</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/burbuja4.jpg" alt="..." />
-                                    <h5>Cristal</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/burbuja6.jpg" alt="..." />
-                                    <h5>Estelar</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/burbuja1.jpg" alt="..." />
-                                    <h5>Oasis</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                        </div>
-                    </div>
-                </section>
-                <div class="row g-0">
-                    <div class="col-lg-6 text-white showcase-img" style="background-image: url('../static/images/landing_page/tipis.jpg')"></div>
-                    <div class="col-lg-6 my-auto showcase-text">
-                        <h2>Tiendas Tipi</h2>
-                        <p class="lead mb-0">Nuestras tiendas tipi ofrecen un refugio acogedor y pintoresco para aquellos que buscan una escapada inolvidable. Te invitamos a descubrir el equilibrio perfecto entre la aventura al aire libre y un alojamiento de lujo, con su diseño tradicional de forma cónica y sus comodidades modernas.</p>
-                    </div>
-                </div>
-                <section class="testimonials text-center bg-light">
-                    <div class="container">
-                        <div class="row ">
-                            <div class="col-lg-3">
-                                <div class="card ">
-                                    <img class="img-fluid mb-3" src="../static/images/landing_page/tipi2.jpg" alt="..." />
-                                    <h5>Armonía</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                    
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/tipi3.jpg" alt="..." />
-                                    <h5>Ecos</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/tipi4.jpg" alt="..." />
-                                    <h5>Nature</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card">
-                                    <img class="img-fluid  mb-3" src="../static/images/landing_page/tipi1.jpg" alt="..." />
-                                    <h5>Zen</h5>
-                                    <p class="font-weight-light mb-0">
-                                        Descripción: <br>
-                                        Capacidad: <br>
-                                        Precio: 
-                                    </p>
-                                </div>
-                        </div>
-                    </div>
-                </section>
+             </div>
+        </section>
+        {% endfor %}
     <div class="carousel-container">
     <h2 class="carousel-title">Servicios adicionales:</h2>            
     <div id="servicesCarousel" class="carousel slide carousel-custom" data-ride="carousel">

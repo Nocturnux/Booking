@@ -1880,6 +1880,9 @@ module.exports = function(Chart) {
 },{}],15:[function(require,module,exports){
 'use strict';
 
+
+
+
 var defaults = require(25);
 var elements = require(40);
 var helpers = require(45);

@@ -20,7 +20,8 @@ import calendar
 from collections import Counter
 from cabin.models import Cabin
 from booking_cabin.models import Booking_cabin
-from cabin_type.models import Cabin_type    
+from cabin_type.models import Cabin_type  
+from booking_service.models import Booking_service   
 
 
 def get_booking_data():
@@ -48,18 +49,28 @@ def get_typecabin_data():
         cabin_data.append(bookings.count())
     return cabin_types, cabin_data
 
+def get_service_data():
+    service_names = [service.name for service in Service.objects.all()]
+    service_data = []
+    for service_name in service_names:
+        bookings = Booking_service.objects.filter(service__name=service_name)
+        service_data.append(bookings.count())
+    return service_names, service_data
 
 def index(request):
     months = [format_date(date(month=i, day=1, year=2024), 'MMMM', locale='es_ES') for i in range(1,7 )]
     booking_data = get_booking_data()
     profit_data = get_profit_data()
     cabin_types, cabin_data = get_typecabin_data()
+    service_names, service_data = get_service_data()   
     context = {
         'months': json.dumps(months),
         'data': json.dumps(booking_data),
         'profit': json.dumps(profit_data), 
         'cabin_data': json.dumps(cabin_data),
         'cabin_types': json.dumps(cabin_types),
+        'service_names': json.dumps(service_names),
+        'service_data': json.dumps(service_data),
     }
     return render(request, 'index.html', context)
 
@@ -69,7 +80,9 @@ def custom_404(request, exception):
 
 def landingpage(request):
     services = Service.objects.filter(status=True)
-    return render(request, 'landingpage.html', {'services': services})
+    cabin_types = Cabin_type.objects.filter(status=True)
+    cabins = Cabin.objects.filter(status=True)
+    return render(request, 'landingpage.html', {'services': services, 'cabin_types': cabin_types, 'cabins': cabins})
         
 
 def login(request):
@@ -81,7 +94,7 @@ def login(request):
         authenticated_user = authenticate(username=username, password=password)
         if authenticated_user is not None:
             auth_login(request, authenticated_user)
-            return render(request, 'index.html', {'user': authenticated_user})
+            return redirect( 'index')
         else:
             error = '¡Usuario o contraseña incorrectos!'
             return render(request, 'login.html', {'error': error})    

@@ -10847,7 +10847,7 @@ textarea.form-control-lg {
 }
 
 header.masthead {
-  height: 600px;
+  height: 650px;
   position: relative;
   background-color: #343a40;
   background: url("../images/layout_img/bg-masthead.jpg") no-repeat center center;
@@ -10880,7 +10880,8 @@ header.masthead h1, header.masthead .h1 {
 }
 
 .showcase .showcase-text {
-  padding: 3rem;
+  padding: 7rem;
+  text-align: center;
 }
 .showcase .showcase-img {
   min-height: 30rem;
@@ -10895,6 +10896,7 @@ header.masthead h1, header.masthead .h1 {
 .testimonials {
   padding-top: 5rem;
   padding-bottom: 5rem;
+  justify-content: space-around;
 }
 .testimonials .testimonial-item {
   max-width: 26rem;
