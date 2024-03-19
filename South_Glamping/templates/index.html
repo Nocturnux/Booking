@@ -1,216 +1,363 @@
+
 {% extends 'base.html' %}
 
 {% load static %}
 
 {% block content %}
-<!DOCTYPE html>
+
 <html lang="es">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Inicio - SG</title>
-        <link href="../static/css/index.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </head>
-    
-<div class="container-fluid">
-   <div class="row column_title">
-      <div class="col-md-12">
-         <div class="page_title">
-            <h2>Dashboard</h2>
-         </div>
-      </div>
-   </div>
-   <!-- dashboard inner -->
-   <div class="midde_cont">
-      <div class="container-fluid">
-         <div class="row column_title">
-            <div class="col-md-12">
-               <div class="page_title">
-                  <h2>Gráficos y estadísticas.</h2>
-               </div>
-            </div>
-         </div>
-         <!-- row -->
-         
-         <div class="row column1">
-            <div class="col-lg-6">
-               <div class="white_shd full margin_bottom_30">
-                  <div class="full graph_head">
-                     <div class="heading1 margin_0">
-                        <h2>Reservas por mes</h2>
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <title>Inicio - SouthGlamping</title>
+      <link href="../static/css/index.css" rel="stylesheet" />
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      <link rel="icon" href="{% static 'images/logo/Golden.png' %}" type="image/png" />
+        <!-- Bootstrap icons-->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
+        <!-- Google fonts-->
+      <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+       
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+   </head>
+      
+
+   <body>
+      {% if user.is_superuser %}
+         <!-- Contenido para el administrador -->
+         <div id="admin-content">
+            <div class="container-fluid">
+               <div class="row column_title">
+                  <div class="col-md-12">
+                     <div class="page_title">
+                        <h2>Dashboard South Glamping.</h2>
                      </div>
                   </div>
-                  <div class="map_section padding_infor_info">
-                     <canvas id="my_chart"></canvas>
-                     <script>
-                     var ctx = document.getElementById('my_chart').getContext('2d');
-                     var myChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                           labels: {{ months|safe }},
-                           datasets: [{
-                              label: 'Reservas',
-                              data: {{ data|safe }},
-                              backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                              borderColor: 'rgba(75, 192, 192, 1)',
-                              borderWidth: 1
-                           }]
-                        },
-                        options: {
-                           scales: {
-                              y: {
-                                 beginAtZero: true
-                              }
-                           }
-                        }
-                     });
-                     </script> 
-                  </div>
                </div>
-           </div>
-   
-            <div class="col-lg-6">
-               <div class="white_shd full margin_bottom_30">
-                  <div class="full graph_head">
-                     <div class="heading1 margin_0">
-                        <h2>Ganancias mensuales</h2>
+               <!-- dashboard inner -->
+               <div class="midde_cont">
+                  <div class="container-fluid">
+                     <div class="row column_title text-center">
+                        <div class="col-md-12">
+                           <div class="page_title">
+                              <h2>Gráficos y estadísticas.</h2>
+                           </div>
+                        </div>
                      </div>
-                  </div>
-                  <div class="map_section padding_infor_info">
-                     <canvas id="bar_chart"></canvas>
-                     <script>
-                     var ctx = document.getElementById('bar_chart').getContext('2d');
-                     var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                           labels: {{ months|safe }},
-                           datasets: [{
-                              label: 'Ganancias',
-                              data: {{ profit|safe }},
-                              backgroundColor: 'rgba(255, 165, 0, 0.2)',  // Color de fondo de las barras en naranja con transparencia
-                              borderColor: 'rgba(255, 165, 0, 1)',  // Color del borde de las barras en naranja
-                              borderWidth: 1
-                           }]   
-                        },
-                        options: {
-                           scales: {
-                              y: {
-                                 beginAtZero: false,  // Comienza la escala en el valor mínimo de los datos, no en cero
-                              }
-                           }
-                        }
-                     });
-                     </script>
-
-                  </div>
-               </div>
-            </div>
-
-            <div class="col-lg-6">
-               <div class="white_shd full margin_bottom_30">
-                  <div class="full graph_head">
-                     <div class="heading1 margin_0">
-                        <h2>Solicitudes por servicio</h2>
-                     </div>
-                  </div>
-                  <div class="map_section padding_infor_info">
-                     <canvas id="bar1_chart"></canvas>
-                     <script>
-                     document.addEventListener('DOMContentLoaded', function() {
-                        var ctx = document.getElementById('bar1_chart').getContext('2d');
-                        var myChart = new Chart(ctx, {
-                           type: 'horizontalBar',
-                           data: {
-                              labels: JSON.parse('{{ service_names|escapejs }}'),
-                              datasets: [{
-                                 label: 'Solicitudes por servicio',
-                                 data: JSON.parse('{{ service_data|escapejs }}'),
-                                 backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)',
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 206, 86, 0.2)',
-                                    'rgba(75, 192, 192, 0.2)',
-                                    'rgba(153, 102, 255, 0.2)',
-                                    'rgba(255, 159, 64, 0.2)',
-                                 ],
-                                 borderColor: [
-                                 'rgba(255, 99, 132, 1)',
-                                 'rgba(54, 162, 235, 1)',
-                                 'rgba(255, 206, 86, 1)',
-                                 'rgba(75, 192, 192, 1)',
-                                 'rgba(153, 102, 255, 1)',
-                                 'rgba(255, 159, 64, 1)',
-                                 ],
-                                 borderWidth: 1
-                              }]
-                           },
-                           options: {
-                              scales: {
-                                 x: {
-                                    beginAtZero: true,
-                                    title: {
-                                       display: true,
-                                       text: 'Número de solicitudes'
-                                    }   
-                                 }
-                              }
-                           }
-                        });
-                     });
-                     </script>
-                  </div>
-               </div>
-            </div>
-
-            <div class="col-lg-6" width: '400px'>
-               <div class="white_shd full margin_bottom_30">
-                  <div class="full graph_head">
-                     <div class="heading1 margin_0">
-                        <h2>Reservas por tipo de cabaña</h2>
-                     </div>
-                  </div>
-                  <div class="map_section padding_infor_info">
-                     <canvas id="pie_chart"></canvas>
-                     <script>
-                     var ctx = document.getElementById('pie_chart').getContext('2d');
-                     var myChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                           labels: {{ cabin_types|safe }},
-                           datasets: [{
-                           data: {{ cabin_data|safe }},
-                              backgroundColor: [
-                                 'rgba(255, 99, 132, 0.2)',
-                                 'rgba(54, 162, 235, 0.2)',
-                                 'rgba(255, 206, 86, 0.2)',
-                                 'rgba(75, 192, 192, 0.2)',
-                                 'rgba(153, 102, 255, 0.2)',
-                                 'rgba(255, 159, 64, 0.2)',
-                              ],
-                              borderColor: [
-                                 'rgba(255, 99, 132, 1)',
-                                 'rgba(54, 162, 235, 1)',
-                                 'rgba(255, 206, 86, 1)',
-                                 'rgba(75, 192, 192, 1)',
-                                 'rgba(153, 102, 255, 1)',
-                                 'rgba(255, 159, 64, 1)',
-                              ],
-                              borderWidth: 1
-                           }]
-                        }
-                    });
-                    </script>
-                  </div>
-               </div>
-            </div>
-
+                     <!-- row -->
+                     
+                     <div class="row column1">
+                        <div class="col-lg-6">
+                           <div class="white_shd full margin_bottom_30">
+                              <div class="full graph_head">
+                                 <div class="heading1 margin_0">
+                                    <h2>Reservas por mes</h2>
+                                 </div>
+                              </div>
+                              <div class="map_section padding_infor_info">
+                                 <canvas id="my_chart"></canvas>
+                                 <script>
+                                 var ctx = document.getElementById('my_chart').getContext('2d');
+                                 var myChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data: {
+                                       labels: {{ months|safe }},
+                                       datasets: [{
+                                          label: 'Reservas',
+                                          data: {{ data|safe }},
+                                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                          borderColor: 'rgba(75, 192, 192, 1)',
+                                          borderWidth: 1
+                                       }]
+                                    },
+                                    options: {
+                                       scales: {
+                                          y: {
+                                             beginAtZero: true
+                                          }
+                                       }
+                                    }
+                                 });
+                                 </script> 
+                              </div>
+                           </div>
+                       </div>
+               
+                        <div class="col-lg-6">
+                           <div class="white_shd full margin_bottom_30">
+                              <div class="full graph_head">
+                                 <div class="heading1 margin_0">
+                                    <h2>Ganancias mensuales</h2>
+                                 </div>
+                              </div>
+                              <div class="map_section padding_infor_info">
+                                 <canvas id="bar_chart"></canvas>
+                                 <script>
+                                 var ctx = document.getElementById('bar_chart').getContext('2d');
+                                 var myChart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                       labels: {{ months|safe }},
+                                       datasets: [{
+                                          label: 'Ganancias',
+                                          data: {{ profit|safe }},
+                                          backgroundColor: 'rgba(255, 165, 0, 0.2)',  // Color de fondo de las barras en naranja con transparencia
+                                          borderColor: 'rgba(255, 165, 0, 1)',  // Color del borde de las barras en naranja
+                                          borderWidth: 1
+                                       }]   
+                                    },
+                                    options: {
+                                       scales: {
+                                          y: {
+                                             beginAtZero: false,  // Comienza la escala en el valor mínimo de los datos, no en cero
+                                          }
+                                       }
+                                    }
+                                 });
+                                 </script>
             
+                              </div>
+                           </div>
+                        </div>
+            
+                        <div class="col-lg-6">
+                           <div class="white_shd full margin_bottom_30">
+                              <div class="full graph_head">
+                                 <div class="heading1 margin_0">
+                                    <h2>Solicitudes por servicio</h2>
+                                 </div>
+                              </div>
+                              <div class="map_section padding_infor_info">
+                                 <canvas id="bar1_chart"></canvas>
+                                 <script>
+                                 document.addEventListener('DOMContentLoaded', function() {
+                                    var ctx = document.getElementById('bar1_chart').getContext('2d');
+                                    var myChart = new Chart(ctx, {
+                                       type: 'horizontalBar',
+                                       data: {
+                                          labels: JSON.parse('{{ service_names|escapejs }}'),
+                                          datasets: [{
+                                             label: 'Solicitudes por servicio',
+                                             data: JSON.parse('{{ service_data|escapejs }}'),
+                                             backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(255, 206, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                             ],
+                                             borderColor: [
+                                             'rgba(255, 99, 132, 1)',
+                                             'rgba(54, 162, 235, 1)',
+                                             'rgba(255, 206, 86, 1)',
+                                             'rgba(75, 192, 192, 1)',
+                                             'rgba(153, 102, 255, 1)',
+                                             'rgba(255, 159, 64, 1)',
+                                             ],
+                                             borderWidth: 1
+                                          }]
+                                       },
+                                       options: {
+                                          scales: {
+                                             x: {
+                                                beginAtZero: true,
+                                                title: {
+                                                   display: true,
+                                                   text: 'Número de solicitudes'
+                                                }   
+                                             }
+                                          }
+                                       }
+                                    });
+                                 });
+                                 </script>
+                              </div>
+                           </div>
+                        </div>
+            
+                        <div class="col-lg-6" width: '400px'>
+                           <div class="white_shd full margin_bottom_30">
+                              <div class="full graph_head">
+                                 <div class="heading1 margin_0">
+                                    <h2>Reservas por tipo de cabaña</h2>
+                                 </div>
+                              </div>
+                              <div class="map_section padding_infor_info">
+                                 <canvas id="pie_chart"></canvas>
+                                 <script>
+                                 var ctx = document.getElementById('pie_chart').getContext('2d');
+                                 var myChart = new Chart(ctx, {
+                                    type: 'pie',
+                                    data: {
+                                       labels: {{ cabin_types|safe }},
+                                       datasets: [{
+                                       data: {{ cabin_data|safe }},
+                                          backgroundColor: [
+                                             'rgba(255, 99, 132, 0.2)',
+                                             'rgba(54, 162, 235, 0.2)',
+                                             'rgba(255, 206, 86, 0.2)',
+                                             'rgba(75, 192, 192, 0.2)',
+                                             'rgba(153, 102, 255, 0.2)',
+                                             'rgba(255, 159, 64, 0.2)',
+                                          ],
+                                          borderColor: [
+                                             'rgba(255, 99, 132, 1)',
+                                             'rgba(54, 162, 235, 1)',
+                                             'rgba(255, 206, 86, 1)',
+                                             'rgba(75, 192, 192, 1)',
+                                             'rgba(153, 102, 255, 1)',
+                                             'rgba(255, 159, 64, 1)',
+                                          ],
+                                          borderWidth: 1
+                                       }]
+                                    }
+                                });
+                                </script>
+                              </div>
+                           </div>
+                        </div>
+            
+                        
+                     </div>
+                     <!-- end row -->
+                  </div>
+               </div>
          </div>
-         <!-- end row -->
-      </div>
-   </div><!-- end dashboard inner -->
+      {% else %}
+         <!-- Contenido para el usuario -->
+         <div id="user-content">
+            <div class="container-fluid">
+               <div class="row column_title">
+                  <div class="col-md-12">
+                     <div class="page_title text-center">
+                        <h2>Bienvenido(a) <strong>{{user.first_name}}</strong>, aquí encontrarás todo lo que en South Glamping tenemos para ofrecerte. <br> Reserva ahora y prepárate para vivir una experiencia única en medio de la naturaleza, con la variedad de cabañas y servicios que tenemos disponibles para ti y toda la familia:</h2>
+                     </div>
+                  </div>
+               </div>
+            </div>   
+            {% for cabin_type in cabin_types %}
+        <section class="showcase">
+            <div class="container-fluid p-0">
+                <div class="row g-0">
+                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{ cabin_type.image.url }}')"></div>
+                    <div class="col-lg-6 order-lg-1 my-auto showcase-text bg-white ">
+                        <h2>{{ cabin_type.name }}</h2>
+                        <p class="lead mb-0">{{ cabin_type.description }}</p>
+                    </div>
+                </div>
+                <section class="testimonials text-center bg-light">
+                    <div class="container-fluid p-0">
+                        <div class="row g-3 py-0">
+                            {% for cabin in cabin_type.cabin_set.all %}
+                                {% if cabin in cabins %}
+                                <div class="col-lg-3 d-flex align-items-stretch p-0">
+                                    <div class="card h-100 d-flex flex-column m-1">
+                                        <img class="img-fluid mb-3 m-1" src="{{ cabin.image.url }}" alt="..." />
+                                        <div class="card h-100 d-flex flex-column ">
+                                            <strong><h5 class="card-title">{{ cabin.name }}</h5></strong>
+                                            <p class="card-text mb-auto">
+                                                <strong>Descripción:</strong> {{ cabin.description }}<br>
+                                                <strong>Capacidad:</strong> {{ cabin.capacity }}<br>
+                                                <strong>Valor por noche:</strong> {{ cabin.price }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+             </div>
+        </section>
+        {% endfor %}
+        <section class="call text-center" id="signup" style=" width: 99%; margin: auto;">
+        <div class="carousel-container">
+         <h2 class="carousel-title">Servicios adicionales:</h2>            
+         <div id="servicesCarousel" class="carousel slide carousel-custom" data-ride="carousel">
+             <div class="carousel-inner">
+                 {% for service in services %}
+                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                         <img src="{{ service.image.url }}" class="d-flex w-100 h-20" alt="{{ service.name }}">
+                         <div class="carousel-caption d-none d-md-block" >
+                             <h2 style="color: white;">{{ service.name }}</h2>
+                             <h2 style="color: white;">{{ service.description }}</h2>
+                         </div>
+                     </div>
+                 {% endfor %}
+             </div>
+                     
+             <a class="carousel-control-prev" href="#servicesCarousel" role="button" data-slide="prev">
+                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                 <span class="sr-only">Anterior</span>
+             </a>
+             <a class="carousel-control-next" href="#servicesCarousel" role="button" data-slide="next">
+                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                 <span class="sr-only">Siguiente</span>
+             </a>
+         </div>
+         </div>
+        </section>
+
+        <section class="testimonials text-center bg-light width=50%">
+         <div class="container">
+             <h2 class="mb-5">No olvides que también contamos con...</h2>
+             <div class="row">
+                 <div class="col-lg-4">
+                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                         <img class="img-fluid rounded-circle mb-3" src="../static/images/layout_img/restaurante.jpg" alt="..." />
+                         <h5>Restaurante-Bar.</h5>
+                         <p class="font-weight-light mb-0"></p>
+                     </div>
+                 </div>
+                 <div class="col-lg-4">
+                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                         <img class="img-fluid rounded-circle mb-3" src="../static/images/layout_img/piscina.png" alt="..." />
+                         <h5>Piscina.</h5>
+                         <p class="font-weight-light mb-0"></p>
+                     </div>
+                 </div>
+                 <div class="col-lg-4">
+                     <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                         <img class="img-fluid rounded-circle mb-3" src="../static/images/layout_img/turco.jpg" alt="..." />
+                         <h5>Baño Turco.</h5>
+                         <p class="font-weight-light mb-0"></p>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </section>
+
+        <section class="call-to-action text-white text-center" id="signup" style=" width: 99%; margin: auto; margin-top: 50px;">
+            <div class="container position-relative">
+                <div class="row justify-content-center">
+                    <div class="col-xl-6">
+                        <h1 class="mb-4" style='color: white'>¿Qué esperas para reservar? <br> </h1>
+                        <a class="btn btn-primary" href="{% url 'create_booking' %}">¡Reservar ahora!</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Aquí puedes agregar los tipos de cabañas, cabañas y servicios para el usuario -->
+         </div>
+         <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="../static/js/scripts.js"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+      {% endif %}
+      <!-- end dashboard inner -->
+   </body>
 
 {%endblock%}

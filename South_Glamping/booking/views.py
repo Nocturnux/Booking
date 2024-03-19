@@ -19,8 +19,6 @@ from django.contrib.staticfiles import finders
 
 
 
-
-
 def admin_or_staff(user):
     return user.is_authenticated and (user.is_superuser or user.is_staff)
 
@@ -43,6 +41,7 @@ def create_booking(request):
         date_start = datetime.strptime(date_start_str, '%Y-%m-%d')
         date_end = datetime.strptime(date_end_str, '%Y-%m-%d')
         
+    
     
         booking = Booking.objects.create(                        
             date_booking=datetime.now().date(),                                   
@@ -163,6 +162,17 @@ def edit_booking(request, booking_id):
         return redirect('booking')
     
     return render(request, 'booking/edit.html', {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list, 'booking_cabin': booking_cabin, 'booking_service': booking_service})
+
+from django.shortcuts import get_object_or_404
+
+@login_required
+@user_passes_test(admin_or_staff)
+def finish_booking(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    booking.status = 'Finalizada'
+    booking.save()
+    messages.success(request, 'Reserva finalizada con éxito.')
+    return redirect('booking')
 
 
 

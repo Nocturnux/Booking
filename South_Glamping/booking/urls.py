@@ -10,4 +10,5 @@ urlpatterns = [
     path('edit/<int:booking_id>/', views.edit_booking, name='edit_booking'),
     path('payment_booking/<int:booking_id>/', views.payment_booking, name='payment_booking'),
     path('invoice/<int:booking_id>/', views.ReportInvoicePdfView.as_view(), name='ReportInvoicePdfView'),
+    path('booking/finish/<int:booking_id>/', views.finish_booking, name='finish_booking'),
 ]

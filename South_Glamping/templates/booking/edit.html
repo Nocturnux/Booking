@@ -8,7 +8,7 @@
         <h4 class="m-0 font-weight-bold text-primary">Editar Reserva</h4>
     </div>
     <div class="mb-3 mr-5">
-        <label for="" class="form-label"><FONT SIZE=6 COLOR="#ff5722">Valor de la reserva</FONT></label>
+        <label for="" class="form-label text-primary font-weight-bold mt-4" style="font-size: 18px;">Valor actual de la reserva:</label>
         <input type="text" class="form-control" value="{{booking.price}}" readonly />
     </div>
     <div class="table-responsive">
@@ -82,6 +82,10 @@
             <label for="" class="form-label">Cliente</label>
             <input type="text" class="form-control" id="customerName" value="{{booking.customer.name}}" readonly>
             <input type="hidden" name="customer" id="customerId" value="{{booking.customer.id}}">
+        </div>
+
+        <div class="mb-3">
+            <p class="alert alert-info">Debes seleccionar las cabañas y servicios que deseas reservar.</p>
         </div>
 
         <div class="mb-3">

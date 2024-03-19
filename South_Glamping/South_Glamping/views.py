@@ -21,7 +21,8 @@ from collections import Counter
 from cabin.models import Cabin
 from booking_cabin.models import Booking_cabin
 from cabin_type.models import Cabin_type  
-from booking_service.models import Booking_service   
+from booking_service.models import Booking_service 
+from django.contrib.auth.decorators import login_required  
 
 
 def get_booking_data():
@@ -57,22 +58,45 @@ def get_service_data():
         service_data.append(bookings.count())
     return service_names, service_data
 
-def index(request):
+def get_admin_data():
+    # Obtén los datos que necesitas para el administrador
     months = [format_date(date(month=i, day=1, year=2024), 'MMMM', locale='es_ES') for i in range(1,7 )]
     booking_data = get_booking_data()
     profit_data = get_profit_data()
     cabin_types, cabin_data = get_typecabin_data()
-    service_names, service_data = get_service_data()   
-    context = {
-        'months': json.dumps(months),
-        'data': json.dumps(booking_data),
-        'profit': json.dumps(profit_data), 
-        'cabin_data': json.dumps(cabin_data),
-        'cabin_types': json.dumps(cabin_types),
-        'service_names': json.dumps(service_names),
-        'service_data': json.dumps(service_data),
-    }
-    return render(request, 'index.html', context)
+    service_names, service_data = get_service_data()  
+    
+
+    return months, booking_data, profit_data, cabin_data, cabin_types, service_names, service_data
+
+@login_required
+def index(request):
+    services = Service.objects.filter(status=True)
+    cabin_types = Cabin_type.objects.filter(status=True)
+    cabins = Cabin.objects.filter(status=True)
+
+
+    if request.user.is_superuser:  # Si el usuario es un administrador
+        months, booking_data, profit_data, cabin_data, cabin_types, service_names, service_data = get_admin_data()  # Asume que esta función obtiene los datos del administrador
+
+        context = {
+            'months': json.dumps(months),
+            'data': json.dumps(booking_data),
+            'profit': json.dumps(profit_data),
+            'cabin_data': json.dumps(cabin_data),
+            'cabin_types': json.dumps(cabin_types),
+            'service_names': json.dumps(service_names),
+            'service_data': json.dumps(service_data),
+            'services': services,
+            'cabin_types': cabin_types,
+            'cabins': cabins,
+            'request': request
+        }
+        
+        return render(request, 'index.html', context)  
+
+    else:  # Si el usuario no es un administrador
+        return render(request, 'index.html', {'services': services, 'cabin_types': cabin_types, 'cabins': cabins, 'request': request })
 
 
 def custom_404(request, exception):
