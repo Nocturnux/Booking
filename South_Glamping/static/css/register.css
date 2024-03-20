@@ -13,13 +13,13 @@ body {
     form {
       background: rgba(255,255,255,0.3);
       padding: 3em;
-      height: 570px;
-      width: 300px;
+      height: 600px;
+      width: 400px;
       border-radius: 20px;
       border-left: 1px solid rgba(255,255,255,0.3);
       border-top: 1px solid rgba(255,255,255,0.3);
       backdrop-filter: blur(10px);
-      box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
+      box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.0);
       text-align: center;
       position: relative;
       transition: all 0.2s ease-in-out;
@@ -29,10 +29,10 @@ body {
       font-weight: 500;
       color: #ffffff;
       opacity: 2;
-      font-size: 1.7rem;
-      margin-top: -2px;
+      font-size: 2rem;
+      margin-top: 0.5px;
       margin-bottom: 40px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
 
     form a {
@@ -41,9 +41,7 @@ body {
       font-size: 12px;
     }
     
-    form a:hover {
-      text-shadow: 2px 2px 6px #00000040;
-    }   
+     
     
     form a:active {
       text-shadow: none;
@@ -51,7 +49,7 @@ body {
     
     form input {
       background: transparent;
-      width: 200px;
+      width: 240px;
       padding: 1em;
       margin-bottom: 2em;
       border: none;
@@ -60,32 +58,40 @@ body {
       border-radius: 5000px;
       backdrop-filter: blur(5px);
       box-shadow: 4px 4px 60px rgba(0,0,0,0.2);
-      color: #fff;
+      color: #000000;
       font-family: Montserrat, sans-serif;
       font-weight: 500;
       transition: all 0.2s ease-in-out;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.0);
     }
     
    
     
-    form input[type="button"]:hover {
-      cursor: pointer;
-    }
-    
-    form input[type="button"]:active {
-      background: rgba(255,255,255,0.2);
-    }
-    
+   
+  form input[type="submit"] {
+    margin-top: 10px;
+    color: #000000;
+    width: 230px;
+    font-size: 1rem;
+  }
+  
+
     form:hover {
-      margin: 4px;
+      margin: 8px;
     }
     
-    ::placeholder {
+    form input:hover {
+      background: rgb(244, 244, 244);
+      box-shadow: 4px 4px 60px 8px rgba(0,0,0,0.2);
+    }
+    
+
+    input::placeholder {
       font-family: Montserrat, sans-serif;
-      font-weight: 400;
-      color: #fff;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+      width: 600px;
+      font-weight: 500;
+      color: #000000;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.0);
     }
     
     .drop {
@@ -100,38 +106,38 @@ body {
     }
     
     .drop-1 {
-      height: 80px;
-      width: 80px;
+      height: 90px;
+      width: 90px;
       top: -20px;
       left: -40px;
       z-index: -1;
     }
     
     .drop-2 {
-      height: 80px;
-      width: 80px;
+      height: 90px;
+      width: 90px;
       bottom: -30px;
       right: -10px;
     }
     
     .drop-3 {
-      height: 100px;
-      width: 100px;
+      height: 110px;
+      width: 110px;
       bottom: 120px;
       right: -50px;
       z-index: -1;
     }
     
     .drop-4 {
-      height: 120px;
-      width: 120px;
+      height: 130px;
+      width: 130px;
       top: -60px;
       right: -60px;
     }
     
     .drop-5 {
-      height: 60px;
-      width: 60px;
+      height: 70px;
+      width: 70px;
       bottom: 170px;
       left: 90px;
       z-index: -1;
