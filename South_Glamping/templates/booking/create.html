@@ -39,9 +39,17 @@
             </select>
         </div>
         {% else %}
-        {% if request.user.email == customer.email %}
-        <input type="hidden" name="customer" value="{{ customer.id }}">
-        {% endif %}
+        <div class="mb-3">
+            <label for="" class="form-label">Cliente</label>
+            <select class="form-control" name="customer" id="" required readonly>
+                
+                {% for customer in customer_list %}
+                {% if request.user.email == customer.email %}
+                <option value="{{customer.id}}">{{customer.name}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
         {% endif %}
         <div class="mb-3">
             <label for="" class="form-label">Cabaña</label>

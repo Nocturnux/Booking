@@ -71,6 +71,9 @@ def get_admin_data():
 
 @login_required
 def index(request):
+    user_count = User.objects.count()
+    booking_count = Booking.objects.count()
+    payment_count = Booking.objects.aggregate(total=Sum('price'))['total'] or 0
     services = Service.objects.filter(status=True)
     cabin_types = Cabin_type.objects.filter(status=True)
     cabins = Cabin.objects.filter(status=True)
@@ -90,13 +93,16 @@ def index(request):
             'services': services,
             'cabin_types': cabin_types,
             'cabins': cabins,
-            'request': request
+            'request': request,
+            'user_count': user_count,
+            'booking_count': booking_count,
+            'payment_count': payment_count
         }
         
         return render(request, 'index.html', context)  
 
     else:  # Si el usuario no es un administrador
-        return render(request, 'index.html', {'services': services, 'cabin_types': cabin_types, 'cabins': cabins, 'request': request })
+        return render(request, 'index.html', {'services': services, 'cabin_types': cabin_types, 'cabins': cabins, 'request': request, 'payment_count': payment_count})
 
 
 def custom_404(request, exception):
