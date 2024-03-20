@@ -55,7 +55,7 @@ def edit_payment(request, payment_id):
         return redirect('payment')    
     return render(request, 'payment/edit.html', {'form': form})
 
-class ReportInvoicePdfView(View):
+""" class ReportInvoicePdfView(View):
     def get(self, request, *args, **kwargs ):
         template = get_template('booking/invoice.html')
         context = {'title' : 'pdf'}
@@ -66,5 +66,5 @@ class ReportInvoicePdfView(View):
             html, dest=response)
         if pisaStatus.err:
             return HttpResponse(' Hay un error ' + html)
-        return response
+        return response """
 

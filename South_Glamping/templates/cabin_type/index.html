@@ -41,8 +41,8 @@
                     </td>
                     <td>
                         
-                        <a href="" class="btn btn-info btn-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modalId" data-cabin_type-id="{{ cabin_type.id }}">
-                            <i class="fa fa-info-circle"></i>
+                        {% comment %} <a href="" class="btn btn-info btn-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modalId" data-cabin_type-id="{{ cabin_type.id }}">
+                            <i class="fa fa-info-circle"></i> {% endcomment %}
                         </a>
                         <a href="{% url 'edit_cabin_type' cabin_type.id %}" class="btn btn-warning btn-circle btn-sm">
                             <i class="fa fa-edit"></i>
