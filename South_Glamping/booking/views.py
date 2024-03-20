@@ -205,7 +205,7 @@ def payment_booking(request, booking_id):
             elif int(total_p['total']) >= booking.price:
                 booking.status = 'En ejecución'        
             booking.save()
-            messages.success(request, 'Pago actualizado correctamente.')
+            messages.success(request, 'Pago realizado correctamente.')
             return redirect('booking') 
         
         except:
