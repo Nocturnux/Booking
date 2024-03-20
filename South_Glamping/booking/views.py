@@ -205,9 +205,11 @@ def payment_booking(request, booking_id):
             elif int(total_p['total']) >= booking.price:
                 booking.status = 'En ejecución'        
             booking.save()
-            return redirect('bookings') 
+            messages.success(request, 'Pago actualizado correctamente.')
+            return redirect('booking') 
         
-        except Exception as e:
+        except:
+            messages.error(request, 'Ocurrió un error al editar el Pago.')
             return redirect('booking')         
     return render(request, 'booking/payment_booking.html', {'booking': booking, 'total_payments': total_payments})
 
