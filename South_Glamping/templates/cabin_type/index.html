@@ -47,8 +47,8 @@
                         <a href="{% url 'edit_cabin_type' cabin_type.id %}" class="btn btn-warning btn-circle btn-sm">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <a href="{% url 'delete_cabin_type' cabin_type.id %}" class="deleteBtn btn btn-danger btn-circle btn-sm">
-                            <i class="fa fa-trash"></i>
+                        {% comment %} <a href="{% url 'delete_cabin_type' cabin_type.id %}" class="deleteBtn btn btn-danger btn-circle btn-sm">
+                            <i class="fa fa-trash"></i> {% endcomment %}
                 </a>
                         </a>
                     </td>

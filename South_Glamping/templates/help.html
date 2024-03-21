@@ -4,13 +4,17 @@
 {% load static %}
 
 {% block content %}
+
+
 <body>
+
+    {% if request.user.is_superuser or request.user.is_staff %}
 
     <div class="container-fluid">
         <div class="row column_title">
            <div class="col-md-12">
               <div class="page_title text-center">
-                 <h2>Hola <strong>{{user.first_name}}</strong>. Bienvenido(a) a la ayuda en línea, aquí encontrarás una guía para navegar por los diferentes módulos de South Glamping.
+                 <h2>Hola <strong>{{user.username}}</strong>. Bienvenido(a) a la ayuda en línea, aquí encontrarás una guía para navegar por los diferentes módulos de South Glamping.
               </div>
            </div>
         </div>
@@ -18,13 +22,13 @@
      
     <div class="row">
 
-        <div class="col-lg-4">
+        <div class="col-lg-4 d-flex">
             <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem">
                 <div class="card-header text-center border-dark">
                     <i class="fa fa-cogs"></i> <strong>Gestión de roles</strong>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">Guía para gestionar los roles de usuario del aplicativo.</p>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Guía para gestionar los roles de usuario del aplicativo.</p>
                     <div class="d-flex justify-content-center">
                         <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
                     </div>
@@ -32,13 +36,13 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-4 d-flex">
             <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem;">
                 <div class="card-header text-center border-dark">
                     <i class="fa fa-users"></i> <strong>Gestión de usuarios</strong>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">Guía para gestionar los usuarios, su estado y permisos.</p>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Guía para gestionar los usuarios, su estado y permisos.</p>
                     <div class="d-flex justify-content-center">
                         <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
                     </div>
@@ -46,13 +50,13 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-4 d-flex">
             <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem; ">
                 <div class="card-header text-center border-dark">
                     <i class="fa fa-sign-in"></i> <strong>Gestión de acceso</strong>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">Guía  gestionar el inicio de sesión, cierre de sesión y recuperación de contraseña.</p>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Guía para gestionar el inicio de sesión, cierre de sesión y recuperación de contraseña.</p>
                     <div class="d-flex justify-content-center">
                         <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
                     </div>
@@ -60,13 +64,13 @@
             </div>
         </div>
 
-        <div class="col-lg-4 border-black">
+        <div class="col-lg-4 d-flex">
             <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem;">
                 <div class="card-header text-center border-dark">
                     <i class="fa fa-user"></i> <strong>Gestión de clientes</strong>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">Guía paso a paso para gestionar el módulo de clientes.</p>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Guía para gestionar el módulo de clientes.</p>
                     <div class="d-flex justify-content-center">
                         <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
                     </div>
@@ -74,13 +78,13 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-4 d-flex">
             <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem;">
                 <div class="card-header text-center border-dark">
                     <i class="fa fa-university"></i> <strong>Gestión de tipos de cabaña</strong>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">Aquí encuentras la guía paso a paso para gestionar el inicio de sesión, cierre de sesión y recuperación de contraseña.</p>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Guía paso a paso para gestionar los tipos de cabaña y su información.</p>
                     <div class="d-flex justify-content-center">
                         <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
                     </div>
@@ -88,13 +92,13 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-4 d-flex">
             <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem;">
                 <div class="card-header text-center border-dark">
                     <i class="fa fa-home"></i> <strong>Gestión de cabañas</strong>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">Aquí encuentras la guía paso a paso para gestionar el inicio de sesión, cierre de sesión y recuperación de contraseña.</p>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Guía para gestionar las cabañas y su información.</p>
                     <div class="d-flex justify-content-center">
                         <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
                     </div>
@@ -103,13 +107,13 @@
         </div>
     
 
-    <div class="col-lg-4">
+    <div class="col-lg-4 d-flex">
         <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem;">
             <div class="card-header text-center border-dark">
                 <i class="fa fa-calendar"></i> <strong>Gestión de reservas</strong>
             </div>
-            <div class="card-body">
-                <p class="card-text">Aquí encuentras la guía paso a paso para gestionar el inicio de sesión, cierre de sesión y recuperación de contraseña.</p>
+            <div class="card-body d-flex flex-column">
+                <p class="card-text flex-grow-1">Guía para gestionar las reservas.</p>
                 <div class="d-flex justify-content-center">
                     <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
                 </div>
@@ -117,13 +121,13 @@
         </div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-4 d-flex">
         <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem;">
             <div class="card-header text-center border-dark">
                 <i class="fa fa-coffee"></i> <strong>Gestión de servicios</strong>
             </div>
-            <div class="card-body">
-                <p class="card-text">Aquí encuentras la guía paso a paso para gestionar el inicio de sesión, cierre de sesión y recuperación de contraseña.</p>
+            <div class="card-body d-flex flex-column">
+                <p class="card-text flex-grow-1">Guía para gestionar los servicios y su información.</p>
                 <div class="d-flex justify-content-center">
                     <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
                 </div>
@@ -131,13 +135,13 @@
         </div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-4 d-flex">
         <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem;">
             <div class="card-header text-center border-dark">
                 <i class="fa fa-money"></i> <strong>Gestión de pagos</strong>
             </div>
-            <div class="card-body">
-                <p class="card-text">Aquí encuentras la guía paso a paso para gestionar el inicio de sesión, cierre de sesión y recuperación de contraseña.</p>
+            <div class="card-body d-flex flex-column">
+                <p class="card-text flex-grow-1">Guía para gestionar el módulo de pagos.</p>
                 <div class="d-flex justify-content-center">
                     <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
                 </div>
@@ -145,7 +149,67 @@
         </div>
     </div>
 
-</div>
-    
+  </div>
+
+    {% else %}
+    <div class="container-fluid">
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title text-center">
+                    <h2>Hola <strong>{{user.first_name}}</strong>. Bienvenido(a) a la ayuda en línea, aquí encontrarás una guía para navegar por los diferentes módulos de South Glamping.
+                </div>
+            </div>
+        </div>
+    </div>   
+
+    <div class="row">
+        <div class="col-lg-4 d-flex">
+            <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem; ">
+                <div class="card-header text-center border-dark">
+                    <i class="fa fa-sign-in"></i> <strong>Gestión de acceso</strong>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Guía para gestionar el inicio de sesión, cierre de sesión y recuperación de contraseña.</p>
+                    <div class="d-flex justify-content-center">
+                        <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 d-flex">
+            <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem;">
+                <div class="card-header text-center border-dark">
+                    <i class="fa fa-calendar"></i> <strong>Gestión de reservas</strong>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Guía para gestionar las reservas.</p>
+                    <div class="d-flex justify-content-center">
+                        <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 d-flex">
+            <div class="card bg-white mb-3 border-dark flex-grow-1" style="max-width: 30rem;">
+                <div class="card-header text-center border-dark">
+                    <i class="fa fa-money"></i> <strong>Gestión de pagos</strong>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Guía para gestionar el módulo de pagos.</p>
+                    <div class="d-flex justify-content-center">
+                        <a href="#" class="btn btn-primary"><i class="fa fa-youtube-play"></i> Ver video</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+        
+
+ 
+ {%endif%}
 </body>
 {%endblock%}
