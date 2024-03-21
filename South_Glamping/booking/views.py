@@ -174,6 +174,13 @@ def finish_booking(request, booking_id):
     messages.success(request, 'Reserva finalizada con éxito.')
     return redirect('booking')
 
+@login_required
+@user_passes_test(admin_or_staff)
+def cancel_booking(request, booking_id):
+    booking = Booking.objects.get(id=booking_id)
+    booking.status = 'cancelada'
+    booking.save()
+    return redirect('index')
 
 
 @login_required
@@ -253,3 +260,5 @@ def booking(request):
         booking_list = Booking.objects.all()
 
     return render(request, 'booking/index.html', {'booking_list': booking_list})
+
+

@@ -217,6 +217,10 @@ def recover_password(request):
             message = "¡El correo ingresado no está registrado!"
         
     return render(request, 'recover_password.html', {'message': message})
+
+@login_required
+def help(request):
+    return render(request, 'help.html')
             
 
 
