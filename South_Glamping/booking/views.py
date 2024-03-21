@@ -221,7 +221,7 @@ def payment_booking(request, booking_id):
     return render(request, 'booking/payment_booking.html', {'booking': booking, 'total_payments': total_payments})
 
 class ReportInvoicePdfView(View):
-    def get(self, request, booking_id, *args, **kwargs):
+    def get(self, request, booking_id):
         booking = get_object_or_404(Booking, pk=booking_id)
         booking_cabin = Booking_cabin.objects.filter(booking=booking)
         booking_service = Booking_service.objects.filter(booking=booking)
@@ -238,7 +238,7 @@ class ReportInvoicePdfView(View):
         pisaStatus = pisa.CreatePDF(html, dest=response)
         if pisaStatus.err:
             return HttpResponse('Hay un error al generar el PDF')
-        return response
+        return response 
     
 
 from django.db.models import Q

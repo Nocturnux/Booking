@@ -49,10 +49,10 @@
                         </form>
                     </td>
                     <td>
-                        <a href="" class="btn btn-info btn-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modalId" data-cabin-id="{{ cabin.id }}">
+{% comment %}                         <a href="" class="btn btn-info btn-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modalId" data-cabin-id="{{ cabin.id }}">
                             <i class="fa fa-info-circle"></i>
                         </a>
-                        <a href="{% url 'edit_cabin' cabin.id %}" class="btn btn-warning btn-circle btn-sm">
+ {% endcomment %}                        <a href="{% url 'edit_cabin' cabin.id %}" class="btn btn-warning btn-circle btn-sm">
                             <i class="fa fa-edit"></i>
                         </a>
                         
