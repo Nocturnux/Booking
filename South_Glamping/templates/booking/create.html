@@ -55,7 +55,7 @@
             <label for="" class="form-label">Cabaña</label>
             <div class="d-flex">
                 <select class="form-control" name="cabin" id=""required>
-                    <option value="">Selecciona una cabaña</option>
+                    <option value="default" disabled selected>Selecciona una cabaña</option>
                     {% for cabin in cabin_list %}
                     <option value="{{cabin.id}}">{{cabin.name}} - {{cabin.price}}</option>
                     {% endfor %}
@@ -69,7 +69,7 @@
             <label for="" class="form-label">Servicios</label>
             <div class="d-flex">
                 <select class="form-control" name="service" id="" required>
-                    <option value="">Selecciona un servicio</option>
+                    <option value="default" disabled selected>Selecciona un servicio</option>
                     {% for service in service_list %}
                     <option value="{{service.id}}">{{service.name}} - {{service.price}}</option>
                     {% endfor %}
@@ -96,8 +96,11 @@
                 <thead>
                     <tr>
                         <th>Total:</th>
+                        <th><input type="hidden" name="totalValueUnformatted" id="totalValueUnformatted">
+                        </th>
                         <th scope="col"><input class="text-success font-weight-bold" style="border: none;" type="text" name="totalValue" id="totalValue" readonly></th>
-                        <th></th>
+                        
+                        
                     </tr>
                 </thead>
             </table>
@@ -114,16 +117,22 @@
     service_added = [];
     let total = 0;
 
-    
-
     function addCabin(event) {
         let date_start = document.getElementById('date_start').value;
         let date_end = document.getElementById('date_end').value;
+        let today = new Date();
+        today.setHours(0, 0, 0, 0); // Set time to 00:00:00.000
         let start_date = new Date(date_start);
         let end_date = new Date(date_end);
-        let days = (end_date - start_date) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
-
     
+        if (start_date < today) {
+            alert('La fecha de inicio de la reserva no puede ser anterior a la fecha actual.');
+            return; // Termina la ejecución de la función
+        } else if (start_date > end_date) {
+            alert('La fecha de inicio de la reserva no puede ser mayor a la fecha de fin.');
+            return; // Termina la ejecución de la función
+        }
+        let days = (end_date - start_date) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
 
         event.preventDefault();
         let cabinSelect = $('select[name="cabin"]');
@@ -131,6 +140,7 @@
         let cabin_Name = cabinSelect.find('option:selected').text().split(' - ')[0];
         let cabin_price_per_day = cabinSelect.find('option:selected').text().split(' - ')[1];
         let cabin_price_total = parseInt(cabin_price_per_day) * days;
+        let formattedCabinPriceTotal = '$' + cabin_price_total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
         cabin_added.push(cabin_Id);
         totalBooking(cabin_price_total);
 
@@ -141,7 +151,7 @@
                     <input type="hidden" name="cabinPrice[]" value="${cabin_price_total}">
                     ${cabin_Name}
                 </td>
-                <td>${cabin_price_total}</td>                
+                <td>${formattedCabinPriceTotal}</td>                
                 <td>
                     <a onclick='removeBooking(event, "cabin")' class="deleteBtn btn btn-danger btn-circle btn-sm">
                         <i class="fa fa-trash"></i>
@@ -156,9 +166,10 @@
         let serviceSelect = $('select[name="service"]');
         let service_Id = serviceSelect.val();
         let sevice_Name = serviceSelect.find('option:selected').text().split(' - ')[0];
-        let service_Price = serviceSelect.find('option:selected').text().split(' - ')[1];
+        let service_Price = parseInt(serviceSelect.find('option:selected').text().split(' - ')[1]);
+        let formattedServicePrice = '$' + service_Price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
         service_added.push(service_Id);
-        totalBooking(parseInt(service_Price));
+        totalBooking(service_Price);
 
         $('#tbooking').append(`
             <tr id="${service_Id}">                                
@@ -167,7 +178,7 @@
                     <input type="hidden" name="servicePrice[]" value="${service_Price}">
                     ${sevice_Name}
                 </td>
-                <td>${service_Price}</td>                
+                <td>${formattedServicePrice}</td>                
                 <td>
                     <a onclick='removeBooking(event, "service")' class="btn btn-danger btn-circle btn-sm">
                         <i class="fa fa-trash"></i>
@@ -179,57 +190,52 @@
 
     function totalBooking(value) {
         total += value;
-        document.getElementById('totalValue').value = total;
+        let formattedTotal = '$' + total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+        document.getElementById('totalValue').value = formattedTotal;
+        document.getElementById('totalValueUnformatted').value = total; // Guarda el total sin formato
     }
 
     document.querySelector('form').addEventListener('submit', function(e) {
-        let date_start = document.getElementById('date_start').value;
-        let date_end = document.getElementById('date_end').value;
-        let today = new Date();
-        today.setHours(0, 0, 0, 0); // Set time to 00:00:00.000
-        let start_date = new Date(date_start);
-        let end_date = new Date(date_end);
-    
-        if (start_date < today) {
-            e.preventDefault();
-            alert('La fecha de inicio de la reserva no puede ser anterior a la fecha actual.');
-        } else if (start_date > end_date) {
-            e.preventDefault();
-            alert('La fecha de inicio de la reserva no puede ser mayor a la fecha de fin.');
-        } else if (cabin_added.length === 0) {
+       
+        if (cabin_added.length === 0) {
             e.preventDefault();
             alert('Por favor, añade al menos una cabaña a la reserva.');
         }
     });
 
     function removeBooking(event, type) {
-    event.preventDefault();
-    let element = event.target.closest('tr');
-    
-    // Comprobar si el elemento existe
-    if (element) {
-        let id = element.id;
-        let priceString = element.querySelector('td:nth-child(2)').textContent;
-        // Elimina los caracteres que no son dígitos
-        let price = parseInt(priceString.replace(/\D/g, ''), 10);
+        event.preventDefault();
+        let element = event.target.closest('tr');
         
-        if (type === 'cabin') {
-            cabin_added = cabin_added.filter(cabin => cabin !== id);
+        // Comprobar si el elemento existe
+        if (element) {
+            let id = element.id;
+            let priceString;
+            
+            if (type === 'cabin') {
+                priceString = element.querySelector('input[name="cabinPrice[]"]').value;
+                cabin_added = cabin_added.filter(cabin => cabin !== id);
+            } else {
+                priceString = element.querySelector('input[name="servicePrice[]"]').value;
+                service_added = service_added.filter(service => service !== id);
+            }
+    
+            // Convierte la cadena de precio a un número
+            let price = parseInt(priceString, 10);
+    
+            total -= price;
+            if (total < 0) {
+                total = 0; // Asegurarse de que el total nunca sea negativo
+            }
+            let formattedTotal = '$' + total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+            document.getElementById('totalValue').value = formattedTotal;
+            document.getElementById('totalValueUnformatted').value = total; // Actualiza el total sin formato
+    
+            element.remove();
         } else {
-            service_added = service_added.filter(service => service !== id);
+            console.error('Error: Elemento no encontrado.');
         }
-
-        total -= price;
-        if (total < 0) {
-            total = 0; // Asegurarse de que el total nunca sea negativo
-        }
-        document.getElementById('totalValue').value = total;
-
-        element.remove();
-    } else {
-        console.error('Error: Elemento no encontrado.');
     }
-}
 </script>
 
 

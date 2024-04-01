@@ -47,7 +47,7 @@ def create_booking(request):
             date_booking=datetime.now().date(),                                   
             date_start=date_start,
             date_end=date_end,
-            price=request.POST['totalValue'],
+            price=request.POST['totalValueUnformatted'],
             status='Reservado',
             customer_id=request.POST['customer']
         )

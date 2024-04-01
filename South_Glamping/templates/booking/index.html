@@ -4,6 +4,8 @@
 
 {% block content %}
 
+{% load humanize %}
+
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -41,7 +43,7 @@
                             <td>{{ booking.date_booking }}</td>
                             <td>{{ booking.date_start }}</td>
                             <td>{{ booking.date_end }}</td>
-                            <td>{{ booking.price }}</td>
+                            <td>${{ booking.price|floatformat:2|intcomma }}</td>
                             <td>{{ booking.status }}</td>                                       
                 
                             <td>
