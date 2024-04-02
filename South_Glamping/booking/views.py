@@ -230,7 +230,7 @@ class ReportInvoicePdfView(View):
         service_list = Service.objects.all()
         booking_cabin = Booking_cabin.objects.filter(booking_id=booking_id)
         booking_service = Booking_service.objects.filter(booking_id=booking_id)
-        template = get_template('payment/invoice.html')
+        template = get_template('booking/booking_invoice.html')
         context = {'booking': booking, 'customer_list': customer_list, 'cabin_list': cabin_list, 'service_list': service_list, 'booking_cabin': booking_cabin, 'booking_service': booking_service}
         html = template.render(context, request)
         response = HttpResponse(content_type='application/pdf')
@@ -239,6 +239,7 @@ class ReportInvoicePdfView(View):
         if pisaStatus.err:
             return HttpResponse('Hay un error al generar el PDF')
         return response 
+
     
 
 from django.db.models import Q
