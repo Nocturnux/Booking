@@ -93,20 +93,6 @@ def detail_booking(request, booking_id):
 
 
 @login_required
-@user_passes_test(admin_or_staff)
-def delete_booking(request, booking_id):
-    booking = Booking.objects.get(pk=booking_id)
-    try:
-        booking.delete()        
-        messages.success(request, 'Reserva eliminada correctamente.')
-    except:
-        messages.error(request, 'No se puede eliminar la reserva porque está asociada a un servicio.')
-    return redirect('booking')
-
-
-
-
-@login_required
 def edit_booking(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
     customer_list = Customer.objects.all()
@@ -173,14 +159,6 @@ def finish_booking(request, booking_id):
     booking.save()
     messages.success(request, 'Reserva finalizada con éxito.')
     return redirect('booking')
-
-@login_required
-@user_passes_test(admin_or_staff)
-def cancel_booking(request, booking_id):
-    booking = Booking.objects.get(id=booking_id)
-    booking.status = 'cancelada'
-    booking.save()
-    return redirect('index')
 
 
 @login_required

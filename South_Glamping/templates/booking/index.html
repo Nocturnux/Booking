@@ -63,9 +63,6 @@
                                 <a href="{% url 'finish_booking' booking.id %}" class="btn btn-primary btn-circle btn-sm">
                                     <i class="fa fa-check-square"></i>
                                 </a>
-                                <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-danger btn-circle btn-sm"">
-                                    <i class="fa fa-times"></i>
-                                </a>
                          
 
                             </td>
@@ -89,9 +86,9 @@
                                     <a href="{% url 'edit_booking' booking.id %}" class="btn btn-warning btn-circle btn-sm">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    {%comment%}<a href="" class="btn btn btn-secondary btn-circle btn-sm">
+                                    <a href="" class="btn btn btn-secondary btn-circle btn-sm">
                                         <i class="fa fa-print"></i>
-                                    </a>{%endcomment%}
+                                    </a>
 
                                 </td>
                             </tr>
@@ -104,26 +101,6 @@
     </div>
 </div>
 
-
-<script>
-    document.querySelectorAll('.deleteBtn').forEach(function(deleteBtn) {
-    deleteBtn.addEventListener('click', function (event) {
-        event.preventDefault(); 
-
-        swal({
-            title: "Estás seguro que deseas eliminar?",            
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-            if (willDelete) {                
-                window.location.href = this.getAttribute('href');              
-            }
-        });
-    });
-});
-</script>
 
 
 {% if messages %}

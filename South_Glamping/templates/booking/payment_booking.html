@@ -24,7 +24,7 @@
             </div>
             <div class="mb-3 d-flex">
                 <label for="" class="form-label">Método de pago</label>
-                <select class="form-control mx-2 col-3" name="payment_method" id="payment_method" required>
+                <select class="form-control mx-2 col-3" disabled name="payment_method" id="payment_method" required>
                 <option value= "" disabled selected>Selecciona el método de pago</option>
                 <option value="Efectivo">Efectivo</option>
                 <option value="Tarjeta Crédito">Tarjeta Crédito</option>
@@ -38,7 +38,11 @@
                     
             </div>
             
+            {% if booking.price == total_payments %}
+            <button type="submit" class="btn btn-secondary" disabled>El pago ya se ha completado.</button>
+            {% else %}
             <button type="submit" class="btn btn-primary">Pagar</button>
+            {% endif %}
         </form>
     </div>
 </div>

@@ -221,7 +221,7 @@ def recover_password(request):
 @login_required
 def help(request):
     return render(request, 'help.html')
-
+@login_required
 def generate_report(request):
     return render(request, 'generate_report.html')            
 
