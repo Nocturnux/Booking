@@ -63,7 +63,7 @@ class ReportInvoicePdfView(View):
         payment_method = Payment.objects.get(payment.payment_method)
         context = { 'amount' : payment.amount, 'date': payment.date, 'payment_method': payment.payment_method, 'status': payment.status }    
         detail_payment
-        template= get_template('payment/invoice.html')
+        template= get_template('payment/payment_invoice.html')
         context = {'title' : 'pdf'}
         html = template.render(context, request)
         response = HttpResponse(content_type='application/pdf')

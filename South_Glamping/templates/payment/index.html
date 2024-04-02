@@ -33,9 +33,9 @@
                                 {% comment %} <a href="" class="btn btn-info btn-circle btn-sm"data-bs-toggle="modal" data-bs-target="#modalId" data-payment-id="{{ payment.id }}">
                                     <i class="fa fa-info-circle"></i>
                                 </a> {% endcomment %}
-                                {% comment %} <a href="" class="btn btn btn-secondary btn-circle btn-sm">
+                                <a href="{% url 'invoice' payment.id %}" class="btn btn btn-secondary btn-circle btn-sm">
                                     <i class="fa fa-print"></i>
-                                </a> {% endcomment %}
+                                </a>
                             </td>
                         </tr>
                         {% else %}
@@ -47,12 +47,12 @@
                                 <td>{{ payment.booking }}</td>                                       
                                 
                                 <td>
-                                    {% comment %} <a href="" class="btn btn-info btn-circle btn-sm"data-bs-toggle="modal" data-bs-target="#modalId" data-payment-id="{{ payment.id }}">
+                                    <a href="" class="btn btn-info btn-circle btn-sm"data-bs-toggle="modal" data-bs-target="#modalId" data-payment-id="{{ payment.id }}">
                                         <i class="fa fa-info-circle"></i>
-                                    </a>
+                                    </a> 
                                     <a href="" class="btn btn btn-secondary btn-circle btn-sm">
                                         <i class="fa fa-print"></i>
-                                    </a> {% endcomment %}
+                                    </a> 
                                 </td>
                             </tr>
                             {% endif %}
