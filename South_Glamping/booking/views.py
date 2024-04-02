@@ -239,6 +239,7 @@ class ReportInvoicePdfView(View):
         if pisaStatus.err:
             return HttpResponse('Hay un error al generar el PDF')
         return response 
+
     
 
 from django.db.models import Q

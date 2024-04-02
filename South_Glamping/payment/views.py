@@ -55,16 +55,23 @@ def edit_payment(request, payment_id):
         return redirect('payment')    
     return render(request, 'payment/edit.html', {'form': form})
 
-""" class ReportInvoicePdfView(View):
-    def get(self, request, *args, **kwargs ):
-        template = get_template('booking/invoice.html')
+class ReportInvoicePdfView(View):
+    def invoice(request, payment_id, self, *args, **kwargs, ):
+        payment = Payment.objects.get(pk=payment_id)
+        amount = Payment.objects.get(payment.amount)
+        date = Payment.objects.get(payment.date)
+        payment_method = Payment.objects.get(payment.payment_method)
+        context = { 'amount' : payment.amount, 'date': payment.date, 'payment_method': payment.payment_method, 'status': payment.status }    
+        detail_payment
+        template= get_template('payment/invoice.html')
         context = {'title' : 'pdf'}
-        html = template.render(context)
+        html = template.render(context, request)
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="report_payment.pdf"' 
         pisaStatus = pisa.CreatePDF(
             html, dest=response)
         if pisaStatus.err:
             return HttpResponse(' Hay un error ' + html)
-        return response """
+        return response
+
 

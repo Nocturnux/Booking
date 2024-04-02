@@ -1,5 +1,6 @@
 from . import views
 from django.urls import path
+from .views import ReportInvoicePdfView
 
 
 urlpatterns = [      
@@ -11,4 +12,5 @@ urlpatterns = [
     path('payment_booking/<int:booking_id>/', views.payment_booking, name='payment_booking'),
     path('booking/finish/<int:booking_id>/', views.finish_booking, name='finish_booking'),
     path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
+    path('invoice/<int:booking_id>/', ReportInvoicePdfView.as_view(), name='invoice')
 ]
