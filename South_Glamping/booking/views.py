@@ -128,7 +128,7 @@ def edit_booking(request, booking_id):
         # Actualizar los campos de la reserva
         booking.date_start = date_start
         booking.date_end = date_end
-        booking.price = request.POST['totalValue']
+        price=request.POST['totalValueUnformatted']
         booking.customer_id = request.POST['customer']
         booking.save()
         

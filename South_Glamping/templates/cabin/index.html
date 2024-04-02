@@ -4,6 +4,7 @@
 
 {% block content %}
 
+{% load humanize %}
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -38,7 +39,7 @@
                     <td>{{ cabin.capacity }}</td>
                     <td>{{ cabin.cabin_type  }}</td>
                     <td>{{ cabin.description }}</td>
-                    <td>{{ cabin.price }}</td>
+                    <td>${{ cabin.price|floatformat:2|intcomma }}</td>
                     <td>
                         <form action="{% url 'cabin_status' cabin.id %}" method="POST">
                             {% csrf_token %}                            

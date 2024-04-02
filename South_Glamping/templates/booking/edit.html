@@ -3,13 +3,16 @@
 {% block title %} Glamping{% endblock %}
 
 {% block content %}
+
+{% load humanize %}
+
 <div class="card shadow mb-4 p-4 ">
     <div class="card-header py-3 mb-3">
         <h4 class="m-0 font-weight-bold text-primary">Editar Reserva</h4>
     </div>
     <div class="mb-3 mr-5">
         <label for="" class="form-label text-primary font-weight-bold mt-4" style="font-size: 18px;">Valor actual de la reserva:</label>
-        <input type="text" class="form-control" value="{{booking.price}}" readonly />
+        <input type="text" class="form-control" value="{{booking.price|floatformat:2|intcomma}}" readonly />
     </div>
     <div class="table-responsive">
         <h5 class="text-primary font-weight-bold mt-4">Cabañas reservadas</h5>
@@ -28,7 +31,7 @@
                     <td><img src="{{ cabin.cabin.image.url}}" alt="" width="50"></td>
                     <td>{{ cabin.cabin.id }}</td>
                     <td>{{ cabin.cabin.name }}</td>
-                    <td>{{ cabin.price}}</td>                        
+                    <td>{{ cabin.price|floatformat:2|intcomma}}</td>                        
                 </tr>
                 {% endfor %}
             </tbody>
@@ -51,7 +54,7 @@
                     <td><img src="{{ service.service.image.url}}" alt="" width="50"></td>
                     <td>{{ service.service.id }}</td>
                     <td>{{ service.service.name }}</td>
-                    <td>{{ service.price}}</td>                        
+                    <td>{{ service.price|floatformat:2|intcomma}}</td>                        
                 </tr>
                 {% endfor %}
             </tbody>
@@ -92,9 +95,9 @@
             <label for="" class="form-label">Cabaña</label>
             <div class="d-flex">
                 <select class="form-control" name="cabin" id="" >
-                    <option value="">Selecciona una cabaña</option>
+                    <option value="default" disabled selected>Selecciona una cabaña</option>
                     {% for cabin in cabin_list %}
-                    <option value="{{cabin.id}}" {% if cabin.id == booking.cabin.id %} selected {% endif %}>{{ cabin.name }} - {{ cabin.price }}</option>
+                    <option value="{{cabin.id}}" data-price="{{cabin.price}}" data-formatted-price="{{cabin.price|floatformat:2|intcomma}}">{{ cabin.name }} - ${{ cabin.price|floatformat:2|intcomma }}</option>
                     {% endfor %}
                 </select>
                 <a href="" onclick="addCabin(event)" class="btn btn-primary btn-icon-split mb-3">
@@ -107,9 +110,9 @@
             <label for="" class="form-label">Servicios</label>
             <div class="d-flex">
                 <select class="form-control" name="service" id="" >
-                    <option value="">Selecciona un servicio</option>
+                    <option value="default" disabled selected>Selecciona un servicio</option>
                     {% for service in service_list %}
-                    <option value="{{service.id}}" {% if service.id == booking.service.id %} selected {% endif %}>{{ service.name }} - {{ service.price }}</option>
+                    <option value="{{service.id}}" data-price="{{service.price}}" data-formatted-price="{{service.price|floatformat:2|intcomma}}">{{ service.name }} - ${{ service.price|floatformat:2|intcomma }}</option>
                     {% endfor %}
                 </select>
                 <a onclick="addService(event)" href="" class="btn btn-primary btn-icon-split mb-3">
@@ -138,8 +141,9 @@
                 <thead>
                     <tr>
                         <th>Total:</th>
+                        <th> <input type="hidden" name="totalValueUnformatted" id="totalValueUnformatted"> </th>
                         <th scope="col"><input class="text-success font-weight-bold" style="border: none;" type="text" name="totalValue" id="totalValue" readonly></th>
-                        <th></th>
+                        
                     </tr>
                 </thead>
             </table>
@@ -147,7 +151,7 @@
         
 
         <div class="text-center">
-            <p id="totalDisplay">{{ booking.total }}</p>
+            
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
         </div>
     </form>
@@ -169,8 +173,9 @@
         let cabinSelect = $('select[name="cabin"]');
         let cabin_Id = cabinSelect.val();
         let cabin_Name = cabinSelect.find('option:selected').text().split(' - ')[0];
-        let cabin_price_per_day = cabinSelect.find('option:selected').text().split(' - ')[1];
-        let cabin_price_total = parseInt(cabin_price_per_day) * days;
+        let cabin_price_per_day = parseFloat(cabinSelect.find('option:selected').attr('data-price'));
+        let cabin_price_total = parseFloat(cabin_price_per_day) * days;
+        let formattedCabinPriceTotal = '$' + cabin_price_total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
         cabin_added.push(cabin_Id);
         totalBooking(cabin_price_total);
 
@@ -181,7 +186,7 @@
                     <input type="hidden" name="cabinPrice[]" value="${cabin_price_total}">
                     ${cabin_Name}
                 </td>
-                <td>${cabin_price_total}</td>                
+                <td>${formattedCabinPriceTotal}</td>                
                 <td>
                     <a onclick='removeBooking(event, "cabin")' class="deleteBtn btn btn-danger btn-circle btn-sm">
                         <i class="fa fa-trash"></i>
@@ -196,9 +201,10 @@
         let serviceSelect = $('select[name="service"]');
         let service_Id = serviceSelect.val();
         let sevice_Name = serviceSelect.find('option:selected').text().split(' - ')[0];
-        let service_Price = serviceSelect.find('option:selected').text().split(' - ')[1];
+        let service_Price = parseFloat(serviceSelect.find('option:selected').attr('data-price'));
+        let formattedServicePrice = '$' + service_Price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
         service_added.push(service_Id);
-        totalBooking(parseInt(service_Price));
+        totalBooking(service_Price);
 
         $('#tbooking').append(`
             <tr id="${service_Id}">                                
@@ -207,7 +213,7 @@
                     <input type="hidden" name="servicePrice[]" value="${service_Price}">
                     ${sevice_Name}
                 </td>
-                <td>${service_Price}</td>                
+                <td>${formattedServicePrice}</td>                
                 <td>
                     <a onclick='removeBooking(event, "service")' class="btn btn-danger btn-circle btn-sm">
                         <i class="fa fa-trash"></i>
@@ -218,8 +224,11 @@
     }
 
     function totalBooking(value) {
+        value = parseFloat(value);
         total += value;
-        document.getElementById('totalValue').value = total;
+        let formattedTotal = total.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
+        document.getElementById('totalValue').value = formattedTotal;
+        document.getElementById('totalValueUnformatted').value = total; // Guarda el total sin formato
     }
 
     document.querySelector('form').addEventListener('submit', function(e) {
@@ -230,46 +239,46 @@
         let start_date = new Date(date_start);
         let end_date = new Date(date_end);
     
-        if (start_date < today) {
-            e.preventDefault();
-            alert('La fecha de inicio de la reserva no puede ser anterior a la fecha actual.');
-        } else if (start_date > end_date) {
-            e.preventDefault();
-            alert('La fecha de inicio de la reserva no puede ser mayor a la fecha de fin.');
-        } else if (cabin_added.length === 0) {
+        
+        if (cabin_added.length === 0) {
             e.preventDefault();
             alert('Por favor, añade al menos una cabaña a la reserva.');
         }
     });
 
     function removeBooking(event, type) {
-    event.preventDefault();
-    let element = event.target.closest('tr');
-    
-    // Comprobar si el elemento existe
-    if (element) {
-        let id = element.id;
-        let priceString = element.querySelector('td:nth-child(2)').textContent;
-        // Elimina los caracteres que no son dígitos
-        let price = parseInt(priceString.replace(/\D/g, ''), 10);
+        event.preventDefault();
+        let element = event.target.closest('tr');
         
-        if (type === 'cabin') {
-            cabin_added = cabin_added.filter(cabin => cabin !== id);
+        // Comprobar si el elemento existe
+        if (element) {
+            let id = element.id;
+            let priceString;
+            
+            if (type === 'cabin') {
+                priceString = element.querySelector('input[name="cabinPrice[]"]').value;
+                cabin_added = cabin_added.filter(cabin => cabin !== id);
+            } else {
+                priceString = element.querySelector('input[name="servicePrice[]"]').value;
+                service_added = service_added.filter(service => service !== id);
+            }
+    
+            // Convierte la cadena de precio a un número
+            let price = parseFloat(priceString);
+    
+            total -= price;
+            if (total < 0) {
+                total = 0; // Asegurarse de que el total nunca sea negativo
+            }
+            let formattedTotal = '$' + total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+            document.getElementById('totalValue').value = formattedTotal;
+            document.getElementById('totalValueUnformatted').value = total; // Actualiza el total sin formato
+    
+            element.remove();
         } else {
-            service_added = service_added.filter(service => service !== id);
+            console.error('Error: Elemento no encontrado.');
         }
-
-        total -= price;
-        if (total < 0) {
-            total = 0; // Asegurarse de que el total nunca sea negativo
-        }
-        document.getElementById('totalValue').value = total;
-
-        element.remove();
-    } else {
-        console.error('Error: Elemento no encontrado.');
     }
-}
 
 
 </script>

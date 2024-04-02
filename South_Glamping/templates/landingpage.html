@@ -1,5 +1,7 @@
 {% load static %}
 
+{% load humanize %}
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -102,7 +104,7 @@
                                             <p class="card-text mb-auto">
                                                 <strong>Descripción:</strong> {{ cabin.description }}<br>
                                                 <strong>Capacidad:</strong> {{ cabin.capacity }}<br>
-                                                <strong>Valor por noche:</strong> {{ cabin.price }}
+                                                <strong>Valor por noche:</strong> ${{ cabin.price|floatformat:2|intcomma }}
                                             </p>
                                         </div>
                                     </div>

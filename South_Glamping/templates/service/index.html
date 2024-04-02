@@ -4,6 +4,8 @@
 
 {% block content %}
 
+{% load humanize %}
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h4 class="m-0 font-weight-bold text-primary">Servicios</h4>
@@ -33,7 +35,7 @@
                     <td><img src="{{ service.image.url }}" alt="" width="100"></td>
                     <td>{{ service.name }}</td>
                     <td>{{ service.description }}</td>
-                    <td>{{ service.price }}</td>
+                    <td>${{ service.price|floatformat:2|intcomma }}</td>
                     <!-- Toggle Switch button -->
                     <td>
                         <form action="{% url 'service_status' service.id %}" method="POST">

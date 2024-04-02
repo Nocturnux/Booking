@@ -3,6 +3,9 @@
 {% block title %}Glamping {% endblock %}
 
 {% block content %}
+
+{% load humanize %}
+
 <div class="card shadow mb-4 p-4 ">
     <div class="card-header py-3 mb-3">
         <h4 class="m-0 font-weight-bold text-primary">Reserva de cabañas y servicios</h4>
@@ -57,7 +60,7 @@
                 <select class="form-control" name="cabin" id=""required>
                     <option value="default" disabled selected>Selecciona una cabaña</option>
                     {% for cabin in cabin_list %}
-                    <option value="{{cabin.id}}">{{cabin.name}} - {{cabin.price}}</option>
+                    <option value="{{cabin.id}}" data-price="{{cabin.price}}">{{cabin.name}} - ${{cabin.price|floatformat:2|intcomma}}</option>
                     {% endfor %}
                 </select>
                 <a href="" onclick="addCabin(event)" class="btn btn-primary btn-icon-split mb-3">
@@ -71,7 +74,7 @@
                 <select class="form-control" name="service" id="" required>
                     <option value="default" disabled selected>Selecciona un servicio</option>
                     {% for service in service_list %}
-                    <option value="{{service.id}}">{{service.name}} - {{service.price}}</option>
+                    <option value="{{service.id}}" data-price="{{service.price}}">{{service.name}} - ${{service.price|floatformat:2|intcomma}}</option>
                     {% endfor %}
                 </select>
                 <a onclick="addService(event)" href="" class="btn btn-primary btn-icon-split mb-3">
@@ -105,6 +108,34 @@
                 </thead>
             </table>
         </div>
+
+        <div class="card-header py-3 mb-3">
+            <h4 class="m-0 font-weight-bold text-primary">Primer pago</h4>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Pago</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                        <th>Recuerda que para confirmar tu reserva debes hacer un pago parcial del 50%</th>
+                <tbody >
+                </tbody>
+                <thead>
+                    <tr>
+                        <th>Pago parcial:</th>
+                        <th><input type="hidden" name="amountValueUnformatted" id="amountValueUnformatted">
+                        </th>
+                        <th scope="col"><input class="text-success font-weight-bold" style="border: none;" type="text" name="amountValue" id="amountValue" readonly></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
         <div class="text-center">
             <button type="submit" class="btn btn-primary">Crear reserva</button>
 
@@ -138,17 +169,18 @@
         let cabinSelect = $('select[name="cabin"]');
         let cabin_Id = cabinSelect.val();
         let cabin_Name = cabinSelect.find('option:selected').text().split(' - ')[0];
-        let cabin_price_per_day = cabinSelect.find('option:selected').text().split(' - ')[1];
-        let cabin_price_total = parseInt(cabin_price_per_day) * days;
+        let cabin_price_per_day = parseFloat(cabinSelect.find('option:selected').attr('data-price'));
+        let cabin_price_total = parseFloat(cabin_price_per_day) * days;
         let formattedCabinPriceTotal = '$' + cabin_price_total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
         cabin_added.push(cabin_Id);
         totalBooking(cabin_price_total);
+        amountBooking(cabin_price_total); // Add this line to update the partial payment amount
 
         $('#tbooking').append(`
             <tr id=${cabin_Id}>                               
                 <td>
                     <input type="hidden" name="cabinId[]" value="${cabin_Id}">
-                    <input type="hidden" name="cabinPrice[]" value="${cabin_price_total}">
+                    <input type="hidden" name="cabinPrice[]" value="${cabin_price_total.toFixed(2)}">
                     ${cabin_Name}
                 </td>
                 <td>${formattedCabinPriceTotal}</td>                
@@ -166,10 +198,11 @@
         let serviceSelect = $('select[name="service"]');
         let service_Id = serviceSelect.val();
         let sevice_Name = serviceSelect.find('option:selected').text().split(' - ')[0];
-        let service_Price = parseInt(serviceSelect.find('option:selected').text().split(' - ')[1]);
+        let service_Price = parseFloat(serviceSelect.find('option:selected').attr('data-price'));
         let formattedServicePrice = '$' + service_Price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
         service_added.push(service_Id);
         totalBooking(service_Price);
+        amountBooking(service_Price); // Add this line to update the partial payment amount
 
         $('#tbooking').append(`
             <tr id="${service_Id}">                                
@@ -189,10 +222,18 @@
     }
 
     function totalBooking(value) {
+        value = parseFloat(value);
         total += value;
         let formattedTotal = '$' + total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
         document.getElementById('totalValue').value = formattedTotal;
         document.getElementById('totalValueUnformatted').value = total; // Guarda el total sin formato
+    }
+
+    function amountBooking(value) {
+        amount = total / 2;
+        let formattedAmount = '$' + amount.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+        document.getElementById('amountValue').value = formattedAmount;
+        document.getElementById('amountValueUnformatted').value = amount; // Guarda el pago parcial sin formato
     }
 
     document.querySelector('form').addEventListener('submit', function(e) {
@@ -221,7 +262,7 @@
             }
     
             // Convierte la cadena de precio a un número
-            let price = parseInt(priceString, 10);
+            let price = parseFloat(priceString);
     
             total -= price;
             if (total < 0) {

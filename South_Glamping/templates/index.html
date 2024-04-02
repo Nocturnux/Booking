@@ -5,6 +5,7 @@
 
 {% block content %}
 
+{% load humanize %}
 
    <body>
       {% if user.is_superuser %}
@@ -58,8 +59,7 @@
                                    <i class="fa fa-money"></i> Total pagos
                                </div>
                                <div class="card-body">
-                                   <h5 class="card-title text-primary text-center">{{ payment_count }}</h5>
-                               </div>
+                                 <h5 class="card-title text-primary text-center">${{ payment_count|floatformat:2|intcomma }}</h5>
                            </div>
                        </div>
                     </div>
@@ -277,7 +277,7 @@
                                             <p class="card-text mb-auto">
                                                 <strong>Descripción:</strong> {{ cabin.description }}<br>
                                                 <strong>Capacidad:</strong> {{ cabin.capacity }}<br>
-                                                <strong>Valor por noche:</strong> {{ cabin.price }}
+                                                <strong>Valor por noche:</strong> ${{ cabin.price|floatformat:2|intcomma }}
                                             </p>
                                         </div>
                                     </div>
