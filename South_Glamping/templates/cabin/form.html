@@ -6,7 +6,7 @@
           {% if field.name == 'cabin_type'%}
           <label for="" class="form-label">Tipo Cabaña</label> 
               <select class="form-control" name="cabin_type" id="">
-                <option value="">Seleccione el tipo de cabaña {{ choice.1 }}</option>
+                <option value="default0" disabled selected>Seleccione el tipo de cabaña {{ choice.1 }}</option>
                   {% for choice in field.field.choices %}
                     <option value="{{ choice.0 }}" {% if choice.0 == field.value %}selected{% endif %}>{{ choice.1 }}</option>
                   {% endfor %}

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}payment_booking{% endblock %}
+{% block title %}payment{% endblock %}
 
 {% block content %}
 
@@ -24,6 +24,13 @@
             </div>
             <div class="mb-3 d-flex">
                 <label for="" class="form-label">Método de pago</label>
+                <select class="form-control mx-2 col-3" name="payment_method" id="payment_method" required>
+                <option value= "default" disabled selected>Selecciona el método de pago</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta Crédito">Tarjeta Crédito</option>
+                <option value="Tarjeta Débito">Tarjeta Débito</option>
+                <option value="Transferencia">Transferencia</option>
+            </select>
 
                 <label for="" class="form-label ml-4">Abono</label>
                 <input
