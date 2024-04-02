@@ -38,6 +38,8 @@ urlpatterns = [
     path('booking_cabin/', include('booking_cabin.urls')),
     path('recover_password',views.recover_password, name='recover_password'),
     path('help',views.help, name='help'),
+    path('generate_report',
+         )
 ]
 # tus otras urls aquí...
 if settings.DEBUG:
