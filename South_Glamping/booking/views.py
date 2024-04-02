@@ -63,7 +63,7 @@ def create_booking(request):
             booking_cabin = Booking_cabin.objects.create(
                 booking=booking,
                 cabin=cabin,
-                price=cabin_price[i]
+                price=request.POST['totalValueUnformatted'],
             )
             booking_cabin.save()
         

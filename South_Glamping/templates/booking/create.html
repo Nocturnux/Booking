@@ -271,6 +271,8 @@
             let formattedTotal = '$' + total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
             document.getElementById('totalValue').value = formattedTotal;
             document.getElementById('totalValueUnformatted').value = total; // Actualiza el total sin formato
+
+            amountBooking(total); // Actualiza el pago parcial
     
             element.remove();
         } else {
