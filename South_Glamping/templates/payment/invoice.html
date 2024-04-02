@@ -1,118 +1,47 @@
 
 
+{% extends 'base.html' %}
+
+{% block title %}payment_booking{% endblock %}
+
 {% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Pago reserva</h1>    
+</div>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h4 class="m-0 font-weight-bold text-primary">Detalle reserva</h4>
+        <h4 class="m-0 font-weight-bold text-primary">Pago reserva</h4>
     </div>
     <div class="card-body">
-        <div class="d-flex">
-            <div class="mb-3 mr-5">
-                <label for="" class="form-label">Código reserva</label>
-                <input type="text" class="form-control" value="{{booking.id}}" readonly />
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="d-flex mb-3">
+                <label for="" class="form-label mr-3">Total reserva</label>
+                <input type="text" class="form-control col-3 mx-3" name="booking_total" id="booking_total" value="{{ booking.price }}" readonly />
+                <label for="" class="form-label mx-3">Total pagos</label>
+                <input type="text" class="form-control col-3" name="payment_booking" id="payment_booking" value="{{ total_payments}}" readonly />
             </div>
-            <div class="mb-3 mr-5">
-                <label for="" class="form-label">Fecha reserva</label>
-                <input type="text" class="form-control" value='{{booking.date_booking|date:"d/m/Y"}}' readonly />
+            <div class="mb-3 d-flex">
+                <label for="" class="form-label">Método de pago</label>
+
+                <label for="" class="form-label ml-4">Abono</label>
+                <input
+                    type="text" class="form-control col-3 mx-5" name="amount" id="amount" aria-describedby="helpId" placeholder="" />
             </div>
-            <div class="mb-3 mr-5">
-                <label for="" class="form-label">Documento Cliente</label>
-                <input type="text" class="form-control" value="{{booking.customer.document}}" readonly />
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Nombre Cliente</label>
-                <input type="text" class="form-control" value="{{booking.customer.name}}" readonly />
-            </div>
-        </div>
-        <div class="d-flex">
-            <div class="mb-3 mr-5">
-                <label for="" class="form-label">Fecha inicio</label>
-                <input type="text" class="form-control" value='{{booking.date_start|date:"d/m/Y"}}' readonly />
-            </div>
-            <div class="mb-3 mr-5">
-                <label for="" class="form-label">Fecha fin</label>
-                <input type="text" class="form-control" value='{{booking.date_end|date:"d/m/Y"}}' readonly />
-            </div>
-            <div class="mb-3 mr-5">
-                <label for="" class="form-label">Valor</label>
-                <input type="text" class="form-control" value="{{booking.price}}" readonly />
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Estado</label>
-                <input type="text" class="form-control" value="{{booking.status}}" readonly />
-            </div>
-        </div>
-        <div class="table-responsive">
-            <h5 class="text-primary font-weight-bold mt-4">Cabañas reservadas</h5>
-            <table class="table table-bordered" width="100%" cellspacing="0">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Imagen</th>
-                        <th>Código cabaña</th>
-                        <th>Nombre</th>
-                        <th>Valor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for cabin in booking_cabin %}
-                    <tr>
-                        <td><img src="{{ cabin.cabin.image.url}}" alt="" width="50"></td>
-                        <td>{{ cabin.cabin.id }}</td>
-                        <td>{{ cabin.cabin.name }}</td>
-                        <td>{{ cabin.price}}</td>                        
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>            
-        </div>
-        <div class="table-responsive">
-            <h5 class="text-primary font-weight-bold mt-4">Servicios reservados</h5>
-            <table class="table table-bordered" width="100%" cellspacing="0">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Imagen</th>
-                        <th>Código servicio</th>
-                        <th>Nombre</th>
-                        <th>Valor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for service in booking_service %}
-                    <tr>
-                        <td><img src="{{ service.service.image.url}}" alt="" width="50"></td>
-                        <td>{{ service.service.id }}</td>
-                        <td>{{ service.service.name }}</td>
-                        <td>{{ service.price}}</td>                        
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>            
-        </div>
-        <div class="table-responsive">
-            <h5 class="text-primary font-weight-bold mt-4">Pagos realizados</h5>
-            <table class="table table-bordered" width="100%" cellspacing="0">
-                <thead class="table-dark">
-                    <tr>                        
-                        <th>Código pago</th>
-                        <th>Fecha</th>
-                        <th>Método</th>
-                        <th>Valor</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for payment in payments %}
-                    <tr>
-                        <td>{{ payment.id }}</td>
-                        <td>{{ payment.date_payment|date:"d/m/Y" }}</td>
-                        <td>{{ payment.payment_method }}</td>
-                        <td>{{ payment.price }}</td>
-                        <td>{{ payment.status }}</td>                       
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            
+            <button type="submit" class="btn btn-primary">Pagar</button>
+        </form>
     </div>
 </div>
+
+
+<script>
+    let booking_total = document.getElementById('booking_total').value;
+    let payment_booking = document.getElementById('payment_booking').value;
+    let amount = booking_total / 2;
+    if (booking_total != payment_booking) {
+        document.getElementById('amount').value = amount;        
+    }
+    
+</script>
 {% endblock %}
