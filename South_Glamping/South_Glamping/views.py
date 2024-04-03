@@ -221,10 +221,29 @@ def recover_password(request):
 @login_required
 def help(request):
     return render(request, 'help.html')
+
 @login_required
 def generate_report(request):
-    return render(request, 'generate_report.html')            
+    # Obtener los datos necesarios
+    user_count = User.objects.count()
+    booking_count = Booking.objects.count()
+    payment_count = Booking.objects.aggregate(total=Sum('price'))['total'] or 0
+    services = Service.objects.filter(status=True)
+    cabin_types = Cabin_type.objects.filter(status=True)
+    cabins = Cabin.objects.filter(status=True)
 
+    # Preparar los datos para el contexto del informe
+    context = {
+        'user_count': user_count,
+        'booking_count': booking_count,
+        'payment_count': payment_count,
+        'services': services,
+        'cabin_types': cabin_types,
+        'cabins': cabins,
+        'request': request,
+    }
+    
+    return render(request, 'generate_report.html', context)
 
 
 

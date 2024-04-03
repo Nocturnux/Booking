@@ -1,49 +1,277 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generación de reporte</title>
+</head>
+<body>
+    <h1>Informe de datos</h1>
+    <h2>Usuarios registrados: {{ user_count }}</h2>
+    <h2>Total de reservas: {{ booking_count }}</h2>
+    <h2>Total de pagos: ${{ payment_count }}</h2>
+
+    <h2>Servicios:</h2>
+    <ul>
+    {% for service in services %}
+        <li>{{ service.name }}</li>
+    {% endfor %}
+    </ul>
+
+    <h2>Tipos de cabañas:</h2>
+    <ul>
+    {% for cabin_type in cabin_types %}
+        <li>{{ cabin_type.name }}</li>
+    {% endfor %}
+    </ul>
+
+    <h2>Cabañas:</h2>
+    <ul>
+    {% for cabin in cabins %}
+        <li>{{ cabin.name }}</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
+
+{% comment %} {% extends 'base.html' %}
 
 {% load static %}
 
 {% block content %}
 
-<div class="row">
-    <div class="col-lg-4">
-        <div class="card text-primary bg-white mb-3" style="max-width: 20rem;">
-            <div class="card-header text-center">
-                <i class="fa fa-user"></i> Usuarios registrados
-            </div>
-            <div class="card-body">
-                <h5 class="card-title text-primary text-center">{{ user_count }}</h5>
-            </div>
-        </div>
-    </div>
+{% load humanize %}
 
-    <div class="col-lg-4">
-        <div class="card text-primary bg-white mb-3" style="max-width: 20rem;">
-            <div class="card-header text-center">
-                <i class="fa fa-calendar"></i> Total reservas
-            </div>
-            <div class="card-body">
-                <h5 class="card-title text-primary text-center">{{ booking_count }}</h5>
-            </div>
-        </div>
-    </div>
+   <body>
+      {% if user.is_superuser %}
+         <!-- Contenido para el administrador -->
+         <div id="admin-content">
+            <div class="container-fluid">
+               <div class="row column_title">
+                  <div class="col-md-12">
+                     <div class="page_title">
+                        <h2>Dashboard South Glamping.</h2>
+                     </div>
+                  </div>
+               </div>
+               <!-- dashboard inner -->
+               <div class="midde_cont">
+                  <div class="container-fluid">
+                     <div class="row column_title text-center">
+                        <div class="col-md-12">
+                           <div class="page_title">
+                              <h2>Gráficos y estadísticas.</h2>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- row -->
+                     <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card text-primary bg-white mb-3" style="max-width: 20rem;">
+                                <div class="card-header text-center">
+                                    <i class="fa fa-user"></i> Usuarios registrados
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary text-center">{{ user_count }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-lg-4">
+                            <div class="card text-primary bg-white mb-3" style="max-width: 20rem;">
+                                <div class="card-header text-center">
+                                    <i class="fa fa-calendar"></i> Total reservas
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary text-center">{{ booking_count }}</h5>
+                                </div>
+                            </div>
+                        </div>
 
-    <div class="col-lg-4">
-       <div class="card text-primary bg-white mb-3" style="max-width: 20rem;">
-           <div class="card-header text-center">
-               <i class="fa fa-money"></i> Total pagos
-           </div>
-           <div class="card-body">
-               <h5 class="card-title text-primary text-center">{{ payment_count }}</h5>
-           </div>
-       </div>
-   </div>
-</div>
- 
- <div class="row column1">
-    <div class="col-lg-6">
-       <div class="white_shd full margin_bottom_30">
-          <div class="full graph_head">
-             <div class="heading1 margin_0">
-                <h2>Reservas por mes</h2>
-             </div>
-          </div>
+                        <div class="col-lg-4">
+                           <div class="card text-primary bg-white mb-3" style="max-width: 20rem;">
+                               <div class="card-header text-center">
+                                   <i class="fa fa-money"></i> Total pagos
+                               </div>
+                               <div class="card-body">
+                                 <h5 class="card-title text-primary text-center">${{ payment_count|floatformat:2|intcomma }}</h5>
+                           </div>
+                       </div>
+                    </div>
+                     
+                     <div class="row column1">
+                        <div class="col-lg-6">
+                           <div class="white_shd full margin_bottom_30">
+                              <div class="full graph_head">
+                                 <div class="heading1 margin_0">
+                                    <h2>Reservas por mes</h2>
+                                 </div>
+                              </div>
+                              <div class="map_section padding_infor_info">
+                                 <canvas id="my_chart"></canvas>
+                                 <script>
+                                 var ctx = document.getElementById('my_chart').getContext('2d');
+                                 var myChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data: {
+                                       labels: {{ months|safe }},
+                                       datasets: [{
+                                          label: 'Reservas',
+                                          data: {{ data|safe }},
+                                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                          borderColor: 'rgba(75, 192, 192, 1)',
+                                          borderWidth: 1
+                                       }]
+                                    },
+                                    options: {
+                                       scales: {
+                                          y: {
+                                             beginAtZero: true
+                                          }
+                                       }
+                                    }
+                                 });
+                                 </script> 
+                              </div>
+                           </div>
+                       </div>
+               
+                        <div class="col-lg-6">
+                           <div class="white_shd full margin_bottom_30">
+                              <div class="full graph_head">
+                                 <div class="heading1 margin_0">
+                                    <h2>Ganancias mensuales</h2>
+                                 </div>
+                              </div>
+                              <div class="map_section padding_infor_info">
+                                 <canvas id="bar_chart"></canvas>
+                                 <script>
+                                 var ctx = document.getElementById('bar_chart').getContext('2d');
+                                 var myChart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                       labels: {{ months|safe }},
+                                       datasets: [{
+                                          label: 'Ganancias',
+                                          data: {{ profit|safe }},
+                                          backgroundColor: 'rgba(255, 165, 0, 0.2)',  // Color de fondo de las barras en naranja con transparencia
+                                          borderColor: 'rgba(255, 165, 0, 1)',  // Color del borde de las barras en naranja
+                                          borderWidth: 1
+                                       }]   
+                                    },
+                                    options: {
+                                       scales: {
+                                          y: {
+                                             beginAtZero: false,  // Comienza la escala en el valor mínimo de los datos, no en cero
+                                          }
+                                       }
+                                    }
+                                 });
+                                 </script>
+            
+                              </div>
+                           </div>
+                        </div>
+            
+                        <div class="col-lg-6">
+                           <div class="white_shd full margin_bottom_30">
+                              <div class="full graph_head">
+                                 <div class="heading1 margin_0">
+                                    <h2>Solicitudes por servicio</h2>
+                                 </div>
+                              </div>
+                              <div class="map_section padding_infor_info">
+                                 <canvas id="bar1_chart"></canvas>
+                                 <script>
+                                 document.addEventListener('DOMContentLoaded', function() {
+                                    var ctx = document.getElementById('bar1_chart').getContext('2d');
+                                    var myChart = new Chart(ctx, {
+                                       type: 'horizontalBar',
+                                       data: {
+                                          labels: JSON.parse('{{ service_names|escapejs }}'),
+                                          datasets: [{
+                                             label: 'Solicitudes por servicio',
+                                             data: JSON.parse('{{ service_data|escapejs }}'),
+                                             backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(255, 206, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                             ],
+                                             borderColor: [
+                                             'rgba(255, 99, 132, 1)',
+                                             'rgba(54, 162, 235, 1)',
+                                             'rgba(255, 206, 86, 1)',
+                                             'rgba(75, 192, 192, 1)',
+                                             'rgba(153, 102, 255, 1)',
+                                             'rgba(255, 159, 64, 1)',
+                                             ],
+                                             borderWidth: 1
+                                          }]
+                                       },
+                                       options: {
+                                          scales: {
+                                             x: {
+                                                beginAtZero: true,
+                                                title: {
+                                                   display: true,
+                                                   text: 'Número de solicitudes'
+                                                }   
+                                             }
+                                          }
+                                       }
+                                    });
+                                 });
+                                 </script>
+                              </div>
+                           </div>
+                        </div>
+            
+                        <div class="col-lg-6" width: '400px'>
+                           <div class="white_shd full margin_bottom_30">
+                              <div class="full graph_head">
+                                 <div class="heading1 margin_0">
+                                    <h2>Reservas por tipo de cabaña</h2>
+                                 </div>
+                              </div>
+                              <div class="map_section padding_infor_info">
+                                 <canvas id="pie_chart"></canvas>
+                                 <script>
+                                 var ctx = document.getElementById('pie_chart').getContext('2d');
+                                 var myChart = new Chart(ctx, {
+                                    type: 'pie',
+                                    data: {
+                                       labels: {{ cabin_types|safe }},
+                                       datasets: [{
+                                       data: {{ cabin_data|safe }},
+                                          backgroundColor: [
+                                             'rgba(255, 99, 132, 0.2)',
+                                             'rgba(54, 162, 235, 0.2)',
+                                             'rgba(255, 206, 86, 0.2)',
+                                             'rgba(75, 192, 192, 0.2)',
+                                             'rgba(153, 102, 255, 0.2)',
+                                             'rgba(255, 159, 64, 0.2)',
+                                          ],
+                                          borderColor: [
+                                             'rgba(255, 99, 132, 1)',
+                                             'rgba(54, 162, 235, 1)',
+                                             'rgba(255, 206, 86, 1)',
+                                             'rgba(75, 192, 192, 1)',
+                                             'rgba(153, 102, 255, 1)',
+                                             'rgba(255, 159, 64, 1)',
+                                          ],
+                                          borderWidth: 1
+                                       }]
+                                    }
+                                });
+                                </script>
+                              </div>
+                           </div>
+                        </div>
+            
+                        
+                     </div>
+                     <!-- end row -->
+                  </div>
+               </div>
+         </div> {% endcomment %}
