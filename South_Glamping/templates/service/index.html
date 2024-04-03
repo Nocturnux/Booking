@@ -35,7 +35,7 @@
                     <td><img src="{{ service.image.url }}" alt="" width="100"></td>
                     <td>{{ service.name }}</td>
                     <td>{{ service.description }}</td>
-                    <td>${{ service.price|floatformat:2|intcomma }}</td>
+                    <td>${{ service.price|floatformat:"0"|intcomma }}</td>
                     <!-- Toggle Switch button -->
                     <td>
                         <form action="{% url 'service_status' service.id %}" method="POST">

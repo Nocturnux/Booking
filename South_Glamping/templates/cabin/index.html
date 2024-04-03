@@ -39,7 +39,7 @@
                     <td>{{ cabin.capacity }}</td>
                     <td>{{ cabin.cabin_type  }}</td>
                     <td>{{ cabin.description }}</td>
-                    <td>${{ cabin.price|floatformat:2|intcomma }}</td>
+                    <td>${{ cabin.price|floatformat:"0"|intcomma }}</td>
                     <td>
                         <form action="{% url 'cabin_status' cabin.id %}" method="POST">
                             {% csrf_token %}                            

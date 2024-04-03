@@ -17,7 +17,8 @@
                         <th>Fecha</th>
                         <th>Metodo de pago</th>
                         <th>Estado</th>
-                        <th>Reserva</th>                       
+                        <th>Reserva</th> 
+                        <th>Acciones</th>                      
                     </tr>
                 </thead>                
                 <tbody>
@@ -30,9 +31,6 @@
                             <td>{{ payment.booking }}</td>                                       
                             
                             <td>
-                                {% comment %} <a href="" class="btn btn-info btn-circle btn-sm"data-bs-toggle="modal" data-bs-target="#modalId" data-payment-id="{{ payment.id }}">
-                                    <i class="fa fa-info-circle"></i>
-                                </a> {% endcomment %}
                                 <a href="{% url 'invoice' payment.id %}" class="btn btn btn-secondary btn-circle btn-sm">
                                     <i class="fa fa-print"></i>
                                 </a>

@@ -53,7 +53,6 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Imagen</th>
-                        <th>Código cabaña</th>
                         <th>Nombre</th>
                         <th>Valor</th>
                     </tr>
@@ -62,9 +61,8 @@
                     {% for cabin in booking_cabin %}
                     <tr>
                         <td><img src="{{ cabin.cabin.image.url}}" alt="" width="50"></td>
-                        <td>{{ cabin.cabin.id }}</td>
                         <td>{{ cabin.cabin.name }}</td>
-                        <td>${{ cabin.price|floatformat:2|intcomma}}</td>                        
+                        <td>${{ cabin.price|floatformat:"0"|intcomma}}</td>                        
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -76,7 +74,6 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Imagen</th>
-                        <th>Código servicio</th>
                         <th>Nombre</th>
                         <th>Valor</th>
                     </tr>
@@ -85,9 +82,8 @@
                     {% for service in booking_service %}
                     <tr>
                         <td><img src="{{ service.service.image.url}}" alt="" width="50"></td>
-                        <td>{{ service.service.id }}</td>
                         <td>{{ service.service.name }}</td>
-                        <td>${{ service.price|floatformat:2|intcomma}}</td>                        
+                        <td>${{ service.price|floatformat:"0"|intcomma}}</td>                        
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -111,7 +107,7 @@
                         <td>{{ payment.id }}</td>
                         <td>{{ payment.date }}</td>
                         <td>{{ payment.payment_method }}</td>
-                        <td>${{ payment.amount|floatformat:2|intcomma }}</td>
+                        <td>${{ payment.amount|floatformat:"0"|intcomma }}</td>
                         <td>{{ payment.status }}</td>                       
                     </tr>
                     {% endfor %}

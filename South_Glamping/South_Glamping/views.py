@@ -17,12 +17,22 @@ import json
 from datetime import date
 from django.db.models import Sum
 import calendar
+from django.db.models import Count
 from collections import Counter
 from cabin.models import Cabin
 from booking_cabin.models import Booking_cabin
 from cabin_type.models import Cabin_type  
 from booking_service.models import Booking_service 
 from django.contrib.auth.decorators import login_required  
+from django.db.models.functions import ExtractMonth
+from babel.dates import format_date
+from payment.models import Payment 
+from django.http import FileResponse,HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.template.loader import render_to_string
+
 
 
 def get_booking_data():
@@ -66,8 +76,95 @@ def get_admin_data():
     cabin_types, cabin_data = get_typecabin_data()
     service_names, service_data = get_service_data()  
     
-
     return months, booking_data, profit_data, cabin_data, cabin_types, service_names, service_data
+
+def get_bookings_data():
+    data = []
+    for month in range(1, 7):
+        bookings = Booking.objects.filter(date_start__month=month).count()
+        month_name = calendar.month_name[month]
+        data.append((month_name, bookings))
+    return data
+
+def get_profits_data():
+    profits_data = []
+    for month in range(1, 7):  
+        bookings = Booking.objects.filter(date_booking__year=2024, date_booking__month=month)
+        monthly_profit = bookings.aggregate(total_profit=Sum('price'))['total_profit'] or 0
+        month_name = format_date(date(2024, month, 1), 'MMMM', locale='es')
+        profits_data.append((month_name, monthly_profit))
+    return profits_data
+
+def get_services_data():
+    services_data = []
+    for service in Service.objects.all():
+        bookings = Booking_service.objects.filter(service__name=service.name)
+        services_data.append((service.name, bookings.count()))
+    return services_data
+
+def get_typecabins_data():
+    cabins_data = []
+    for cabin_type in Cabin_type.objects.all():
+        bookings = Booking_cabin.objects.filter(cabin__cabin_type__name=cabin_type.name)
+        cabins_data.append((cabin_type.name, bookings.count()))
+    return cabins_data
+
+
+
+@login_required
+def generate_report(request):
+    user_count = User.objects.count()
+    booking_count = Booking.objects.count()
+    payment_count = Booking.objects.aggregate(total=Sum('price'))['total'] or 0
+    services = Service.objects.filter(status=True)
+    cabin_types = Cabin_type.objects.filter(status=True)
+    cabins = Cabin.objects.filter(status=True)
+    data = [(calendar.month_name[i], 0) for i in range(1, 7)]
+    bookings = Booking.objects.filter(date_start__year=2024, date_start__month__lte=6).annotate(month=ExtractMonth('date_start')).values('month').annotate(count=Count('id')).order_by('month')
+    profits_data = get_profits_data()
+    services_data = get_services_data()
+    cabins_data = get_typecabins_data()
+    
+    for i in range(1, 7):
+        month_name = format_date(date(2024, i, 1), 'MMMM', locale='es')
+        count = next((booking['count'] for booking in bookings if booking['month'] == i), 0)
+        data[i - 1] = (month_name, count)   
+    
+
+        context = {
+            
+            'cabin_types': cabin_types,
+            'cabins': cabins,
+            'request': request,
+            'user_count': user_count,
+            'booking_count': booking_count,
+            'payment_count': payment_count,
+            'bookings': data,
+            'profits_data': profits_data,
+            'services_data': services_data,
+            'cabins_data': cabins_data
+        }
+    # Renderiza el template a HTML
+    html_string = render_to_string('generate_report.html', context=context)
+
+    # Crea un archivo PDF en memoria
+    pdf_file = BytesIO()
+
+    # Convierte el HTML a PDF utilizando pisa
+    pisa.CreatePDF(html_string, dest=pdf_file)
+
+    # Establece la posición del puntero del archivo en el principio
+    pdf_file.seek(0)
+
+    # Crea una respuesta HTTP con el archivo PDF adjunto
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reporte_general.pdf"'
+
+    return response
+   
+
+   
+    
 
 @login_required
 def index(request):
@@ -221,9 +318,7 @@ def recover_password(request):
 @login_required
 def help(request):
     return render(request, 'help.html')
-@login_required
-def generate_report(request):
-    return render(request, 'generate_report.html')            
+            
 
 
 

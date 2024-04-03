@@ -43,7 +43,7 @@
                             <td>{{ booking.date_booking }}</td>
                             <td>{{ booking.date_start }}</td>
                             <td>{{ booking.date_end }}</td>
-                            <td>${{ booking.price|floatformat:2|intcomma }}</td>
+                            <td>${{ booking.price|floatformat:"0"|intcomma }}</td>
                             <td>{{ booking.status }}</td>                                       
                 
                             <td>

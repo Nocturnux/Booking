@@ -1,0 +1,42 @@
+/* report.css */
+
+div h3 {
+    text-align: left;
+    margin-top: 20px;
+    font-size: 1.3em;
+}
+
+div h4 {
+    text-align: center;
+    margin-top: 20px;   
+    margin-bottom: 0px;
+    font-size: 1.1em;
+    
+}
+
+
+ table {
+    width: 70%;  /* Disminuye este valor para disminuir el ancho de la tabla */
+  
+    justify-content: center;
+    margin-top: 0px;
+}
+
+
+.table td {
+    width: auto;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 4px;  /* Disminuye este valor para disminuir la altura de las filas */
+}
+
+
+
+.table  th {
+    text-align: center;
+    padding-top: 2px;  /* Disminuye este valor para disminuir la altura de las filas */
+    padding-bottom: 2px;  /* Disminuye este valor para disminuir la altura de las filas */
+    background-color: #464646;
+    color: white;
+    border: 1px solid #ddd;
+}

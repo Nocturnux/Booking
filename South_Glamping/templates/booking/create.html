@@ -60,7 +60,7 @@
                 <select class="form-control" name="cabin" id=""required>
                     <option value="default" disabled selected>Selecciona una cabaña</option>
                     {% for cabin in cabin_list %}
-                    <option value="{{cabin.id}}" data-price="{{cabin.price}}">{{cabin.name}} - ${{cabin.price|floatformat:2|intcomma}}</option>
+                    <option value="{{cabin.id}}" data-price="{{cabin.price}}">{{cabin.name}} - ${{cabin.price|floatformat:"0"|intcomma}}</option>
                     {% endfor %}
                 </select>
                 <a href="" onclick="addCabin(event)" class="btn btn-primary btn-icon-split mb-3">
@@ -74,7 +74,7 @@
                 <select class="form-control" name="service" id="" required>
                     <option value="default" disabled selected>Selecciona un servicio</option>
                     {% for service in service_list %}
-                    <option value="{{service.id}}" data-price="{{service.price}}">{{service.name}} - ${{service.price|floatformat:2|intcomma}}</option>
+                    <option value="{{service.id}}" data-price="{{service.price}}">{{service.name}} - ${{service.price|floatformat:"0"|intcomma}}</option>
                     {% endfor %}
                 </select>
                 <a onclick="addService(event)" href="" class="btn btn-primary btn-icon-split mb-3">
@@ -171,7 +171,7 @@
         let cabin_Name = cabinSelect.find('option:selected').text().split(' - ')[0];
         let cabin_price_per_day = parseFloat(cabinSelect.find('option:selected').attr('data-price'));
         let cabin_price_total = parseFloat(cabin_price_per_day) * days;
-        let formattedCabinPriceTotal = '$' + cabin_price_total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+        let formattedCabinPriceTotal = '$' + cabin_price_total.toLocaleString('es-CO');
         cabin_added.push(cabin_Id);
         totalBooking(cabin_price_total);
         amountBooking(cabin_price_total); // Add this line to update the partial payment amount
@@ -180,7 +180,7 @@
             <tr id=${cabin_Id}>                               
                 <td>
                     <input type="hidden" name="cabinId[]" value="${cabin_Id}">
-                    <input type="hidden" name="cabinPrice[]" value="${cabin_price_total.toFixed(2)}">
+                    <input type="hidden" name="cabinPrice[]" value="${cabin_price_total}">
                     ${cabin_Name}
                 </td>
                 <td>${formattedCabinPriceTotal}</td>                
@@ -199,7 +199,7 @@
         let service_Id = serviceSelect.val();
         let sevice_Name = serviceSelect.find('option:selected').text().split(' - ')[0];
         let service_Price = parseFloat(serviceSelect.find('option:selected').attr('data-price'));
-        let formattedServicePrice = '$' + service_Price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+        let formattedServicePrice = '$' + service_Price.toLocaleString('es-CO');
         service_added.push(service_Id);
         totalBooking(service_Price);
         amountBooking(service_Price); // Add this line to update the partial payment amount
@@ -224,14 +224,14 @@
     function totalBooking(value) {
         value = parseFloat(value);
         total += value;
-        let formattedTotal = '$' + total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+        let formattedTotal = '$' + total.toLocaleString('es-CO');
         document.getElementById('totalValue').value = formattedTotal;
         document.getElementById('totalValueUnformatted').value = total; // Guarda el total sin formato
     }
-
+    
     function amountBooking(value) {
         amount = total / 2;
-        let formattedAmount = '$' + amount.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+        let formattedAmount = '$' + amount.toLocaleString('es-CO');
         document.getElementById('amountValue').value = formattedAmount;
         document.getElementById('amountValueUnformatted').value = amount; // Guarda el pago parcial sin formato
     }
@@ -268,7 +268,7 @@
             if (total < 0) {
                 total = 0; // Asegurarse de que el total nunca sea negativo
             }
-            let formattedTotal = '$' + total.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+            let formattedTotal = total.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
             document.getElementById('totalValue').value = formattedTotal;
             document.getElementById('totalValueUnformatted').value = total; // Actualiza el total sin formato
 

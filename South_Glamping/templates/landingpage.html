@@ -104,7 +104,7 @@
                                             <p class="card-text mb-auto">
                                                 <strong>Descripción:</strong> {{ cabin.description }}<br>
                                                 <strong>Capacidad:</strong> {{ cabin.capacity }}<br>
-                                                <strong>Valor por noche:</strong> ${{ cabin.price|floatformat:2|intcomma }}
+                                                <strong>Valor por noche:</strong> ${{ cabin.price|floatformat:"0"|intcomma }}
                                             </p>
                                         </div>
                                     </div>
